@@ -1,0 +1,93 @@
+.product-list {
+  padding-top: 120px;
+}
+.production-list {
+  width: 1100px;
+  margin: 0 auto 10px auto;
+  overflow: hidden;
+}
+.production-list .b-title {
+  padding: 0 0 20px 0;
+  margin: 0;
+  text-align: center;
+  font-size: 28px;
+}
+.production-list .product-container {
+  overflow: hidden;
+  padding: 20px 0;
+}
+.production-list .production-item {
+  width: 250px;
+  height: 300px;
+  float: left;
+  margin: 0 10px 20px 10px;
+  box-sizing: border-box;
+  transition: box-shadow 0.3s ease, -webkit-transform 0.3s ease;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  transition: box-shadow 0.3s ease, transform 0.3s ease, -webkit-transform 0.3s ease;
+}
+.production-list .production-item .product-img {
+  overflow: hidden;
+}
+.production-list .production-item img {
+  width: 250px;
+  height: 250px;
+  background: #ececec;
+  box-sizing: border-box;
+}
+.production-list .production-item .product-content {
+  text-align: center;
+  font-size: 15px;
+  padding: 10px 0;
+}
+.production-list .production-item .product-content .pruduct-name {
+  padding: 0 0 5px 0;
+  transition: color 0.5s ease;
+}
+.production-list .production-item .product-content .current-price {
+  color: #f00;
+}
+.production-list .production-item .product-content .original-price {
+  color: #999;
+  text-decoration: line-through;
+  padding-left: 5px;
+  font-size: 13px;
+}
+.production-list .production-item:hover {
+  box-shadow: 0 0 20px #999;
+  -webkit-transform: translate(0, -5px);
+      -ms-transform: translate(0, -5px);
+          transform: translate(0, -5px);
+}
+.production-list .production-item:hover .product-name {
+  color: #00A6DE;
+}
+.production-list .get-more-product {
+  display: block;
+  width: 100%;
+  height: 60px;
+  line-height: 60px;
+  text-align: center;
+  cursor: pointer;
+  transition: color 0.5s ease, background 0.5s ease;
+}
+.production-list .get-more-product .icon-left {
+  position: absolute;
+  -webkit-transform: translate(-10px, 0) scale(-1);
+      -ms-transform: translate(-10px, 0) scale(-1);
+          transform: translate(-10px, 0) scale(-1);
+  opacity: 0;
+  transition: opacity 0.5s ease, -webkit-transform 0.5s ease;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+  transition: transform 0.5s ease, opacity 0.5s ease, -webkit-transform 0.5s ease;
+}
+.production-list .get-more-product:hover {
+  color: #00A6DE;
+  background: #eee;
+}
+.production-list .get-more-product:hover > .icon-left {
+  opacity: 1;
+  -webkit-transform: translate(5px, 0) scale(-1);
+      -ms-transform: translate(5px, 0) scale(-1);
+          transform: translate(5px, 0) scale(-1);
+}

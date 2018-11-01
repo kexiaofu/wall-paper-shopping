@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>百成墙纸商城</title>
+    <link rel="stylesheet" href="../css/common/base.css">
+    <link rel="stylesheet" href="../css/pages/index.css">
+    <link rel="stylesheet" href="../css/common/carousel.css">
+    <link href="../css/common/iconfont.css" rel="stylesheet">
+</head>
+<body>
+<div class="nav-bar">
+    <div class="left-part">
+        <div class="logo">
+            <a href="./index.html">
+                <img src="../images/logo.png" alt="">
+            </a>
+        </div>
+        <div class="func-item hover-blue">
+            <a href="./product-list.html">商店</a>
+        </div>
+    </div>
+    <div class="right-part">
+        <div class="func-item search">
+            <i class="iconfont icon-cx"></i>
+            <!--<i class="fa fa-search"></i>-->
+            <input type="text" class="search-input" placeholder="搜索百成墙纸网" style="display: none;">
+            <span class="to-search" >搜索</span>
+            <i class="iconfont icon-close" style="display: none;"></i>
+        </div>
+        <div class="func-item hover-blue to-login">登录</div>
+        <div class="func-item hover-blue to-sign-up">注册</div>
+        <div class="func-item">
+            <i class="iconfont icon-gouwuche shopping-car"></i>
+        </div>
+    </div>
+</div>
+
+<div class="login">
+    <div class="close-login-box">
+        <i class="iconfont icon-close"></i>
+    </div>
+    <div class="title">
+       Baicheng Digital
+    </div>
+    <p>登录到您的账户</p>
+    <div class="login-input">
+        <i class="iconfont icon-wode"></i>
+        <input type="text" placeholder="请输入您的账号" id="account" value="aaa">
+    </div>
+    <div class="login-input">
+        <i class="iconfont icon-suo"></i>
+        <input type="password" placeholder="请输入您的密码" id="password" value="1qaz2wsx">
+    </div>
+    <div class="submit">登录</div>
+    <p>我没有账户</p>
+    <div class="sign-up">注册</div>
+</div>
+
+<script src="../js/app/head.js"></script>
+
+<div id="index" class="container">
+    <div class="carousel-container"></div>
+
+    <div class="production-list"></div>
+
+</div>
+<script id="production-list" type="text/html">
+    <p class="b-title">明星产品</p>
+    <div class="product-container">
+        {{each data value i}}
+        <div class="production-item">
+            <div class="product-img">
+                <a href={{"./product.html?productId="+value.productId}}>
+                    <img src="" alt="" data-origin-src={{value.introductImage}} data-is-load="false" class="lazy-load-img">
+                </a>
+            </div>
+            <div class="product-content">
+                <p class="product-name">{{ value.name }}</p>
+                <p>
+                    <span class="current-price">￥{{ value.currentPrice }}</span>
+                    <span class="original-price">{{ value.originalPrice }}</span>
+                </p>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+    <a href="./product-list.html" class="get-more-product">
+        更多产品
+        <i class="iconfont icon-left"></i>
+    </a>
+</script>
+<div class="back-to-top" onclick="backToTop()">
+    <div class="icon-out-container"></div>
+    <div class="icon-in-container"></div>
+    <i class="iconfont icon-drop-down"></i>
+</div>
+
+<script>
+    var backToTop = function() {
+      console.log(document.querySelector('html').scrollTop);
+      document.querySelector('html').scrollTo(0,0);
+    };
+</script>
+<div class="footer">
+    <div class="left-part">
+        <div class="feedback">
+            <span>意见反馈</span>
+            <span>liangjiafu@deepmind.cn</span>
+        </div>
+        <div class="copy-right">
+            &copy;2015 baicheng.com 版权所有 浙ICP备xxxxxxx号
+        </div>
+    </div>
+    <div class="right-part">
+        <div class="web-info">
+            <span>
+                <a href="#">关于百成</a>
+            </span>
+            <span>
+                <a href="#">联系我们</a>
+            </span>
+        </div>
+    </div>
+</div>
+<script src="../js/app/index.js"></script>
+</body>
+</html>

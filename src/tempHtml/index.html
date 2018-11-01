@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>百成墙纸商城</title>
+    <link rel="stylesheet" href="../css/common/base.css">
+    <link rel="stylesheet" href="../css/pages/index.css">
+    <link rel="stylesheet" href="../css/common/carousel.css">
+    <link href="../css/common/iconfont.css" rel="stylesheet">
+</head>
+<body>
+@@include('./common/head.html')
+<div id="index" class="container">
+    <div class="carousel-container"></div>
+
+    <div class="production-list"></div>
+
+</div>
+<script id="production-list" type="text/html">
+    <p class="b-title">明星产品</p>
+    <div class="product-container">
+        {{each data value i}}
+        <div class="production-item">
+            <div class="product-img">
+                <a href={{"./product.html?productId="+value.productId}}>
+                    <img src="" alt="" data-origin-src={{value.introductImage}} data-is-load="false" class="lazy-load-img">
+                </a>
+            </div>
+            <div class="product-content">
+                <p class="product-name">{{ value.name }}</p>
+                <p>
+                    <span class="current-price">￥{{ value.currentPrice }}</span>
+                    <span class="original-price">{{ value.originalPrice }}</span>
+                </p>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+    <a href="./product-list.html" class="get-more-product">
+        更多产品
+        <i class="iconfont icon-left"></i>
+    </a>
+</script>
+@@include('./common/backToTop.html')
+@@include('./common/footer.html')
+<script src="../js/app/index.js"></script>
+</body>
+</html>
