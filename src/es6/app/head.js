@@ -1,8 +1,7 @@
 import Mask from '../common/mask';
 import SHA256 from '../common/encrypt';
-import { toLogin } from '../common/api';
-
-console.log(document.querySelector('.to-search'));
+import { toLogin, getShoppingCarInfo } from '../common/api';
+import template from '../common/template';
 
 let mask = new Mask();
 
@@ -81,6 +80,46 @@ let toSumbitLoginData = () =>{
 
   console.log(name.value )
 };
+
+let toGetShoppingCarInfo = () =>{
+  getShoppingCarInfo()
+    .then(res=>{
+      console.log(res);
+      let len = res.length,
+        maxQuantity = 4,
+        data = {
+          data:len >= maxQuantity?res.slice(0,maxQuantity):res,
+          quantity:len >= maxQuantity? len - maxQuantity: 0
+        };
+      let html = template('shopping-car-container',{data:data});
+      document.querySelector('.shopping-car-container').innerHTML = html;
+
+      let quantityEle =  document.querySelectorAll('.shopping-quantity');
+
+      for(let i=quantityEle.length-1;i>=0;i--) {
+        quantityEle[i].innerHTML = len < 1000?len:'···';
+      }
+
+      if(window.dispatchEvent) {
+        window.dispatchEvent(new CustomEvent('shoppingCartInfo',{
+          detail:res
+        }));
+      } else {
+        window.fireEvent(new CustomEvent('shoppingCartInfo',{
+          detail:res
+        }));
+      }
+
+    })
+};
+
+toGetShoppingCarInfo();
+
+
+let shoppingCar = document.querySelector('.show-shopping-car'),
+    shoppingContainer = document.querySelector('.shopping-car-container');
+
+shoppingCar.addEventListener('mouseenter',toGetShoppingCarInfo);
 
 document.querySelector('.to-search').addEventListener('click',toSearch);
 document.querySelector('.icon-close').addEventListener('click',toClose);

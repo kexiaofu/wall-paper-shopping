@@ -62,4 +62,7 @@ export const getProductClassify = async () => await apiRequire('getProductClassi
 
 export const getProductDetail = async (data) => await apiRequire('getProductDetail','/api/Product/GetProductDetail',null,data,false);
 
+export const getShoppingCarInfo = async (data) => await apiRequire('getShoppingCarInfo','/api/order/GetShoppingCart',null,data,false);
+
+//getShoppingCarInfo
 //getProductClassify,api/Product/GetProductDetail?id=

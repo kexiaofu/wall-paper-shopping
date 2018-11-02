@@ -24,8 +24,8 @@ p{
 }
 
 .container {
-  min-height: calc(100% - 100px);
-  //padding:60px 0 0 0;
+  min-height: calc(100% - 160px);
+  padding:60px 0 0 0;
 }
 
 /*head*/
@@ -59,6 +59,7 @@ p{
     align-items: center;
     color:#555;
     transition: color .5s ease;
+    position: relative;
     .to-search{
       padding:0 0 0 5px;
     }
@@ -141,6 +142,7 @@ p{
       width: 270px;
       padding-left:10px;
       margin:5px 0;
+      font-size: 18px;
     }
   }
   .login-input::before{
@@ -169,6 +171,123 @@ p{
   }
 }
 
+.show-shopping-car{
+  height: 60px;
+}
+
+.shopping-quantity{
+  display: block;
+  width: 22px;
+  height: 22px;
+  line-height: 22px;
+  background: #f00;
+  color:#fff;
+  position: absolute;
+  right: 0;
+  top:5px;
+  font-size:10px;
+  border-radius:100%;
+  text-align: center;
+}
+
+.shopping-car-container{
+  width: 350px;
+  //max-height: 400px;
+  background: #fff;
+  position: fixed;
+  top:55px;
+  right: 10px;
+  border:1px solid #ccc;
+  z-index: 110;
+  padding:10px;
+  box-sizing: border-box;
+  display: none;
+  .shopping-item{
+    width: 100%;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    //justify-content: space-between;
+    font-size:14px;
+    border-bottom:1px solid #ececec;
+    margin:0 0 10px 0;
+    .item-pic{
+      padding:0 5px 0 0;
+      img{
+        width: 50px;
+        height: 50px;
+      }
+    }
+    .item-base-info{
+      .item-name{
+        float:left;
+        width: 180px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+      .item-price{
+        float:left;
+        width: 70px;
+        color:#f00;
+      }
+    }
+    .item-intro-info{
+      padding:5px 0 0 0;
+      width: 220px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+  }
+  .shopping-list-no{
+    height: 40px;
+    line-height: 40px;
+    color:#666;
+    text-align: center;
+    padding:0 0 10px 0;
+    font-size: 16px;
+  }
+  .to-my-shopping-car-btn{
+    width: 120px;
+    height: 40px;
+    line-height: 40px;
+    background: #f00;
+    color:#fff;
+    font-size:14px;
+    text-align: center;
+    float:right;
+  }
+}
+
+.shopping-car-container::before{
+  position: absolute;
+  content: '';
+  width: 0;
+  height: 0;
+  border-left:12px solid transparent;
+  border-right:12px solid transparent;
+  border-bottom:12px solid #ccc;
+  top:-12px;
+  right: 26px;
+}
+
+.shopping-car-container::after{
+  position: absolute;
+  content: '';
+  width: 0;
+  height: 0;
+  border-left:10px solid transparent;
+  border-right:10px solid transparent;
+  border-bottom:10px solid #fff;
+  top:-10px;
+  right: 28px;
+}
+
+.show-shopping-car:hover>.shopping-car-container{
+  display: block;
+}
+
 /*footer*/
 .footer{
   position: absolute;
@@ -181,6 +300,7 @@ p{
   font-size: 14px;
   display: flex;
   justify-content: space-between;
+  z-index: 99;
   .left-part{
     .feedback{
       height: 70px;
@@ -214,7 +334,7 @@ p{
   top:60px;
   background: rgba(255,255,255,.9);
   box-shadow: 0 0 10px #999;
-  z-index: 101;
+  z-index: 99;
   .classify-container{
     width: 1000px;
     height: 60px;
@@ -283,7 +403,6 @@ p{
   }
 }
 
-
 /*back-to-top*/
 .back-to-top{
   width: 80px;
@@ -331,4 +450,72 @@ p{
 .back-to-top:hover >.icon-in-container{
   transform:scale(1,1);
   background: rgba(0,0,0,.3);
+}
+
+.right-side-bar{
+  position: fixed;
+  right: 0;
+  width: 5px;
+  background: #166ab5;
+  height: calc(100% - 60px);
+  top:60px;
+  z-index: 98;
+  .r-content{
+    position: absolute;
+    right: 0;
+    top:50%;
+    transform: translate(0,-50%);
+    width: 40px;
+  }
+  .r-item{
+    width: 100%;
+    min-height: 40px;
+    background: #166ab5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top:2px;
+    box-sizing: border-box;
+    position: relative;
+    i{
+      font-size:25px;
+      color: #eee;
+      cursor: pointer;
+      display: block;
+    }
+  }
+  .r-item::after{
+    content: '';
+    position: absolute;
+    right: 0;
+    background: #166ab5;
+    width: 5px;
+    height: 100%;
+  }
+  .info-content{
+    width: 80px;
+    text-align: center;
+    height: 40px;
+    line-height: 40px;
+    position: absolute;
+    top:0;
+    right: 40px;
+    background: #f00;
+    color:#fff;
+    transition:transform .5s ease;
+    transform: translate(200%,0);
+    z-index: -1;
+    a{
+      color: #fff;
+      font-size: 14px;
+    }
+  }
+  .r-item:hover>.info-content{
+    transform: translate(0,0);
+  }
+  .kefu{
+    i{
+      font-size: 23px;
+    }
+  }
 }

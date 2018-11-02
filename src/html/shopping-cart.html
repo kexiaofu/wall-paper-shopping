@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>百成墙纸商城</title>
+    <title>我的购物车</title>
     <link rel="stylesheet" href="../css/common/base.css">
-    <link rel="stylesheet" href="../css/pages/index.css">
-    <link rel="stylesheet" href="../css/common/carousel.css">
     <link href="../css/common/iconfont.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/pages/shopping-cart.css">
+
 </head>
 <body>
 <div class="nav-bar">
@@ -92,49 +92,34 @@
 
 <script src="../js/app/head.js"></script>
 
-<div id="index" class="container">
-    <div class="carousel-container"></div>
-
-    <div class="production-list"></div>
-
-</div>
-<script id="production-list" type="text/html">
-    <p class="b-title">明星产品</p>
-    <div class="product-container">
-        {{each data value i}}
-        <div class="production-item">
-            <div class="product-img">
-                <a href={{"./product.html?productId="+value.productId}}>
-                    <img src="" alt="" data-origin-src={{value.introductImage}} data-is-load="false" class="lazy-load-img">
-                </a>
+    <div id="shopping-cart" class="shopping-cart container">
+        <div class="shopping-status">
+            <div class="shopping-status-container">
+                <div class="shopping-status-item active">
+                    <i class="iconfont icon-gouwuche"></i>
+                    <span>购物车</span>
+                </div>
+                <div class="shopping-status-item ">
+                    <i class="iconfont icon-order"></i>
+                    <span>填写订单</span>
+                </div>
+                <div class="shopping-status-item">
+                    <i class="iconfont icon-pay"></i>
+                    <span>等待付款</span>
+                </div>
+                <div class="shopping-status-item">
+                    <i class="iconfont icon-paid"></i>
+                    <span>已付款</span>
+                </div>
             </div>
-            <div class="product-content">
-                <p class="product-name">{{ value.name }}</p>
-                <p>
-                    <span class="current-price">￥{{ value.currentPrice }}</span>
-                    <span class="original-price">{{ value.originalPrice }}</span>
-                </p>
-            </div>
+
         </div>
-        {{/each}}
-    </div>
-    <a href="./product-list.html" class="get-more-product">
-        更多产品
-        <i class="iconfont icon-left"></i>
-    </a>
-</script>
-<div class="back-to-top" onclick="backToTop()">
-    <div class="icon-out-container"></div>
-    <div class="icon-in-container"></div>
-    <i class="iconfont icon-drop-down"></i>
-</div>
+        
+        <div class="shopping-list-page"></div>
 
-<script>
-    var backToTop = function() {
-      console.log(document.querySelector('html').scrollTop);
-      document.querySelector('html').scrollTo(0,0);
-    };
-</script>
+        <div class="toPay"></div>
+        
+    </div>
 <div class="footer">
     <div class="left-part">
         <div class="feedback">
@@ -156,6 +141,47 @@
         </div>
     </div>
 </div>
-<script src="../js/app/index.js"></script>
+
+<script id="shopping-list-page" type="text/html">
+    {{ if data.length > 0  }}
+        {{each data product i}}
+            <div class="shopping-item">
+                <input type="checkbox" name={{ product.id }} id={{  product.id }}>
+
+                <div class="product-img">
+                        <img src={{ product.introductImage }} alt=""/>
+                </div>
+
+                <div class="product-info">
+                    <div class="product-name"> {{ product.productName }} </div>
+                    <div class="product-description">{{ product.description }}</div>
+                </div>
+
+                <div class="standards">
+                    {{ each product.standards s i}}
+                    <p>{{ s.optionName }}: {{ s.optionValueName }}</p>
+                    {{ /each }}
+                </div>
+
+                <div class="product-price">￥{{ product.money }}</div>
+
+                <div class="product-quantity">
+                    <input type="text" value={{ product.number }}>
+                </div>
+
+                <div class="count">
+                    {{ product.money * product.number | toFixed2 }}
+                </div>
+
+                <div class="del">删除</div>
+
+            </div>
+        {{ /each }}
+    {{ else if data.length === 0}}
+        <p>您的购物车空白如雪</p>
+    {{ /if }}
+</script>
+
+    <script src="../js/app/shopping-cart.js"></script>
 </body>
 </html>

@@ -8,7 +8,8 @@ var _encrypt = _interopRequireDefault(require("../common/encrypt"));
 
 var _api = require("../common/api");
 
-console.log(document.querySelector('.to-search'));
+var _template = _interopRequireDefault(require("../common/template"));
+
 var mask = new _mask.default();
 
 var dispatchSomrthing = function dispatchSomrthing(bool) {
@@ -86,6 +87,41 @@ var toSumbitLoginData = function toSumbitLoginData() {
   console.log(name.value);
 };
 
+var toGetShoppingCarInfo = function toGetShoppingCarInfo() {
+  (0, _api.getShoppingCarInfo)().then(function (res) {
+    console.log(res);
+    var len = res.length,
+        maxQuantity = 4,
+        data = {
+      data: len >= maxQuantity ? res.slice(0, maxQuantity) : res,
+      quantity: len >= maxQuantity ? len - maxQuantity : 0
+    };
+    var html = (0, _template.default)('shopping-car-container', {
+      data: data
+    });
+    document.querySelector('.shopping-car-container').innerHTML = html;
+    var quantityEle = document.querySelectorAll('.shopping-quantity');
+
+    for (var i = quantityEle.length - 1; i >= 0; i--) {
+      quantityEle[i].innerHTML = len < 1000 ? len : '···';
+    }
+
+    if (window.dispatchEvent) {
+      window.dispatchEvent(new CustomEvent('shoppingCartInfo', {
+        detail: res
+      }));
+    } else {
+      window.fireEvent(new CustomEvent('shoppingCartInfo', {
+        detail: res
+      }));
+    }
+  });
+};
+
+toGetShoppingCarInfo();
+var shoppingCar = document.querySelector('.show-shopping-car'),
+    shoppingContainer = document.querySelector('.shopping-car-container');
+shoppingCar.addEventListener('mouseenter', toGetShoppingCarInfo);
 document.querySelector('.to-search').addEventListener('click', toSearch);
 document.querySelector('.icon-close').addEventListener('click', toClose);
 document.querySelector('.to-login').addEventListener('click', toShowLoginBox);

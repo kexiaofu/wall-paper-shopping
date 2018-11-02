@@ -2566,6 +2566,12 @@ window.onload = function () {
         });
       })(_i2);
     }
+
+    document.querySelector('.add-to-car').addEventListener('click', function () {
+      for (var _i3 = 0, l = select.length; _i3 < l; _i3++) {
+        console.log(select[_i3][select[_i3].selectedIndex].getAttribute('data-op-id'));
+      }
+    });
   });
 };
 },{"../common/api":35,"../common/template":36,"../common/tools":37,"@babel/runtime/helpers/interopRequireDefault":2}],35:[function(require,module,exports){

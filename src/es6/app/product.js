@@ -106,6 +106,13 @@ window.onload = () =>{
         })(i)
       }
 
+      document.querySelector('.add-to-car').addEventListener('click',()=>{
+
+        for(let i = 0,l = select.length;i<l;i++) {
+          console.log(select[i][select[i].selectedIndex].getAttribute('data-op-id'))
+        }
+
+      })
 
 
     });

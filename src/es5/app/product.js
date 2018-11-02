@@ -107,5 +107,11 @@ window.onload = function () {
         });
       })(_i2);
     }
+
+    document.querySelector('.add-to-car').addEventListener('click', function () {
+      for (var _i3 = 0, l = select.length; _i3 < l; _i3++) {
+        console.log(select[_i3][select[_i3].selectedIndex].getAttribute('data-op-id'));
+      }
+    });
   });
 };

@@ -65,7 +65,7 @@
 }
 .product-container .left-part .pic-list ul {
   overflow: hidden;
-  padding: 5px 0;
+  padding: 5px;
   width: 1000px;
   transition: left 0.3s ease;
   position: absolute;
@@ -199,6 +199,7 @@
   font-size: 18px;
   color: #fff;
   font-weight: bold;
+  cursor: pointer;
 }
 .product-detail {
   width: 1000px;

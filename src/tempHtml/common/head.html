@@ -19,8 +19,10 @@
         </div>
         <div class="func-item hover-blue to-login">登录</div>
         <div class="func-item hover-blue to-sign-up">注册</div>
-        <div class="func-item">
+        <div class="func-item show-shopping-car">
+            <span class="shopping-quantity">0</span>
             <i class="iconfont icon-gouwuche shopping-car"></i>
+            <div class="shopping-car-container"></div>
         </div>
     </div>
 </div>
@@ -45,5 +47,36 @@
     <p>我没有账户</p>
     <div class="sign-up">注册</div>
 </div>
+
+<script id="shopping-car-container" type="text/html">
+    {{ if data.data.length === 0 }}
+    <div class="shopping-list-no">
+        您的购物车空空如也
+    </div>
+    {{ else if data.data.length > 0}}
+    <div class="shopping-list">
+        {{ each data.data item i }}
+        <a href={{ "./product.html?productId=" + item.productId }} target="_blank" class="shopping-item">
+            <div class="item-pic">
+                <img src={{ item.introductImage }} alt="">
+            </div>
+            <div class="item-info">
+                <div class="item-base-info">
+                    <div class="item-name">{{ item.productName }}</div>
+                    <div class="item-price">￥{{ item.money }}</div>
+                </div>
+                <div class="item-intro-info">
+                    {{ item.description }}
+                </div>
+            </div>
+        </a>
+        {{/each}}
+    </div>
+    <p>您还有{{ data.quantity }}件商品在购物车</p>
+    {{/if}}
+    <a href="./shopping-cart.html" class="to-my-shopping-car-btn">
+        查看我的购物车
+    </a>
+</script>
 
 <script src="../js/app/head.js"></script>
