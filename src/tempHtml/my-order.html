@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>订单</title>
+    <link rel="stylesheet" href="../css/common/base.css">
+    <link href="../css/common/iconfont.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/pages/my-order.css">
+
+</head>
+<body>
+@@include('./common/head.html')
+    <div id="my-order" class="my-order container">
+        <div class="my-order-container">
+            <div class="order-title">
+                <div class="order-type " onclick="orderTypeActive('#all')">
+                    <a href="#all">所有订单</a>
+                </div>
+                <div class="order-type " onclick="orderTypeActive('#wait2pay')">
+                    <a href="#wait2pay">待付款</a>
+                </div>
+                <div class="order-type" onclick="orderTypeActive('#wait2send')">
+                    <a href="#wait2send">待发货</a>
+                </div>
+                <div class="order-type" onclick="orderTypeActive('#wait2take')">
+                    <a href="#wait2take">待收货</a>
+                </div>
+            </div>
+            <div class="order-content"></div>
+        </div>
+    </div>
+@@include('./common/footer.html')
+<script id="order-content" type="text/html">
+    <div class="introduction">
+        <div class="in-title">产品</div>
+        <div class="in-title">单价</div>
+        <div class="in-title">数量</div>
+        <div class="in-title">实际付款</div>
+        <div class="in-title">状态</div>
+        <div class="in-title">操作</div>
+    </div>
+    {{ each data order i }}
+    <div class="order-container">
+        <div class="order-head">
+            <div class="order-date">{{ order.createTime }}</div>
+            <div class="order-no">订单号：{{ order.orderNumber }}</div>
+        </div>
+        <div class="order-product-list">
+            {{ each order.orderProductDetails product _i }}
+            <div class="product-item">
+                <div class=" props pic">
+                    <img src={{ product.introductImage }} alt="">
+                </div>
+                <div class=" props name">
+                    {{ product.productName }}
+                </div>
+                <div class=" props money">
+                    {{ product.money }}
+                </div>
+                <div class=" props quantity">
+                    {{ product.number }}
+                </div>
+                <div class=" props paid">
+                    {{ product.cost }}
+                </div>
+                <div class=" props product-status">
+                    {{ product.status }}
+                </div>
+                <div class=" props operation">
+                    暂无
+                </div>
+            </div>
+            {{ /each }}
+        </div>
+    </div>
+    {{ /each }}
+</script>
+    <script src="../js/app/my-order.js"></script>
+</body>
+</html>

@@ -73,9 +73,9 @@
   box-sizing: border-box;
 }
 
-.shopping-item{
+.product-item{
   width: 100%;
-  min-height: 150px;
+  min-height: 120px;
   padding:10px;
   box-sizing: border-box;
   border-bottom:1px solid #ececec;
@@ -115,19 +115,54 @@
   }
 
   .product-quantity{
-    float:left;
-    width: 120px;
+    width: 130px;
     height: 150px;
-    line-height: 150px;
     overflow: hidden;
     margin:0 10px;
+    position: relative;
+
+    .quantity-tool{
+      border:1px solid #ccc;
+      margin-top:50%;
+      transform: translate(0,-25%);
+    }
     input{
       width: 100px;
-      height: 32px;
-      border:1px solid #ccc;
+      height: 40px;
+      border:none;
       text-align: center;
       outline: none;
+      box-sizing:border-box;
     }
+
+    .operate-num{
+      display: inline-block;
+      position: absolute;
+      right: 0;
+      width: 30px;
+      height: 40px;
+      .add-num,.reduce-num{
+        width: 30px;
+        height: 20px;
+        line-height: 20px;
+        background: #ddd;
+        position: relative;
+        text-align: center;
+        cursor: pointer;
+      }
+      .add-num{
+        top:0;
+        border-bottom:1px solid #ccc;
+        box-sizing: border-box;
+      }
+      .add-num::after{
+        content: '+';
+      }
+      .reduce-num::after{
+        content: '-';
+      }
+    }
+
   }
 
   .count{
@@ -147,7 +182,39 @@
 }
 
 .toPay{
-  width: 100%;
-  height: 60px;
-  line-height: 60px;
+  width: 1200px;
+  height: 100px;
+  line-height: 100px;
+  transform: translate(-50%,0);
+  position: relative;
+  border-top:1px solid #ccc;
+  border-bottom:1px solid #ccc;
+  z-index: 100;
+  margin:0 0 10px 50%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding:0 30px;
+  .to-submit-order{
+    display: flex;
+    align-items: center;
+    .count-money{
+      color:#f00;
+      font-size: 20px;
+      i{
+        font-size: 14px;
+        font-style: normal;
+      }
+    }
+    .to-order{
+      width: 120px;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      background: #aaa;
+      cursor: pointer;
+      color:#fff;
+      margin: 0 0 0 30px;
+    }
+  }
 }

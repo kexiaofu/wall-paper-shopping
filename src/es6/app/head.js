@@ -115,6 +115,11 @@ let toGetShoppingCarInfo = () =>{
 
 toGetShoppingCarInfo();
 
+window.addEventListener('updateShoppingCart',()=>{
+  console.log('---更新购物车信息---');
+  toGetShoppingCarInfo();
+});
+
 
 let shoppingCar = document.querySelector('.show-shopping-car'),
     shoppingContainer = document.querySelector('.shopping-car-container');

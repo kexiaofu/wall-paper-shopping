@@ -2469,12 +2469,20 @@ _template.default.defaults.imports.toFixed2 = function (val) {
   return val.toFixed(2);
 };
 
+var productInfo = [],
+    orderCount = 0,
+    productCount = 0;
 window.addEventListener('shoppingCartInfo', function (e) {
   var html = '';
 
   if (e.detail) {
+    productInfo = e.detail;
+    productInfo = productInfo.map(function (item) {
+      item.selected = false;
+      return item;
+    });
     html = (0, _template.default)('shopping-list-page', {
-      data: e.detail
+      data: productInfo
     });
   } else {
     html = (0, _template.default)('shopping-list-page', {
@@ -2484,6 +2492,80 @@ window.addEventListener('shoppingCartInfo', function (e) {
 
   document.querySelector('.shopping-list-page').innerHTML = html;
 });
+
+window.opProductQuantity = function (ele) {
+  var _index = ele.getAttribute('data-op-index'),
+      _op = ele.getAttribute('data-op');
+
+  var product = productInfo[_index],
+      selected = document.querySelector("#select".concat(product.id)).checked;
+  console.log(selected);
+
+  if (_op === 'add') {
+    productInfo.splice(_index, 1, Object.assign({}, product, {
+      number: product.number + 1
+    }));
+  } else {
+    productInfo.splice(_index, 1, Object.assign({}, product, {
+      number: product.number > 1 ? product.number - 1 : 1
+    }));
+  }
+
+  if (selected) {
+    var count = 0;
+    productInfo.map(function (item) {
+      item.selected && (count += item.money * item.number);
+    });
+    orderCount = count.toFixed(2) - 0;
+    document.querySelector('.order-count').innerHTML = orderCount;
+  }
+
+  var html = (0, _template.default)('shopping-list-page', {
+    data: productInfo
+  });
+  document.querySelector('.shopping-list-page').innerHTML = html;
+};
+
+window.addProductToOrder = function (ele) {
+  console.log(ele.checked);
+
+  var _index = ele.getAttribute('data-op-index'),
+      product = productInfo[_index];
+
+  if (ele.checked) {
+    productCount += 1;
+    orderCount += product.money * product.number;
+    productInfo.splice(_index, 1, Object.assign({}, product, {
+      selected: true
+    }));
+  } else {
+    productCount -= 1;
+    orderCount -= product.money * product.number;
+    productInfo.splice(_index, 1, Object.assign({}, product, {
+      selected: false
+    }));
+  }
+
+  orderCount = orderCount.toFixed(2) - 0;
+
+  if (orderCount > 0) {
+    document.querySelector('.to-order').style.background = '#f00';
+  } else {
+    document.querySelector('.to-order').style.background = '#aaa';
+  }
+
+  document.querySelector('.order-count').innerHTML = orderCount;
+  document.querySelector('.order-quantity').innerHTML = productCount;
+};
+
+window.deleteThisProduct = function (ele) {
+  var index = ele.getAttribute('data-op-index');
+  (0, _api.deleteShoppingCart)({
+    id: productInfo[index].id
+  }).then(function (res) {
+    console.log(res);
+  });
+};
 },{"../common/api":35,"../common/template":36,"@babel/runtime/helpers/interopRequireDefault":2}],35:[function(require,module,exports){
 "use strict";
 
@@ -2492,7 +2574,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getShoppingCarInfo = exports.getProductDetail = exports.getProductClassify = exports.getAllProductList = exports.toLogin = exports.getProductionList = exports.getCarousel = void 0;
+exports.deleteShoppingCart = exports.addShoppingCart = exports.getShoppingCarInfo = exports.getProductDetail = exports.getProductClassify = exports.getAllProductList = exports.toLogin = exports.getProductionList = exports.getCarousel = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -2808,11 +2890,73 @@ function () {
   return function getShoppingCarInfo(_x8) {
     return _ref8.apply(this, arguments);
   };
-}(); //getShoppingCarInfo
+}();
+
+exports.getShoppingCarInfo = getShoppingCarInfo;
+
+var addShoppingCart =
+/*#__PURE__*/
+function () {
+  var _ref9 = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee9(data) {
+    return _regenerator.default.wrap(function _callee9$(_context9) {
+      while (1) {
+        switch (_context9.prev = _context9.next) {
+          case 0:
+            _context9.next = 2;
+            return apiRequire('addShoppingCart', '/api/order/AddShoppingCart', 'post', data, false);
+
+          case 2:
+            return _context9.abrupt("return", _context9.sent);
+
+          case 3:
+          case "end":
+            return _context9.stop();
+        }
+      }
+    }, _callee9, this);
+  }));
+
+  return function addShoppingCart(_x9) {
+    return _ref9.apply(this, arguments);
+  };
+}();
+
+exports.addShoppingCart = addShoppingCart;
+
+var deleteShoppingCart =
+/*#__PURE__*/
+function () {
+  var _ref10 = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee10(data) {
+    return _regenerator.default.wrap(function _callee10$(_context10) {
+      while (1) {
+        switch (_context10.prev = _context10.next) {
+          case 0:
+            _context10.next = 2;
+            return apiRequire('deleteShoppingCart', '/api/order/DeleteShoppingCart', 'post', data, false);
+
+          case 2:
+            return _context10.abrupt("return", _context10.sent);
+
+          case 3:
+          case "end":
+            return _context10.stop();
+        }
+      }
+    }, _callee10, this);
+  }));
+
+  return function deleteShoppingCart(_x10) {
+    return _ref10.apply(this, arguments);
+  };
+}(); ///api/order/AddShoppingCart
 //getProductClassify,api/Product/GetProductDetail?id=
 
 
-exports.getShoppingCarInfo = getShoppingCarInfo;
+exports.deleteShoppingCart = deleteShoppingCart;
 },{"@babel/runtime/helpers/asyncToGenerator":1,"@babel/runtime/helpers/interopRequireDefault":2,"@babel/runtime/regenerator":4,"axios":5}],36:[function(require,module,exports){
 (function (process){
 "use strict";

@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getShoppingCarInfo = exports.getProductDetail = exports.getProductClassify = exports.getAllProductList = exports.toLogin = exports.getProductionList = exports.getCarousel = void 0;
+exports.getOrder = exports.deleteShoppingCart = exports.addShoppingCart = exports.getShoppingCarInfo = exports.getProductDetail = exports.getProductClassify = exports.getAllProductList = exports.toLogin = exports.getProductionList = exports.getCarousel = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -321,8 +321,101 @@ function () {
   return function getShoppingCarInfo(_x8) {
     return _ref8.apply(this, arguments);
   };
-}(); //getShoppingCarInfo
+}();
+
+exports.getShoppingCarInfo = getShoppingCarInfo;
+
+var addShoppingCart =
+/*#__PURE__*/
+function () {
+  var _ref9 = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee9(data) {
+    return _regenerator.default.wrap(function _callee9$(_context9) {
+      while (1) {
+        switch (_context9.prev = _context9.next) {
+          case 0:
+            _context9.next = 2;
+            return apiRequire('addShoppingCart', '/api/order/AddShoppingCart', 'post', data, false);
+
+          case 2:
+            return _context9.abrupt("return", _context9.sent);
+
+          case 3:
+          case "end":
+            return _context9.stop();
+        }
+      }
+    }, _callee9, this);
+  }));
+
+  return function addShoppingCart(_x9) {
+    return _ref9.apply(this, arguments);
+  };
+}();
+
+exports.addShoppingCart = addShoppingCart;
+
+var deleteShoppingCart =
+/*#__PURE__*/
+function () {
+  var _ref10 = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee10(data) {
+    return _regenerator.default.wrap(function _callee10$(_context10) {
+      while (1) {
+        switch (_context10.prev = _context10.next) {
+          case 0:
+            _context10.next = 2;
+            return apiRequire('deleteShoppingCart', '/api/order/DeleteShoppingCart', 'post', data, false);
+
+          case 2:
+            return _context10.abrupt("return", _context10.sent);
+
+          case 3:
+          case "end":
+            return _context10.stop();
+        }
+      }
+    }, _callee10, this);
+  }));
+
+  return function deleteShoppingCart(_x10) {
+    return _ref10.apply(this, arguments);
+  };
+}();
+
+exports.deleteShoppingCart = deleteShoppingCart;
+
+var getOrder =
+/*#__PURE__*/
+function () {
+  var _ref11 = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee11(data) {
+    return _regenerator.default.wrap(function _callee11$(_context11) {
+      while (1) {
+        switch (_context11.prev = _context11.next) {
+          case 0:
+            _context11.next = 2;
+            return apiRequire('getOrder', '/api/order/GetOrder', null, data, false);
+
+          case 2:
+            return _context11.abrupt("return", _context11.sent);
+
+          case 3:
+          case "end":
+            return _context11.stop();
+        }
+      }
+    }, _callee11, this);
+  }));
+
+  return function getOrder(_x11) {
+    return _ref11.apply(this, arguments);
+  };
+}(); ///api/order/AddShoppingCart
 //getProductClassify,api/Product/GetProductDetail?id=
 
 
-exports.getShoppingCarInfo = getShoppingCarInfo;
+exports.getOrder = getOrder;

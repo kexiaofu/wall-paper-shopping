@@ -1,9 +1,9 @@
-import { getProductDetail } from '../common/api';
+import { getProductDetail, addShoppingCart } from '../common/api';
 
 import { getParameter } from '../common/tools';
 
 import template from '../common/template';
-
+import Toast from '../common/toast';
 
 let scrollX = (direct,w,parent) =>{
   console.log(direct,w,parent);
@@ -76,15 +76,18 @@ window.onload = () =>{
 
       },false);
 
-      let quantity = document.querySelector('.product-quantity');
-
       document.querySelector('.add').addEventListener('click',()=>{
-        quantity.value -= -1
+        let quantity = document.querySelector('.product-quantity');
+        quantity.value -= -1;
+        quantity.setAttribute('value',quantity.value)
       });
 
       document.querySelector('.reduce').addEventListener('click',()=>{
+        let quantity = document.querySelector('.product-quantity');
         if(quantity.value > 1) {
-          quantity.value -= 1
+          quantity.value -= 1;
+          quantity.setAttribute('value',quantity.value)
+
         }
       });
 
@@ -106,15 +109,46 @@ window.onload = () =>{
         })(i)
       }
 
-      document.querySelector('.add-to-car').addEventListener('click',()=>{
-
-        for(let i = 0,l = select.length;i<l;i++) {
-          console.log(select[i][select[i].selectedIndex].getAttribute('data-op-id'))
-        }
-
-      })
-
 
     });
+
+};
+
+window.toAddShoppingCart = () =>{
+  let select = document.querySelectorAll('.props-item>select'),
+      selectStr = '',
+      quantity = document.querySelector('.product-quantity');
+  for(let i=0,l=select.length;i<l;i++) {
+    console.log(select[i][select[i].selectedIndex].getAttribute('data-op-id'));
+    selectStr += select[i][select[i].selectedIndex].getAttribute('data-op-id') + ',';
+  }
+  console.log(selectStr.substring(0,selectStr.length-1),quantity.value);
+
+
+  addShoppingCart({
+    productId:getParameter('productId'),
+    number:quantity.value,
+    optionValueIds:selectStr.substring(0,selectStr.length-1)
+  })
+    .then(res=>{
+      console.log(res);
+      let toast = new Toast();
+      toast.show({
+        content:'成功加入购物车了'
+      });
+
+      window.dispatchEvent(new CustomEvent('updateShoppingCart'));
+
+    })
+
+};
+
+window.checkNumber = (ele) =>{
+  console.log(ele);
+  ele.setAttribute('value',ele.value);
+  if((ele.value-0) < 1) {
+    ele.value = 1;
+    ele.setAttribute('value',1)
+  }
 
 };

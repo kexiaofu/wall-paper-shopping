@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>产品详情</title>
     <link rel="stylesheet" href="../css/common/base.css">
+    <link rel="stylesheet" href="../css/common/toast.css">
     <link href="../css/common/iconfont.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/pages/product.css">
 </head>
@@ -61,7 +62,7 @@
                     <div class="prop-name">{{prop.name}}</div>
                     <select name={{prop.name}} id={{'props'+prop.id}}>
                         {{ each prop.optionValue op index}}
-                        <option value={{op.price}}>{{ op.name }}</option>
+                        <option value={{op.price}} data-op-id={{ op.id }}>{{ op.name }}</option>
                         {{/each}}
                     </select>
                 </div>
@@ -69,12 +70,13 @@
         </div>
         <div class="buy-product">
             <div class="quantity">
-                <input type="number" value="1" class="product-quantity">
-                <span class="changeQuantity add">+</span>
-                <span class="changeQuantity reduce">-</span>
+
+                <input type="number" value="1" class="product-quantity" onchange="checkNumber(this)">
+                <span class="change-quantity add">+</span>
+                <span class="change-quantity reduce">-</span>
             </div>
 
-            <div class="add-to-car">
+            <div class="add-to-car" onclick="toAddShoppingCart()">
                 加入购物车
             </div>
 

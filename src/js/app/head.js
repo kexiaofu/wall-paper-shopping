@@ -2604,6 +2604,10 @@ var toGetShoppingCarInfo = function toGetShoppingCarInfo() {
 };
 
 toGetShoppingCarInfo();
+window.addEventListener('updateShoppingCart', function () {
+  console.log('---更新购物车信息---');
+  toGetShoppingCarInfo();
+});
 var shoppingCar = document.querySelector('.show-shopping-car'),
     shoppingContainer = document.querySelector('.shopping-car-container');
 shoppingCar.addEventListener('mouseenter', toGetShoppingCarInfo);
@@ -2620,7 +2624,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getShoppingCarInfo = exports.getProductDetail = exports.getProductClassify = exports.getAllProductList = exports.toLogin = exports.getProductionList = exports.getCarousel = void 0;
+exports.addShoppingCart = exports.getShoppingCarInfo = exports.getProductDetail = exports.getProductClassify = exports.getAllProductList = exports.toLogin = exports.getProductionList = exports.getCarousel = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -2936,11 +2940,42 @@ function () {
   return function getShoppingCarInfo(_x8) {
     return _ref8.apply(this, arguments);
   };
-}(); //getShoppingCarInfo
+}();
+
+exports.getShoppingCarInfo = getShoppingCarInfo;
+
+var addShoppingCart =
+/*#__PURE__*/
+function () {
+  var _ref9 = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee9(data) {
+    return _regenerator.default.wrap(function _callee9$(_context9) {
+      while (1) {
+        switch (_context9.prev = _context9.next) {
+          case 0:
+            _context9.next = 2;
+            return apiRequire('addShoppingCart', '/api/order/AddShoppingCart', 'post', data, false);
+
+          case 2:
+            return _context9.abrupt("return", _context9.sent);
+
+          case 3:
+          case "end":
+            return _context9.stop();
+        }
+      }
+    }, _callee9, this);
+  }));
+
+  return function addShoppingCart(_x9) {
+    return _ref9.apply(this, arguments);
+  };
+}(); ///api/order/AddShoppingCart
 //getProductClassify,api/Product/GetProductDetail?id=
 
 
-exports.getShoppingCarInfo = getShoppingCarInfo;
+exports.addShoppingCart = addShoppingCart;
 },{"@babel/runtime/helpers/asyncToGenerator":1,"@babel/runtime/helpers/interopRequireDefault":4,"@babel/runtime/regenerator":6,"axios":7}],38:[function(require,module,exports){
 "use strict";
 

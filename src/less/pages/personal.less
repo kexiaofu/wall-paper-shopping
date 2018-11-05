@@ -1,0 +1,74 @@
+.personal{
+  width: 1000px;
+  margin:0px auto;
+}
+.personal-info{
+  width: 800px;
+  margin:10px auto;
+  background: #fff;
+  border:1px solid #ececec;
+
+  .base-info{
+    background: #eee;
+    display: flex;
+    align-items: center;
+    padding:10px 20px;
+    box-sizing: border-box;
+    .pic{
+      margin:0 30px 0 0;
+      img{
+        width: 40px;
+        height: 40px;
+        border-radius:100%;
+      }
+    }
+    .name{
+      margin:0 30px;
+    }
+    .addr{
+      font-size: 14px;
+    }
+  }
+  .order-type{
+    height:50px;
+    line-height:50px;
+    font-size: 14px;
+    text-align: center;
+    .order-item{
+      width:33%;
+      float:left;
+      cursor: pointer;
+      position: relative;
+    }
+    .order-item::after{
+      content:'';
+      position: absolute;
+      right: 0;
+      height: 70%;
+      top:15%;
+      width: 1px;
+      background: #ececec;
+    }
+    .order-item:last-child::after{
+      content:'';
+      width:0;
+    }
+  }
+}
+
+.express-info{
+  width: 800px;
+  margin:10px auto;
+  border:1px solid #ececec;
+  .title{
+    background: #eee;
+    height: 50px;
+    line-height: 50px;
+    padding:0 20px;
+  }
+  .content{
+    min-height:80px;
+    background: #fff;
+    padding:10px 20px;
+  }
+}

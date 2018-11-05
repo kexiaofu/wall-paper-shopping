@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>个人中心</title>
+    <link rel="stylesheet" href="../css/common/base.css">
+    <link href="../css/common/iconfont.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/pages/personal.css">
+
+</head>
+<body>
+@@include('./common/head.html')
+    <div id="personal" class="personal container">
+        <div class="personal-info">
+            <div class="base-info">
+                <div class="pic">
+                    <img src="../images/1.jpg" alt="">
+                </div>
+                <div class="name">name</div>
+                <div class="addr">
+                    <a href="./my-addr.html">我的收货地址</a>
+                </div>
+            </div>
+            <div class="order-type">
+                <div class="order-item">
+                    <a href="./my-order.html#wait2pay">待付款</a>
+                </div>
+                <div class="order-item">
+                    <a href="./my-order.html#wait2send">待发货</a>
+                </div>
+                <div class="order-item">
+                    <a href="./my-order.html#wait2take">待收货</a>
+                </div>
+            </div>
+        </div>
+        <div class="express-info">
+            <div class="title">我的快递</div>
+            <div class="content">
+                暂无
+            </div>
+        </div>
+    </div>
+@@include('./common/footer.html')
+    <script src="../js/app/personal.js"></script>
+</body>
+</html>

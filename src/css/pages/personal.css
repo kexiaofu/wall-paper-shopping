@@ -1,0 +1,76 @@
+.personal {
+  width: 1000px;
+  margin: 0px auto;
+}
+.personal-info {
+  width: 800px;
+  margin: 10px auto;
+  background: #fff;
+  border: 1px solid #ececec;
+}
+.personal-info .base-info {
+  background: #eee;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 10px 20px;
+  box-sizing: border-box;
+}
+.personal-info .base-info .pic {
+  margin: 0 30px 0 0;
+}
+.personal-info .base-info .pic img {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+}
+.personal-info .base-info .name {
+  margin: 0 30px;
+}
+.personal-info .base-info .addr {
+  font-size: 14px;
+}
+.personal-info .order-type {
+  height: 50px;
+  line-height: 50px;
+  font-size: 14px;
+  text-align: center;
+}
+.personal-info .order-type .order-item {
+  width: 33%;
+  float: left;
+  cursor: pointer;
+  position: relative;
+}
+.personal-info .order-type .order-item::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  height: 70%;
+  top: 15%;
+  width: 1px;
+  background: #ececec;
+}
+.personal-info .order-type .order-item:last-child::after {
+  content: '';
+  width: 0;
+}
+.express-info {
+  width: 800px;
+  margin: 10px auto;
+  border: 1px solid #ececec;
+}
+.express-info .title {
+  background: #eee;
+  height: 50px;
+  line-height: 50px;
+  padding: 0 20px;
+}
+.express-info .content {
+  min-height: 80px;
+  background: #fff;
+  padding: 10px 20px;
+}

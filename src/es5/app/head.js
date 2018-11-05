@@ -119,6 +119,10 @@ var toGetShoppingCarInfo = function toGetShoppingCarInfo() {
 };
 
 toGetShoppingCarInfo();
+window.addEventListener('updateShoppingCart', function () {
+  console.log('---更新购物车信息---');
+  toGetShoppingCarInfo();
+});
 var shoppingCar = document.querySelector('.show-shopping-car'),
     shoppingContainer = document.querySelector('.shopping-car-container');
 shoppingCar.addEventListener('mouseenter', toGetShoppingCarInfo);

@@ -8,6 +8,8 @@ var _tools = require("../common/tools");
 
 var _template = _interopRequireDefault(require("../common/template"));
 
+var _toast = _interopRequireDefault(require("../common/toast"));
+
 var scrollX = function scrollX(direct, w, parent) {
   console.log(direct, w, parent);
   parent.style.left = parent.offsetLeft + direct * (w + 5) + 'px';
@@ -79,13 +81,17 @@ window.onload = function () {
         targetPic.setAttribute('src', e.target.getAttribute('src'));
       }
     }, false);
-    var quantity = document.querySelector('.product-quantity');
     document.querySelector('.add').addEventListener('click', function () {
+      var quantity = document.querySelector('.product-quantity');
       quantity.value -= -1;
+      quantity.setAttribute('value', quantity.value);
     });
     document.querySelector('.reduce').addEventListener('click', function () {
+      var quantity = document.querySelector('.product-quantity');
+
       if (quantity.value > 1) {
         quantity.value -= 1;
+        quantity.setAttribute('value', quantity.value);
       }
     });
     var select = document.querySelectorAll('.props-item>select');
@@ -107,11 +113,40 @@ window.onload = function () {
         });
       })(_i2);
     }
-
-    document.querySelector('.add-to-car').addEventListener('click', function () {
-      for (var _i3 = 0, l = select.length; _i3 < l; _i3++) {
-        console.log(select[_i3][select[_i3].selectedIndex].getAttribute('data-op-id'));
-      }
-    });
   });
+};
+
+window.toAddShoppingCart = function () {
+  var select = document.querySelectorAll('.props-item>select'),
+      selectStr = '',
+      quantity = document.querySelector('.product-quantity');
+
+  for (var i = 0, l = select.length; i < l; i++) {
+    console.log(select[i][select[i].selectedIndex].getAttribute('data-op-id'));
+    selectStr += select[i][select[i].selectedIndex].getAttribute('data-op-id') + ',';
+  }
+
+  console.log(selectStr.substring(0, selectStr.length - 1), quantity.value);
+  (0, _api.addShoppingCart)({
+    productId: (0, _tools.getParameter)('productId'),
+    number: quantity.value,
+    optionValueIds: selectStr.substring(0, selectStr.length - 1)
+  }).then(function (res) {
+    console.log(res);
+    var toast = new _toast.default();
+    toast.show({
+      content: '成功加入购物车了'
+    });
+    window.dispatchEvent(new CustomEvent('updateShoppingCart'));
+  });
+};
+
+window.checkNumber = function (ele) {
+  console.log(ele);
+  ele.setAttribute('value', ele.value);
+
+  if (ele.value - 0 < 1) {
+    ele.value = 1;
+    ele.setAttribute('value', 1);
+  }
 };

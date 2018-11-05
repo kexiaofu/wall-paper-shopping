@@ -64,5 +64,11 @@ export const getProductDetail = async (data) => await apiRequire('getProductDeta
 
 export const getShoppingCarInfo = async (data) => await apiRequire('getShoppingCarInfo','/api/order/GetShoppingCart',null,data,false);
 
-//getShoppingCarInfo
+export const addShoppingCart = async (data) => await apiRequire('addShoppingCart','/api/order/AddShoppingCart','post',data,false);
+
+export const deleteShoppingCart = async (data) => await apiRequire('deleteShoppingCart','/api/order/DeleteShoppingCart','post',data,false);
+
+export const getOrder = async (data) => await apiRequire('getOrder','/api/order/GetOrder',null,data,false);
+
+///api/order/AddShoppingCart
 //getProductClassify,api/Product/GetProductDetail?id=

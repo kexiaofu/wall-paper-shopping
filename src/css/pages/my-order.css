@@ -1,0 +1,118 @@
+.my-order-container {
+  width: 1000px;
+  margin: 10px auto;
+  background: #fff;
+}
+.my-order-container .order-title {
+  height: 50px;
+  line-height: 50px;
+  border-bottom: 1px solid #ececec;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+.my-order-container .order-title .order-type {
+  width: 150px;
+  height: 48px;
+  float: left;
+  position: relative;
+  text-align: center;
+  cursor: pointer;
+}
+.my-order-container .order-title a::after {
+  content: '';
+  width: 120px;
+  height: 1px;
+  -webkit-transform: translate(-50%, 0) scale(0);
+      -ms-transform: translate(-50%, 0) scale(0);
+          transform: translate(-50%, 0) scale(0);
+  transition: -webkit-transform 0.3s ease;
+  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, -webkit-transform 0.3s ease;
+  bottom: 0;
+  background: #00a6de;
+  position: absolute;
+  left: 50%;
+}
+.my-order-container .order-title .order-type:hover > a {
+  color: #00a6de;
+}
+.my-order-container .order-title .order-type:hover > a::after {
+  content: '';
+  -webkit-transform: translate(-50%, 0) scale(1);
+      -ms-transform: translate(-50%, 0) scale(1);
+          transform: translate(-50%, 0) scale(1);
+}
+.my-order-container .order-title .active > a {
+  color: #00a6de;
+}
+.my-order-container .order-title .active::after {
+  content: '';
+  position: absolute;
+  width: 120px;
+  height: 2px;
+  bottom: 0px;
+  left: 50%;
+  -webkit-transform: translate(-50%, 0);
+      -ms-transform: translate(-50%, 0);
+          transform: translate(-50%, 0);
+  background: #00a6de;
+}
+.my-order-container .order-content {
+  width: 1000px;
+  min-height: 100px;
+  background: #fff;
+  margin: 0 auto;
+}
+.introduction {
+  height: 50px;
+  line-height: 50px;
+  background: #f0f0f0;
+  color: #666;
+}
+.introduction .in-title {
+  float: left;
+  text-align: center;
+  width: 140px;
+}
+.introduction .in-title:first-child {
+  width: 280px;
+}
+.order-container {
+  border-bottom: 1px solid #ececec;
+  padding: 10px 0;
+}
+.order-head {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 40px;
+  border-bottom: 1px solid #ececec;
+  padding: 0 20px;
+  font-size: 14px;
+}
+.order-head .order-date {
+  margin-right: 20px;
+}
+.product-item {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  min-height: 80px;
+}
+.product-item .props {
+  width: 140px;
+  text-align: center;
+}
+.product-item .pic {
+  float: left;
+}
+.product-item .pic img {
+  width: 80px;
+  height: 80px;
+}
