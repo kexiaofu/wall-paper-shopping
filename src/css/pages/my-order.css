@@ -60,7 +60,7 @@
 .my-order-container .order-content {
   width: 1000px;
   min-height: 100px;
-  background: #fff;
+  background: #f4f4f4;
   margin: 0 auto;
 }
 .introduction {
@@ -78,8 +78,9 @@
   width: 280px;
 }
 .order-container {
-  border-bottom: 1px solid #ececec;
-  padding: 10px 0;
+  margin: 0 0 10px 0;
+  background: #fff;
+  border: 1px solid #ececec;
 }
 .order-head {
   display: -webkit-flex;
@@ -104,6 +105,7 @@
       -ms-flex-align: center;
           align-items: center;
   min-height: 80px;
+  border-bottom: 1px solid #ececec;
 }
 .product-item .props {
   width: 140px;
@@ -115,4 +117,7 @@
 .product-item .pic img {
   width: 80px;
   height: 80px;
+}
+.product-item:last-child {
+  border: none;
 }

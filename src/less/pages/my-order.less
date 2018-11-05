@@ -51,12 +51,13 @@
   .order-content{
     width: 1000px;
     min-height: 100px;
-    background: #fff;
+    background: #f4f4f4;
     margin:0 auto;
   }
 }
 
 //order-list
+
 .introduction{
   height: 50px;
   line-height: 50px;
@@ -72,8 +73,9 @@
   }
 }
 .order-container{
-  border-bottom:1px solid #ececec;
-  padding:10px 0;
+  margin:0 0 10px 0;
+  background: #fff;
+  border:1px solid #ececec;
 }
 
 .order-head{
@@ -92,6 +94,7 @@
   display: flex;
   align-items: center;
   min-height:80px;
+  border-bottom:1px solid #ececec;
   .props{
     width: 140px;
     text-align: center;
@@ -103,4 +106,8 @@
       height:80px;
     }
   }
+}
+
+.product-item:last-child{
+  border:none;
 }
