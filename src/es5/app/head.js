@@ -89,7 +89,7 @@ var toSumbitLoginData = function toSumbitLoginData() {
 
 var toGetShoppingCarInfo = function toGetShoppingCarInfo() {
   (0, _api.getShoppingCarInfo)().then(function (res) {
-    console.log(res);
+    console.log(res, 'res');
     var len = res.length,
         maxQuantity = 4,
         data = {
@@ -104,16 +104,6 @@ var toGetShoppingCarInfo = function toGetShoppingCarInfo() {
 
     for (var i = quantityEle.length - 1; i >= 0; i--) {
       quantityEle[i].innerHTML = len < 1000 ? len : '···';
-    }
-
-    if (window.dispatchEvent) {
-      window.dispatchEvent(new CustomEvent('shoppingCartInfo', {
-        detail: res
-      }));
-    } else {
-      window.fireEvent(new CustomEvent('shoppingCartInfo', {
-        detail: res
-      }));
     }
   });
 };

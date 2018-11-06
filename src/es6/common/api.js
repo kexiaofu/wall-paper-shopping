@@ -3,6 +3,7 @@ import axios from 'axios';
 const period = 60000;
 
 let apiRequire = async (name,url,method,data,storage=true) => {
+  console.log(storage,'---');
   let storageTime = new Date().getTime();
   if(storage && window.sessionStorage.getItem(name) !== null && storageTime - window.sessionStorage.getItem(name+'-time') < period) {
     return JSON.parse(window.sessionStorage.getItem(name));
@@ -14,8 +15,8 @@ let apiRequire = async (name,url,method,data,storage=true) => {
       })
         .then(res=>{
           if(res.data.code === 2000) {
-            window.sessionStorage.setItem(name,JSON.stringify(res.data.result));
-            window.sessionStorage.setItem(name+'-time',storageTime);
+            storage && window.sessionStorage.setItem(name,JSON.stringify(res.data.result));
+            storage && window.sessionStorage.setItem(name+'-time',storageTime);
             return res.data.result;
           } else {
             alert(res.data.msg);
@@ -28,8 +29,8 @@ let apiRequire = async (name,url,method,data,storage=true) => {
       return await axios.post(url,data)
         .then(res=>{
           if(res.data.code === 2000) {
-            window.sessionStorage.setItem(name,JSON.stringify(res.data.result));
-            window.sessionStorage.setItem(name+'-time',storageTime);
+            storage && window.sessionStorage.setItem(name,JSON.stringify(res.data.result));
+            storage && window.sessionStorage.setItem(name+'-time',storageTime);
             return res.data.result;
           } else {
             alert(res.data.msg);
@@ -69,6 +70,16 @@ export const addShoppingCart = async (data) => await apiRequire('addShoppingCart
 export const deleteShoppingCart = async (data) => await apiRequire('deleteShoppingCart','/api/order/DeleteShoppingCart','post',data,false);
 
 export const getOrder = async (data) => await apiRequire('getOrder','/api/order/GetOrder',null,data,false);
+
+export const addOrder = async (data) => await apiRequire('addOrder','/api/order/AddOrder','post',data,false);
+
+export const getAddress = async () => await apiRequire('getAddress','/api/account/GetAddressList',null,null,false);
+
+export const setDefaultAddress = async (data) => await apiRequire('setDefaultAddress','/api/account/SetDefaultAddress','post',data,false);
+
+export const addressOperate = async (data) => await apiRequire('addressOperate','/api/account/AddressOperate','post',data,false);
+
+
 
 ///api/order/AddShoppingCart
 //getProductClassify,api/Product/GetProductDetail?id=

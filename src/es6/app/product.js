@@ -1,6 +1,6 @@
 import { getProductDetail, addShoppingCart } from '../common/api';
 
-import { getParameter } from '../common/tools';
+import {getParameter, imageLazyLoad} from '../common/tools';
 
 import template from '../common/template';
 import Toast from '../common/toast';
@@ -17,6 +17,10 @@ window.onload = () =>{
   if(id === null) {
     return alert('没有该产品');
   }
+
+  let containerEle = document.querySelector('.product-container'),
+      detailEle = document.querySelector('.product-detail');
+
   //取得產品信息
   getProductDetail({id:id})
     .then(res=>{
@@ -24,6 +28,9 @@ window.onload = () =>{
 
       let html = template('product-info',{data:res}),
           detail = template('product-detail',{data:res});
+
+      containerEle.style.visibility = 'visible';
+      detailEle.style.visibility = 'visible';
 
       document.querySelector('.product-container').innerHTML = html;
       document.querySelector('.product-detail').innerHTML = detail;

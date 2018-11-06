@@ -37,6 +37,32 @@ function _asyncToGenerator(fn) {
 
 module.exports = _asyncToGenerator;
 },{}],2:[function(require,module,exports){
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+
+module.exports = _classCallCheck;
+},{}],3:[function(require,module,exports){
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, descriptor.key, descriptor);
+  }
+}
+
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
+  return Constructor;
+}
+
+module.exports = _createClass;
+},{}],4:[function(require,module,exports){
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : {
     default: obj
@@ -44,7 +70,7 @@ function _interopRequireDefault(obj) {
 }
 
 module.exports = _interopRequireDefault;
-},{}],3:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
 
 function _typeof(obj) {
@@ -62,12 +88,12 @@ function _typeof(obj) {
 }
 
 module.exports = _typeof;
-},{}],4:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 module.exports = require("regenerator-runtime");
 
-},{"regenerator-runtime":32}],5:[function(require,module,exports){
+},{"regenerator-runtime":34}],7:[function(require,module,exports){
 module.exports = require('./lib/axios');
-},{"./lib/axios":7}],6:[function(require,module,exports){
+},{"./lib/axios":9}],8:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -251,7 +277,7 @@ module.exports = function xhrAdapter(config) {
 };
 
 }).call(this,require('_process'))
-},{"../core/createError":13,"./../core/settle":16,"./../helpers/btoa":20,"./../helpers/buildURL":21,"./../helpers/cookies":23,"./../helpers/isURLSameOrigin":25,"./../helpers/parseHeaders":27,"./../utils":29,"_process":31}],7:[function(require,module,exports){
+},{"../core/createError":15,"./../core/settle":18,"./../helpers/btoa":22,"./../helpers/buildURL":23,"./../helpers/cookies":25,"./../helpers/isURLSameOrigin":27,"./../helpers/parseHeaders":29,"./../utils":31,"_process":33}],9:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -305,7 +331,7 @@ module.exports = axios;
 // Allow use of default import syntax in TypeScript
 module.exports.default = axios;
 
-},{"./cancel/Cancel":8,"./cancel/CancelToken":9,"./cancel/isCancel":10,"./core/Axios":11,"./defaults":18,"./helpers/bind":19,"./helpers/spread":28,"./utils":29}],8:[function(require,module,exports){
+},{"./cancel/Cancel":10,"./cancel/CancelToken":11,"./cancel/isCancel":12,"./core/Axios":13,"./defaults":20,"./helpers/bind":21,"./helpers/spread":30,"./utils":31}],10:[function(require,module,exports){
 'use strict';
 
 /**
@@ -326,7 +352,7 @@ Cancel.prototype.__CANCEL__ = true;
 
 module.exports = Cancel;
 
-},{}],9:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 'use strict';
 
 var Cancel = require('./Cancel');
@@ -385,14 +411,14 @@ CancelToken.source = function source() {
 
 module.exports = CancelToken;
 
-},{"./Cancel":8}],10:[function(require,module,exports){
+},{"./Cancel":10}],12:[function(require,module,exports){
 'use strict';
 
 module.exports = function isCancel(value) {
   return !!(value && value.__CANCEL__);
 };
 
-},{}],11:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
 var defaults = require('./../defaults');
@@ -473,7 +499,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = Axios;
 
-},{"./../defaults":18,"./../utils":29,"./InterceptorManager":12,"./dispatchRequest":14}],12:[function(require,module,exports){
+},{"./../defaults":20,"./../utils":31,"./InterceptorManager":14,"./dispatchRequest":16}],14:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -527,7 +553,7 @@ InterceptorManager.prototype.forEach = function forEach(fn) {
 
 module.exports = InterceptorManager;
 
-},{"./../utils":29}],13:[function(require,module,exports){
+},{"./../utils":31}],15:[function(require,module,exports){
 'use strict';
 
 var enhanceError = require('./enhanceError');
@@ -547,7 +573,7 @@ module.exports = function createError(message, config, code, request, response) 
   return enhanceError(error, config, code, request, response);
 };
 
-},{"./enhanceError":15}],14:[function(require,module,exports){
+},{"./enhanceError":17}],16:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -635,7 +661,7 @@ module.exports = function dispatchRequest(config) {
   });
 };
 
-},{"../cancel/isCancel":10,"../defaults":18,"./../helpers/combineURLs":22,"./../helpers/isAbsoluteURL":24,"./../utils":29,"./transformData":17}],15:[function(require,module,exports){
+},{"../cancel/isCancel":12,"../defaults":20,"./../helpers/combineURLs":24,"./../helpers/isAbsoluteURL":26,"./../utils":31,"./transformData":19}],17:[function(require,module,exports){
 'use strict';
 
 /**
@@ -658,7 +684,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
   return error;
 };
 
-},{}],16:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 'use strict';
 
 var createError = require('./createError');
@@ -686,7 +712,7 @@ module.exports = function settle(resolve, reject, response) {
   }
 };
 
-},{"./createError":13}],17:[function(require,module,exports){
+},{"./createError":15}],19:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -708,7 +734,7 @@ module.exports = function transformData(data, headers, fns) {
   return data;
 };
 
-},{"./../utils":29}],18:[function(require,module,exports){
+},{"./../utils":31}],20:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -804,7 +830,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 module.exports = defaults;
 
 }).call(this,require('_process'))
-},{"./adapters/http":6,"./adapters/xhr":6,"./helpers/normalizeHeaderName":26,"./utils":29,"_process":31}],19:[function(require,module,exports){
+},{"./adapters/http":8,"./adapters/xhr":8,"./helpers/normalizeHeaderName":28,"./utils":31,"_process":33}],21:[function(require,module,exports){
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -817,7 +843,7 @@ module.exports = function bind(fn, thisArg) {
   };
 };
 
-},{}],20:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 'use strict';
 
 // btoa polyfill for IE<10 courtesy https://github.com/davidchambers/Base64.js
@@ -855,7 +881,7 @@ function btoa(input) {
 
 module.exports = btoa;
 
-},{}],21:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -925,7 +951,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
   return url;
 };
 
-},{"./../utils":29}],22:[function(require,module,exports){
+},{"./../utils":31}],24:[function(require,module,exports){
 'use strict';
 
 /**
@@ -941,7 +967,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
     : baseURL;
 };
 
-},{}],23:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -996,7 +1022,7 @@ module.exports = (
   })()
 );
 
-},{"./../utils":29}],24:[function(require,module,exports){
+},{"./../utils":31}],26:[function(require,module,exports){
 'use strict';
 
 /**
@@ -1012,7 +1038,7 @@ module.exports = function isAbsoluteURL(url) {
   return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
 };
 
-},{}],25:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -1082,7 +1108,7 @@ module.exports = (
   })()
 );
 
-},{"./../utils":29}],26:[function(require,module,exports){
+},{"./../utils":31}],28:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -1096,7 +1122,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
   });
 };
 
-},{"../utils":29}],27:[function(require,module,exports){
+},{"../utils":31}],29:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -1151,7 +1177,7 @@ module.exports = function parseHeaders(headers) {
   return parsed;
 };
 
-},{"./../utils":29}],28:[function(require,module,exports){
+},{"./../utils":31}],30:[function(require,module,exports){
 'use strict';
 
 /**
@@ -1180,7 +1206,7 @@ module.exports = function spread(callback) {
   };
 };
 
-},{}],29:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 'use strict';
 
 var bind = require('./helpers/bind');
@@ -1485,7 +1511,7 @@ module.exports = {
   trim: trim
 };
 
-},{"./helpers/bind":19,"is-buffer":30}],30:[function(require,module,exports){
+},{"./helpers/bind":21,"is-buffer":32}],32:[function(require,module,exports){
 /*!
  * Determine if an object is a Buffer
  *
@@ -1508,7 +1534,7 @@ function isSlowBuffer (obj) {
   return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
 }
 
-},{}],31:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -1694,7 +1720,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],32:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
  *
@@ -1733,7 +1759,7 @@ if (hadRuntime) {
   }
 }
 
-},{"./runtime":33}],33:[function(require,module,exports){
+},{"./runtime":35}],35:[function(require,module,exports){
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
  *
@@ -2456,12 +2482,14 @@ if (hadRuntime) {
   })() || Function("return this")()
 );
 
-},{}],34:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 var _template = _interopRequireDefault(require("../common/template"));
+
+var _toast = _interopRequireDefault(require("../common/toast"));
 
 var _api = require("../common/api");
 
@@ -2470,31 +2498,27 @@ _template.default.defaults.imports.toFixed2 = function (val) {
 };
 
 var productInfo = [],
-    orderCount = 0,
-    productCount = 0;
-window.addEventListener('shoppingCartInfo', function (e) {
-  var html = '';
+    productIds = [],
+    toast = new _toast.default(); //获取购物车信息
 
-  if (e.detail) {
-    productInfo = e.detail;
-    productInfo = productInfo.map(function (item) {
-      item.selected = false;
-      return item;
-    });
-    html = (0, _template.default)('shopping-list-page', {
-      data: productInfo
-    });
-  } else {
-    html = (0, _template.default)('shopping-list-page', {
-      data: []
-    });
-  }
-
+(0, _api.getShoppingCarInfo)().then(function (res) {
+  productInfo = res.slice(0);
+  productInfo = productInfo.map(function (item) {
+    item.selected = false;
+    productIds.push(item.id);
+    return item;
+  });
+  var html = (0, _template.default)('shopping-list-page', {
+    data: productInfo
+  });
   document.querySelector('.shopping-list-page').innerHTML = html;
-});
+  productInfo.length > 0 && (document.querySelector('.to-pay').style.visibility = 'visible');
+  productInfo.length > 0 && (document.querySelector('.batch-operation').style.visibility = 'visible');
+}); //改变商品的数量
 
 window.opProductQuantity = function (ele) {
-  var _index = ele.getAttribute('data-op-index'),
+  var id = ele.getAttribute('data-op-id'),
+      _index = productIds.indexOf(id),
       _op = ele.getAttribute('data-op');
 
   var product = productInfo[_index],
@@ -2524,49 +2548,174 @@ window.opProductQuantity = function (ele) {
     data: productInfo
   });
   document.querySelector('.shopping-list-page').innerHTML = html;
-};
+}; //添加或者移除商品进订单里面
+
 
 window.addProductToOrder = function (ele) {
   console.log(ele.checked);
 
-  var _index = ele.getAttribute('data-op-index'),
+  var id = ele.getAttribute('data-op-id'),
+      _index = productIds.indexOf(id),
       product = productInfo[_index];
 
   if (ele.checked) {
-    productCount += 1;
-    orderCount += product.money * product.number;
     productInfo.splice(_index, 1, Object.assign({}, product, {
       selected: true
     }));
+    document.querySelector('#product-id-' + product.id).className = 'product-item product-selected'; //document.querySelector('#batch-operation-btn').checked = true;
   } else {
-    productCount -= 1;
-    orderCount -= product.money * product.number;
     productInfo.splice(_index, 1, Object.assign({}, product, {
       selected: false
     }));
+    document.querySelector('#product-id-' + product.id).className = 'product-item';
+    document.querySelector('#batch-operation-btn').checked = false;
   }
 
-  orderCount = orderCount.toFixed(2) - 0;
+  calculateCount();
+}; //删除商品
 
-  if (orderCount > 0) {
-    document.querySelector('.to-order').style.background = '#f00';
-  } else {
-    document.querySelector('.to-order').style.background = '#aaa';
-  }
-
-  document.querySelector('.order-count').innerHTML = orderCount;
-  document.querySelector('.order-quantity').innerHTML = productCount;
-};
 
 window.deleteThisProduct = function (ele) {
-  var index = ele.getAttribute('data-op-index');
+  console.log(productInfo, '0000', ele.getAttribute('data-op-id'));
+  var id = ele.getAttribute('data-op-id');
   (0, _api.deleteShoppingCart)({
-    id: productInfo[index].id
+    id: id
   }).then(function (res) {
     console.log(res);
+    toast.show({
+      content: '删除成功'
+    });
+    console.log(document.querySelector('#product-id-' + id));
+    document.querySelector('.shopping-list-page').removeChild(document.querySelector('#product-id-' + id));
+    productInfo.splice(productIds.indexOf(id), 1);
+    calculateCount();
+    window.dispatchEvent(new CustomEvent('updateShoppingCart'));
   });
+}; //提交订单
+
+
+window.toSumbitOrder = function () {
+  var products = [];
+  productInfo.map(function (item) {
+    if (item.selected) {
+      products.push({
+        id: item.id,
+        number: item.number
+      });
+    }
+  });
+
+  if (products.length > 0) {
+    (0, _api.addOrder)(products).then(function (res) {
+      window.location.href = './my-order.html#wait2pay';
+    });
+  }
+
+  console.log(products);
+}; //计算价格
+
+
+var calculateCount = function calculateCount() {
+  var orderCount = 0,
+      productCount = 0;
+
+  if (productCount.length > 0) {
+    productInfo.map(function (item) {
+      if (item.selected) {
+        orderCount += item.money * item.number;
+        productCount++;
+      }
+    });
+    console.log(productInfo);
+    orderCount = orderCount.toFixed(2) - 0;
+
+    if (orderCount > 0) {
+      document.querySelector('.to-order').style.background = '#f00';
+    } else {
+      document.querySelector('.to-order').style.background = '#aaa';
+    }
+
+    document.querySelector('.order-count').innerHTML = orderCount;
+    document.querySelector('.order-quantity').innerHTML = productCount;
+  } else {
+    document.querySelector('.to-pay').style.visibility = 'hidden';
+    document.querySelector('.batch-operation').style.visibility = 'hidden';
+    var html = (0, _template.default)('shopping-list-page', {
+      data: []
+    });
+    document.querySelector('.shopping-list-page').innerHTML = html;
+  }
+}; //渲染函数
+
+
+var rendering = function rendering() {
+  var count = 0,
+      quantity = 0;
+  var html = (0, _template.default)('shopping-list-page', {
+    data: productInfo
+  });
+  document.querySelector('.shopping-list-page').innerHTML = html;
+  setTimeout(function () {
+    productInfo.map(function (item, index) {
+      if (item.selected) {
+        count += item.money * item.number;
+        quantity++;
+        document.querySelector('#product-id-' + item.id).className = 'product-item product-selected';
+      } else {
+        document.querySelector('#product-id-' + item.id).className = 'product-item';
+      }
+    });
+
+    if (count > 0) {
+      document.querySelector('.to-order').style.background = '#f00';
+    } else {
+      document.querySelector('.to-order').style.background = '#aaa';
+    }
+
+    document.querySelector('.order-count').innerHTML = count.toFixed(2);
+    document.querySelector('.order-quantity').innerHTML = quantity;
+  }, 0);
+}; //滚动函数
+
+
+var toPayBar = function toPayBar() {
+  var page = document.querySelector('.shopping-list-page'),
+      body = document.documentElement,
+      pageTop = page.offsetTop,
+      pageHeight = page.offsetHeight,
+      bodyHeight = body.clientHeight,
+      bodyScroll = body.scrollTop,
+      ele = document.querySelector('.to-pay');
+
+  if (pageHeight - bodyScroll - (bodyHeight - pageTop) <= 20) {
+    ele.className = 'to-pay to-pay-bottom';
+  } else {
+    ele.className = 'to-pay';
+  }
+}; //监听页面滚动
+
+
+window.addEventListener('scroll', toPayBar); //全选
+
+window.selectAll = function (ele) {
+  console.log(ele.checked);
+  var bool = ele.checked;
+
+  if (bool) {
+    productInfo = productInfo.map(function (item) {
+      item.selected = true;
+      return item;
+    });
+  } else {
+    productInfo = productInfo.map(function (item) {
+      item.selected = false;
+      return item;
+    });
+  }
+
+  rendering();
 };
-},{"../common/api":35,"../common/template":36,"@babel/runtime/helpers/interopRequireDefault":2}],35:[function(require,module,exports){
+},{"../common/api":37,"../common/template":38,"../common/toast":39,"@babel/runtime/helpers/interopRequireDefault":4}],37:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -2574,7 +2723,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.deleteShoppingCart = exports.addShoppingCart = exports.getShoppingCarInfo = exports.getProductDetail = exports.getProductClassify = exports.getAllProductList = exports.toLogin = exports.getProductionList = exports.getCarousel = void 0;
+exports.addressOperate = exports.setDefaultAddress = exports.getAddress = exports.addOrder = exports.getOrder = exports.deleteShoppingCart = exports.addShoppingCart = exports.getShoppingCarInfo = exports.getProductDetail = exports.getProductClassify = exports.getAllProductList = exports.toLogin = exports.getProductionList = exports.getCarousel = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -2598,30 +2747,31 @@ function () {
         switch (_context.prev = _context.next) {
           case 0:
             storage = _args.length > 4 && _args[4] !== undefined ? _args[4] : true;
+            console.log(storage, '---');
             storageTime = new Date().getTime();
 
             if (!(storage && window.sessionStorage.getItem(name) !== null && storageTime - window.sessionStorage.getItem(name + '-time') < period)) {
-              _context.next = 6;
+              _context.next = 7;
               break;
             }
 
             return _context.abrupt("return", JSON.parse(window.sessionStorage.getItem(name)));
 
-          case 6:
+          case 7:
             console.log("require ".concat(name, " again"));
 
             if (!(method === undefined || method === null)) {
-              _context.next = 13;
+              _context.next = 14;
               break;
             }
 
-            _context.next = 10;
+            _context.next = 11;
             return _axios.default.get(url, {
               params: data
             }).then(function (res) {
               if (res.data.code === 2000) {
-                window.sessionStorage.setItem(name, JSON.stringify(res.data.result));
-                window.sessionStorage.setItem(name + '-time', storageTime);
+                storage && window.sessionStorage.setItem(name, JSON.stringify(res.data.result));
+                storage && window.sessionStorage.setItem(name + '-time', storageTime);
                 return res.data.result;
               } else {
                 alert(res.data.msg);
@@ -2630,15 +2780,15 @@ function () {
               alert(err);
             });
 
-          case 10:
+          case 11:
             return _context.abrupt("return", _context.sent);
 
-          case 13:
-            _context.next = 15;
+          case 14:
+            _context.next = 16;
             return _axios.default.post(url, data).then(function (res) {
               if (res.data.code === 2000) {
-                window.sessionStorage.setItem(name, JSON.stringify(res.data.result));
-                window.sessionStorage.setItem(name + '-time', storageTime);
+                storage && window.sessionStorage.setItem(name, JSON.stringify(res.data.result));
+                storage && window.sessionStorage.setItem(name + '-time', storageTime);
                 return res.data.result;
               } else {
                 alert(res.data.msg);
@@ -2647,10 +2797,10 @@ function () {
               alert(err);
             });
 
-          case 15:
+          case 16:
             return _context.abrupt("return", _context.sent);
 
-          case 16:
+          case 17:
           case "end":
             return _context.stop();
         }
@@ -2952,12 +3102,167 @@ function () {
   return function deleteShoppingCart(_x10) {
     return _ref10.apply(this, arguments);
   };
+}();
+
+exports.deleteShoppingCart = deleteShoppingCart;
+
+var getOrder =
+/*#__PURE__*/
+function () {
+  var _ref11 = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee11(data) {
+    return _regenerator.default.wrap(function _callee11$(_context11) {
+      while (1) {
+        switch (_context11.prev = _context11.next) {
+          case 0:
+            _context11.next = 2;
+            return apiRequire('getOrder', '/api/order/GetOrder', null, data, false);
+
+          case 2:
+            return _context11.abrupt("return", _context11.sent);
+
+          case 3:
+          case "end":
+            return _context11.stop();
+        }
+      }
+    }, _callee11, this);
+  }));
+
+  return function getOrder(_x11) {
+    return _ref11.apply(this, arguments);
+  };
+}();
+
+exports.getOrder = getOrder;
+
+var addOrder =
+/*#__PURE__*/
+function () {
+  var _ref12 = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee12(data) {
+    return _regenerator.default.wrap(function _callee12$(_context12) {
+      while (1) {
+        switch (_context12.prev = _context12.next) {
+          case 0:
+            _context12.next = 2;
+            return apiRequire('addOrder', '/api/order/AddOrder', 'post', data, false);
+
+          case 2:
+            return _context12.abrupt("return", _context12.sent);
+
+          case 3:
+          case "end":
+            return _context12.stop();
+        }
+      }
+    }, _callee12, this);
+  }));
+
+  return function addOrder(_x12) {
+    return _ref12.apply(this, arguments);
+  };
+}();
+
+exports.addOrder = addOrder;
+
+var getAddress =
+/*#__PURE__*/
+function () {
+  var _ref13 = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee13() {
+    return _regenerator.default.wrap(function _callee13$(_context13) {
+      while (1) {
+        switch (_context13.prev = _context13.next) {
+          case 0:
+            _context13.next = 2;
+            return apiRequire('getAddress', '/api/account/GetAddressList', null, null, false);
+
+          case 2:
+            return _context13.abrupt("return", _context13.sent);
+
+          case 3:
+          case "end":
+            return _context13.stop();
+        }
+      }
+    }, _callee13, this);
+  }));
+
+  return function getAddress() {
+    return _ref13.apply(this, arguments);
+  };
+}();
+
+exports.getAddress = getAddress;
+
+var setDefaultAddress =
+/*#__PURE__*/
+function () {
+  var _ref14 = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee14(data) {
+    return _regenerator.default.wrap(function _callee14$(_context14) {
+      while (1) {
+        switch (_context14.prev = _context14.next) {
+          case 0:
+            _context14.next = 2;
+            return apiRequire('setDefaultAddress', '/api/account/SetDefaultAddress', 'post', data, false);
+
+          case 2:
+            return _context14.abrupt("return", _context14.sent);
+
+          case 3:
+          case "end":
+            return _context14.stop();
+        }
+      }
+    }, _callee14, this);
+  }));
+
+  return function setDefaultAddress(_x13) {
+    return _ref14.apply(this, arguments);
+  };
+}();
+
+exports.setDefaultAddress = setDefaultAddress;
+
+var addressOperate =
+/*#__PURE__*/
+function () {
+  var _ref15 = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee15(data) {
+    return _regenerator.default.wrap(function _callee15$(_context15) {
+      while (1) {
+        switch (_context15.prev = _context15.next) {
+          case 0:
+            _context15.next = 2;
+            return apiRequire('addressOperate', '/api/account/AddressOperate', 'post', data, false);
+
+          case 2:
+            return _context15.abrupt("return", _context15.sent);
+
+          case 3:
+          case "end":
+            return _context15.stop();
+        }
+      }
+    }, _callee15, this);
+  }));
+
+  return function addressOperate(_x14) {
+    return _ref15.apply(this, arguments);
+  };
 }(); ///api/order/AddShoppingCart
 //getProductClassify,api/Product/GetProductDetail?id=
 
 
-exports.deleteShoppingCart = deleteShoppingCart;
-},{"@babel/runtime/helpers/asyncToGenerator":1,"@babel/runtime/helpers/interopRequireDefault":2,"@babel/runtime/regenerator":4,"axios":5}],36:[function(require,module,exports){
+exports.addressOperate = addressOperate;
+},{"@babel/runtime/helpers/asyncToGenerator":1,"@babel/runtime/helpers/interopRequireDefault":4,"@babel/runtime/regenerator":6,"axios":7}],38:[function(require,module,exports){
 (function (process){
 "use strict";
 
@@ -3914,4 +4219,119 @@ var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
   }]);
 });
 }).call(this,require('_process'))
-},{"@babel/runtime/helpers/interopRequireDefault":2,"@babel/runtime/helpers/typeof":3,"_process":31}]},{},[34]);
+},{"@babel/runtime/helpers/interopRequireDefault":4,"@babel/runtime/helpers/typeof":5,"_process":33}],39:[function(require,module,exports){
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
+var Toast =
+/*#__PURE__*/
+function () {
+  function Toast() {
+    (0, _classCallCheck2.default)(this, Toast);
+    this.toast = null;
+    this.icon = null;
+    this.content = null;
+  }
+
+  (0, _createClass2.default)(Toast, [{
+    key: "init",
+    value: function init(options) {
+      var toast = document.createElement('div'),
+          imgContain = document.createElement('div'),
+          img = document.createElement('img'),
+          content = document.createElement('div');
+      toast.className = 'my-toast';
+      imgContain.className = 'my-toast-icon-container';
+      img.className = 'my-toast-icon';
+      content.className = 'my-toast-content';
+      img.src = options.icon;
+      content.innerHTML = options.content;
+      imgContain.appendChild(img);
+      toast.appendChild(imgContain);
+      toast.appendChild(content);
+      document.querySelector('body').appendChild(toast);
+      this.toast = toast;
+      this.icon = img;
+      this.content = content;
+    }
+  }, {
+    key: "show",
+    value: function show(options) {
+      var _this = this;
+
+      /*
+      * type success/error/normal
+      * */
+      var option = Object.assign({
+        type: 'success',
+        icon: '../images/toast-succ.png',
+        content: null,
+        hideTime: 3000
+      }, options);
+
+      switch (option.type) {
+        case 'success':
+          option.icon = '../images/toast-succ.png';
+          option.content === null && (option.content = '成功');
+          break;
+
+        case 'error':
+          option.icon = '../images/toast-err.png';
+          option.content === null && (option.content = '错误');
+          break;
+
+        default:
+          option.icon = '../images/toast-normal.png';
+          option.content === null && (option.content = '其他');
+      }
+
+      if (this.toast) {
+        this.toast.style.display = 'block';
+        setTimeout(function () {
+          _this.toast.style.opacity = 1;
+          setTimeout(function () {
+            _this.hide();
+          }, option.hideTime);
+        }, 0);
+      } else {
+        this.init(option);
+        setTimeout(function () {
+          _this.toast.style.display = 'block';
+          setTimeout(function () {
+            _this.toast.style.opacity = 1;
+            setTimeout(function () {
+              _this.hide();
+            }, option.hideTime);
+          }, 0);
+        }, 100);
+      }
+    }
+  }, {
+    key: "hide",
+    value: function hide() {
+      var _this2 = this;
+
+      if (this.toast) {
+        this.toast.style.opacity = 0;
+        setTimeout(function () {
+          _this2.toast.style.display = 'none';
+        }, 500);
+      }
+    }
+  }]);
+  return Toast;
+}();
+
+exports.default = Toast;
+;
+},{"@babel/runtime/helpers/classCallCheck":2,"@babel/runtime/helpers/createClass":3,"@babel/runtime/helpers/interopRequireDefault":4}]},{},[36]);

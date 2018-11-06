@@ -20,8 +20,10 @@ window.onload = function () {
 
   if (id === null) {
     return alert('没有该产品');
-  } //取得產品信息
+  }
 
+  var containerEle = document.querySelector('.product-container'),
+      detailEle = document.querySelector('.product-detail'); //取得產品信息
 
   (0, _api.getProductDetail)({
     id: id
@@ -33,6 +35,8 @@ window.onload = function () {
         detail = (0, _template.default)('product-detail', {
       data: res
     });
+    containerEle.style.visibility = 'visible';
+    detailEle.style.visibility = 'visible';
     document.querySelector('.product-container').innerHTML = html;
     document.querySelector('.product-detail').innerHTML = detail;
 

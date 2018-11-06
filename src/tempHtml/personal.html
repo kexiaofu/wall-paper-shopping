@@ -11,36 +11,129 @@
 <body>
 @@include('./common/head.html')
     <div id="personal" class="personal container">
-        <div class="personal-info">
-            <div class="base-info">
-                <div class="pic">
-                    <img src="../images/1.jpg" alt="">
+        <div class="personal-left-side">
+
+        </div>
+        <div class="personal-right-side">
+            <div class="personal-info">
+                <div class="base-info">
+                    <div class="pic">
+                        <img src="../images/1.jpg" alt="">
+                    </div>
+                    <div class="name">name</div>
+                    <div class="addr">
+                        <a href="./my-addr.html">我的收货地址</a>
+                    </div>
                 </div>
-                <div class="name">name</div>
-                <div class="addr">
-                    <a href="./my-addr.html">我的收货地址</a>
+                <div class="order-type">
+                    <div class="order-item">
+                        <a href="./my-order.html#wait2pay">待付款</a>
+                    </div>
+                    <div class="order-item">
+                        <a href="./my-order.html#wait2send">待发货</a>
+                    </div>
+                    <div class="order-item">
+                        <a href="./my-order.html#wait2take">待收货</a>
+                    </div>
                 </div>
             </div>
-            <div class="order-type">
-                <div class="order-item">
-                    <a href="./my-order.html#wait2pay">待付款</a>
+            <div class="info-box express-info">
+                <div class="title">
+                    <i class="iconfont icon-express"></i>
+                    我的快递</div>
+                <div class="content">
+                    暂无
                 </div>
-                <div class="order-item">
-                    <a href="./my-order.html#wait2send">待发货</a>
-                </div>
-                <div class="order-item">
-                    <a href="./my-order.html#wait2take">待收货</a>
-                </div>
+            </div>
+            <div class="info-box addr-info"></div>
+        </div>
+    </div>
+
+
+<div class="my-modal">
+    <div class="my-modal-title">
+        新增/编辑地址
+        <i class="iconfont icon-close"></i>
+    </div>
+    <div class="my-modal-content">
+        <div class="modal-item">
+            <div class="item-title">*联系人</div>
+            <div class="item-content">
+                <input type="text">
             </div>
         </div>
-        <div class="express-info">
-            <div class="title">我的快递</div>
-            <div class="content">
-                暂无
+        <div class="modal-item">
+            <div class="item-title">*联系号码</div>
+            <div class="item-content">
+                <input type="text">
+            </div>
+        </div>
+        <div class="modal-item">
+            <div class="item-title">邮编</div>
+            <div class="item-content">
+                <input type="text">
+            </div>
+        </div>
+        <div class="modal-item">
+            <div class="item-title">选择地址</div>
+            <div class="item-content">
+                <input type="text">
+            </div>
+        </div>
+        <div class="modal-item">
+            <div class="item-title">详细地址</div>
+            <div class="item-content">
+                <input type="text">
             </div>
         </div>
     </div>
+
+</div>
+
 @@include('./common/footer.html')
+<script id="addr-info" type="text/html">
+    <div class="title">
+        <i class="iconfont icon-address"></i>
+        我的地址簿
+        <span class="operate-btn">新增地址</span>
+    </div>
+    <div class="content">
+        {{ if data.length > 0 }}
+        {{ each data addr i }}
+        <div class="content-item">
+            <div class="base-info">
+                <span class="base-info-item">
+                    {{ addr.linkMan }}
+                </span>
+                <span class="base-info-item">
+                   {{ addr.telephone }}
+                </span>
+                <span class="base-info-item">
+                {{ addr.zipCode }}
+                </span>
+                <span class="operate">
+                    <i class="iconfont icon-edit"></i>
+                    <i class="iconfont icon-delete" onclick="toDeleteAddress(this)" data-op-id={{ addr.id }} data-op-index={{ i }}></i>
+                </span>
+
+                {{ if i === 0 }}
+                <span class="default fr">[默认]</span>
+                {{ else if i > 0}}
+                <span class="fr" onclick="toSetDefaultAddress(this)" data-op-id={{ addr.id }} data-op-index={{ i }}>[设为默认]</span>
+                {{ /if }}
+
+            </div>
+            <div class="base-content">
+                <i class="iconfont icon-address"></i>
+                {{ addr.address }}
+            </div>
+        </div>
+        {{ /each }}
+        {{ else if data.length === 0}}
+        <p class="empty-tips">暂无地址，请新增地址</p>
+        {{ /if }}
+    </div>
+</script>
     <script src="../js/app/personal.js"></script>
 </body>
 </html>

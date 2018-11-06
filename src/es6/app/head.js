@@ -84,7 +84,7 @@ let toSumbitLoginData = () =>{
 let toGetShoppingCarInfo = () =>{
   getShoppingCarInfo()
     .then(res=>{
-      console.log(res);
+      console.log(res,'res');
       let len = res.length,
         maxQuantity = 4,
         data = {
@@ -100,16 +100,6 @@ let toGetShoppingCarInfo = () =>{
         quantityEle[i].innerHTML = len < 1000?len:'···';
       }
 
-      if(window.dispatchEvent) {
-        window.dispatchEvent(new CustomEvent('shoppingCartInfo',{
-          detail:res
-        }));
-      } else {
-        window.fireEvent(new CustomEvent('shoppingCartInfo',{
-          detail:res
-        }));
-      }
-
     })
 };
 
@@ -119,7 +109,6 @@ window.addEventListener('updateShoppingCart',()=>{
   console.log('---更新购物车信息---');
   toGetShoppingCarInfo();
 });
-
 
 let shoppingCar = document.querySelector('.show-shopping-car'),
     shoppingContainer = document.querySelector('.shopping-car-container');

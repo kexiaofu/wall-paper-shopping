@@ -2574,7 +2574,7 @@ var toSumbitLoginData = function toSumbitLoginData() {
 
 var toGetShoppingCarInfo = function toGetShoppingCarInfo() {
   (0, _api.getShoppingCarInfo)().then(function (res) {
-    console.log(res);
+    console.log(res, 'res');
     var len = res.length,
         maxQuantity = 4,
         data = {
@@ -2589,16 +2589,6 @@ var toGetShoppingCarInfo = function toGetShoppingCarInfo() {
 
     for (var i = quantityEle.length - 1; i >= 0; i--) {
       quantityEle[i].innerHTML = len < 1000 ? len : '···';
-    }
-
-    if (window.dispatchEvent) {
-      window.dispatchEvent(new CustomEvent('shoppingCartInfo', {
-        detail: res
-      }));
-    } else {
-      window.fireEvent(new CustomEvent('shoppingCartInfo', {
-        detail: res
-      }));
     }
   });
 };
@@ -2624,7 +2614,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.addShoppingCart = exports.getShoppingCarInfo = exports.getProductDetail = exports.getProductClassify = exports.getAllProductList = exports.toLogin = exports.getProductionList = exports.getCarousel = void 0;
+exports.addressOperate = exports.setDefaultAddress = exports.getAddress = exports.addOrder = exports.getOrder = exports.deleteShoppingCart = exports.addShoppingCart = exports.getShoppingCarInfo = exports.getProductDetail = exports.getProductClassify = exports.getAllProductList = exports.toLogin = exports.getProductionList = exports.getCarousel = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -2648,30 +2638,31 @@ function () {
         switch (_context.prev = _context.next) {
           case 0:
             storage = _args.length > 4 && _args[4] !== undefined ? _args[4] : true;
+            console.log(storage, '---');
             storageTime = new Date().getTime();
 
             if (!(storage && window.sessionStorage.getItem(name) !== null && storageTime - window.sessionStorage.getItem(name + '-time') < period)) {
-              _context.next = 6;
+              _context.next = 7;
               break;
             }
 
             return _context.abrupt("return", JSON.parse(window.sessionStorage.getItem(name)));
 
-          case 6:
+          case 7:
             console.log("require ".concat(name, " again"));
 
             if (!(method === undefined || method === null)) {
-              _context.next = 13;
+              _context.next = 14;
               break;
             }
 
-            _context.next = 10;
+            _context.next = 11;
             return _axios.default.get(url, {
               params: data
             }).then(function (res) {
               if (res.data.code === 2000) {
-                window.sessionStorage.setItem(name, JSON.stringify(res.data.result));
-                window.sessionStorage.setItem(name + '-time', storageTime);
+                storage && window.sessionStorage.setItem(name, JSON.stringify(res.data.result));
+                storage && window.sessionStorage.setItem(name + '-time', storageTime);
                 return res.data.result;
               } else {
                 alert(res.data.msg);
@@ -2680,15 +2671,15 @@ function () {
               alert(err);
             });
 
-          case 10:
+          case 11:
             return _context.abrupt("return", _context.sent);
 
-          case 13:
-            _context.next = 15;
+          case 14:
+            _context.next = 16;
             return _axios.default.post(url, data).then(function (res) {
               if (res.data.code === 2000) {
-                window.sessionStorage.setItem(name, JSON.stringify(res.data.result));
-                window.sessionStorage.setItem(name + '-time', storageTime);
+                storage && window.sessionStorage.setItem(name, JSON.stringify(res.data.result));
+                storage && window.sessionStorage.setItem(name + '-time', storageTime);
                 return res.data.result;
               } else {
                 alert(res.data.msg);
@@ -2697,10 +2688,10 @@ function () {
               alert(err);
             });
 
-          case 15:
+          case 16:
             return _context.abrupt("return", _context.sent);
 
-          case 16:
+          case 17:
           case "end":
             return _context.stop();
         }
@@ -2971,11 +2962,197 @@ function () {
   return function addShoppingCart(_x9) {
     return _ref9.apply(this, arguments);
   };
+}();
+
+exports.addShoppingCart = addShoppingCart;
+
+var deleteShoppingCart =
+/*#__PURE__*/
+function () {
+  var _ref10 = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee10(data) {
+    return _regenerator.default.wrap(function _callee10$(_context10) {
+      while (1) {
+        switch (_context10.prev = _context10.next) {
+          case 0:
+            _context10.next = 2;
+            return apiRequire('deleteShoppingCart', '/api/order/DeleteShoppingCart', 'post', data, false);
+
+          case 2:
+            return _context10.abrupt("return", _context10.sent);
+
+          case 3:
+          case "end":
+            return _context10.stop();
+        }
+      }
+    }, _callee10, this);
+  }));
+
+  return function deleteShoppingCart(_x10) {
+    return _ref10.apply(this, arguments);
+  };
+}();
+
+exports.deleteShoppingCart = deleteShoppingCart;
+
+var getOrder =
+/*#__PURE__*/
+function () {
+  var _ref11 = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee11(data) {
+    return _regenerator.default.wrap(function _callee11$(_context11) {
+      while (1) {
+        switch (_context11.prev = _context11.next) {
+          case 0:
+            _context11.next = 2;
+            return apiRequire('getOrder', '/api/order/GetOrder', null, data, false);
+
+          case 2:
+            return _context11.abrupt("return", _context11.sent);
+
+          case 3:
+          case "end":
+            return _context11.stop();
+        }
+      }
+    }, _callee11, this);
+  }));
+
+  return function getOrder(_x11) {
+    return _ref11.apply(this, arguments);
+  };
+}();
+
+exports.getOrder = getOrder;
+
+var addOrder =
+/*#__PURE__*/
+function () {
+  var _ref12 = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee12(data) {
+    return _regenerator.default.wrap(function _callee12$(_context12) {
+      while (1) {
+        switch (_context12.prev = _context12.next) {
+          case 0:
+            _context12.next = 2;
+            return apiRequire('addOrder', '/api/order/AddOrder', 'post', data, false);
+
+          case 2:
+            return _context12.abrupt("return", _context12.sent);
+
+          case 3:
+          case "end":
+            return _context12.stop();
+        }
+      }
+    }, _callee12, this);
+  }));
+
+  return function addOrder(_x12) {
+    return _ref12.apply(this, arguments);
+  };
+}();
+
+exports.addOrder = addOrder;
+
+var getAddress =
+/*#__PURE__*/
+function () {
+  var _ref13 = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee13() {
+    return _regenerator.default.wrap(function _callee13$(_context13) {
+      while (1) {
+        switch (_context13.prev = _context13.next) {
+          case 0:
+            _context13.next = 2;
+            return apiRequire('getAddress', '/api/account/GetAddressList', null, null, false);
+
+          case 2:
+            return _context13.abrupt("return", _context13.sent);
+
+          case 3:
+          case "end":
+            return _context13.stop();
+        }
+      }
+    }, _callee13, this);
+  }));
+
+  return function getAddress() {
+    return _ref13.apply(this, arguments);
+  };
+}();
+
+exports.getAddress = getAddress;
+
+var setDefaultAddress =
+/*#__PURE__*/
+function () {
+  var _ref14 = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee14(data) {
+    return _regenerator.default.wrap(function _callee14$(_context14) {
+      while (1) {
+        switch (_context14.prev = _context14.next) {
+          case 0:
+            _context14.next = 2;
+            return apiRequire('setDefaultAddress', '/api/account/SetDefaultAddress', 'post', data, false);
+
+          case 2:
+            return _context14.abrupt("return", _context14.sent);
+
+          case 3:
+          case "end":
+            return _context14.stop();
+        }
+      }
+    }, _callee14, this);
+  }));
+
+  return function setDefaultAddress(_x13) {
+    return _ref14.apply(this, arguments);
+  };
+}();
+
+exports.setDefaultAddress = setDefaultAddress;
+
+var addressOperate =
+/*#__PURE__*/
+function () {
+  var _ref15 = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee15(data) {
+    return _regenerator.default.wrap(function _callee15$(_context15) {
+      while (1) {
+        switch (_context15.prev = _context15.next) {
+          case 0:
+            _context15.next = 2;
+            return apiRequire('addressOperate', '/api/account/AddressOperate', 'post', data, false);
+
+          case 2:
+            return _context15.abrupt("return", _context15.sent);
+
+          case 3:
+          case "end":
+            return _context15.stop();
+        }
+      }
+    }, _callee15, this);
+  }));
+
+  return function addressOperate(_x14) {
+    return _ref15.apply(this, arguments);
+  };
 }(); ///api/order/AddShoppingCart
 //getProductClassify,api/Product/GetProductDetail?id=
 
 
-exports.addShoppingCart = addShoppingCart;
+exports.addressOperate = addressOperate;
 },{"@babel/runtime/helpers/asyncToGenerator":1,"@babel/runtime/helpers/interopRequireDefault":4,"@babel/runtime/regenerator":6,"axios":7}],38:[function(require,module,exports){
 "use strict";
 

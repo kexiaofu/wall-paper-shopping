@@ -1,7 +1,23 @@
 .personal{
   width: 1000px;
   margin:0px auto;
+  display: flex;
 }
+
+.personal-left-side{
+  width: 180px;
+  height: 600px;
+  margin-right: 10px;
+  background: #fff;
+  margin-top:10px;
+  display: none;
+  visibility: hidden;
+}
+
+.personal-right-side{
+  margin:0px auto;
+}
+
 .personal-info{
   width: 800px;
   margin:10px auto;
@@ -56,7 +72,7 @@
   }
 }
 
-.express-info{
+.info-box{
   width: 800px;
   margin:10px auto;
   border:1px solid #ececec;
@@ -65,10 +81,96 @@
     height: 50px;
     line-height: 50px;
     padding:0 20px;
+    i{
+      color:#999;
+      font-size:18px;
+    }
+    .operate-btn{
+      float:right;
+      border:1px solid #ccc;
+      line-height: 1;
+      padding:5px 10px;
+      color:#aaa;
+      margin:10px 0;
+      cursor: pointer;
+      transition:border-color .3s ease, color .3s ease;
+    }
+    .operate-btn:hover{
+      border-color:#666;
+      color:#666;
+    }
   }
   .content{
     min-height:80px;
     background: #fff;
     padding:10px 20px;
+    .empty-tips{
+      padding:30px 0;
+      color: #999;
+      text-align: center;
+    }
   }
+}
+
+.content-item{
+  height: 80px;
+  border:1px solid #ececec;
+  padding: 5px 10px;
+  width: 100%;
+  box-sizing:border-box;
+  margin:10px 0;
+  transition:border-color .3s ease;
+  .base-info{
+    color:#666;
+    padding:5px 0;
+    border-bottom:1px solid #ececec;
+    .base-info-item{
+       margin:0 10px;
+    }
+
+    .base-info-item:first-child{
+      margin:0 10px 0 0;
+    }
+
+    .fr{
+      float:right;
+      color:#ccc;
+      margin:0 10px;
+      cursor: pointer;
+      transition:color .3s ease;
+    }
+
+    .fr:hover{
+      color:#f00;
+    }
+
+    .default{
+      color: #f00;
+    }
+    .operate{
+      float:right;
+      i{
+        margin:0 5px;
+        cursor: pointer;
+      }
+      .icon-delete{
+        color:#f00;
+      }
+    }
+  }
+  .base-content{
+    padding:10px 0 5px 0;
+    color:#666;
+    i{
+      color:#999;
+    }
+  }
+}
+
+.content-item:hover{
+  border-color:#999;
+}
+
+.content-item:hover>.base-content>i{
+  visibility: visible;
 }

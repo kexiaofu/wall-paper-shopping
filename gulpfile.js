@@ -45,7 +45,7 @@ let fileDisplay = (filePath) => {
             if(isFile){
               let jsPath = path.win32.basename(filedir) ,
                 destPath = path.parse(filedir).dir.replace('es5','js');
-              console.log(filedir,jsPath,destPath,'first');
+              console.log(filedir,jsPath,destPath);
               browserify(filedir)
                 .bundle()
                 .pipe(source(jsPath))
@@ -166,13 +166,33 @@ gulp.task('clean-dev-files',()=>{
     .pipe(clean())
 });
 
+gulp.task('buildAllAppJs',()=>{
+  gulp.src('src/es6/app/**/**/*.js')
+    .pipe(plumber())
+    .pipe(babel({
+      presets: ['@babel/env'],
+      plugins: ['@babel/transform-runtime']
+    }))
+    .pipe(gulp.dest('src/es5'))
+    .pipe(reload({stream: true}));
+});
+
 //开发
 gulp.task('dev', ()=>{
   gulpSequence('clean-dev-files',['buildAllJs','dealwithhtml','dealwithless'],'server', ()=>{
 
     gulp.watch('src/es6/**/**/*.js', ['babel']);
 
-    gulp.watch('src/es5/**/**/*.js',(e)=>{
+    //gulp.watch('src/es6/common/**/**/*.js',['buildAllAppJs']);
+
+    gulp.watch('src/es5/common/**/**/*.js',()=>{
+      fileDisplay('src/es5/app/');
+      setTimeout(()=>{
+        browserSync.reload();
+      },300)
+    });
+
+    gulp.watch('src/es5/app/**/**/*.js',(e)=>{
       let realPath = e.path.split(path.delimiter)[0],
         jsPath = path.win32.basename(realPath) ,
         destPath = path.parse(realPath).dir.replace('es5','js');
