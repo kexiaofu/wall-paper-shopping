@@ -26,14 +26,49 @@ window.onload = function () {
       data: res
     });
     document.querySelector('.production-list').innerHTML = html;
+    var images = document.querySelectorAll('.lazy-load-img');
+    (0, _tools.imageLazyLoad)(images);
+  });
+  (0, _api.getHomeGroup)().then(function (res) {
+    console.log(res);
+    var html = '';
+    res.map(function (item) {
+      switch (item.templetType) {
+        case 1:
+          break;
+
+        case 2:
+          html += (0, _template.default)('show-text-images-box', {
+            data: item
+          });
+          break;
+
+        case 3:
+          html += (0, _template.default)('show-images-box-a', {
+            data: item
+          });
+          break;
+
+        case 4:
+          console.log(item);
+          html += (0, _template.default)('show-more-info', {
+            data: item
+          });
+          break;
+      }
+
+      document.querySelector('.show-box').innerHTML = html;
+    });
+    var images = document.querySelectorAll('.lazy-load-img');
+    (0, _tools.imageLazyLoad)(images);
+  });
+
+  window.onscroll = function () {
     var images = document.querySelectorAll('.lazy-load-img'),
         len = images.length;
-    (0, _tools.imageLazyLoad)(images);
 
-    window.onscroll = function () {
-      if (images[len - 1].getAttribute('data-is-load') === 'false') {
-        (0, _tools.imageLazyLoad)(images);
-      }
-    };
-  });
+    if (images[len - 1].getAttribute('data-is-load') === 'false') {
+      (0, _tools.imageLazyLoad)(images);
+    }
+  };
 };

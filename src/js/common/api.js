@@ -2446,7 +2446,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.addOrder = exports.getOrder = exports.deleteShoppingCart = exports.addShoppingCart = exports.getShoppingCarInfo = exports.getProductDetail = exports.getProductClassify = exports.getAllProductList = exports.toLogin = exports.getProductionList = exports.getCarousel = void 0;
+exports.addressOperate = exports.setDefaultAddress = exports.getAddress = exports.addOrder = exports.getOrder = exports.deleteShoppingCart = exports.addShoppingCart = exports.getShoppingCarInfo = exports.getProductDetail = exports.getProductClassify = exports.getAllProductList = exports.toLogin = exports.getProductionList = exports.getCarousel = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -2887,9 +2887,102 @@ function () {
   return function addOrder(_x12) {
     return _ref12.apply(this, arguments);
   };
+}();
+
+exports.addOrder = addOrder;
+
+var getAddress =
+/*#__PURE__*/
+function () {
+  var _ref13 = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee13() {
+    return _regenerator.default.wrap(function _callee13$(_context13) {
+      while (1) {
+        switch (_context13.prev = _context13.next) {
+          case 0:
+            _context13.next = 2;
+            return apiRequire('getAddress', '/api/account/GetAddressList', null, null, false);
+
+          case 2:
+            return _context13.abrupt("return", _context13.sent);
+
+          case 3:
+          case "end":
+            return _context13.stop();
+        }
+      }
+    }, _callee13, this);
+  }));
+
+  return function getAddress() {
+    return _ref13.apply(this, arguments);
+  };
+}();
+
+exports.getAddress = getAddress;
+
+var setDefaultAddress =
+/*#__PURE__*/
+function () {
+  var _ref14 = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee14(data) {
+    return _regenerator.default.wrap(function _callee14$(_context14) {
+      while (1) {
+        switch (_context14.prev = _context14.next) {
+          case 0:
+            _context14.next = 2;
+            return apiRequire('setDefaultAddress', '/api/account/SetDefaultAddress', 'post', data, false);
+
+          case 2:
+            return _context14.abrupt("return", _context14.sent);
+
+          case 3:
+          case "end":
+            return _context14.stop();
+        }
+      }
+    }, _callee14, this);
+  }));
+
+  return function setDefaultAddress(_x13) {
+    return _ref14.apply(this, arguments);
+  };
+}();
+
+exports.setDefaultAddress = setDefaultAddress;
+
+var addressOperate =
+/*#__PURE__*/
+function () {
+  var _ref15 = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee15(data) {
+    return _regenerator.default.wrap(function _callee15$(_context15) {
+      while (1) {
+        switch (_context15.prev = _context15.next) {
+          case 0:
+            _context15.next = 2;
+            return apiRequire('addressOperate', '/api/account/AddressOperate', 'post', data, false);
+
+          case 2:
+            return _context15.abrupt("return", _context15.sent);
+
+          case 3:
+          case "end":
+            return _context15.stop();
+        }
+      }
+    }, _callee15, this);
+  }));
+
+  return function addressOperate(_x14) {
+    return _ref15.apply(this, arguments);
+  };
 }(); ///api/order/AddShoppingCart
 //getProductClassify,api/Product/GetProductDetail?id=
 
 
-exports.addOrder = addOrder;
+exports.addressOperate = addressOperate;
 },{"@babel/runtime/helpers/asyncToGenerator":1,"@babel/runtime/helpers/interopRequireDefault":2,"@babel/runtime/regenerator":3,"axios":4}]},{},[33]);

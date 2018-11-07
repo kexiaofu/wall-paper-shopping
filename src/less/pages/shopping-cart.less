@@ -1,73 +1,5 @@
-.shopping-status{
-  background-color: #ececec;
-  height: 150px;
-  .shopping-status-container{
-    width: 1000px;
-    margin:0 auto;
-    //background: #ddd;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    transform: translate(0,20px);
-  }
-  
-  .shopping-status-item{
-    width:100px;
-    height: 100px;
-    line-height: 100px;
-    text-align: center;
-    background: rgba(255,2555,255,.3);
-    border-radius:100%;
-    position:relative;
-    border:2px solid rgba(0,0,0,.3);
-    box-sizing: border-box;
-    i{
-      font-size: 50px;
-      color:rgba(0,0,0,.5);
-    }
-    span{
-      position: absolute;
-      display: block;
-      width: 100px;
-      height: 30px;
-      bottom: 3px;
-      color:#333;
-    }
-  }
-
-  .shopping-status-item::after{
-    content: '';
-    position: absolute;
-    width: 200px;
-    height: 1px;
-    border-top:1.5px dashed #999;
-    top:50%;
-    left: 100px;
-    transform: translate(0,-50%);
-  }
-  .shopping-status-item:last-child::after{
-    border:none;
-  }
-
-  .active{
-    border-color:#00a6de;
-    //background: rgba(0,166,222,.5);
-    i{
-      color:#00a6de;
-    }
-    span{
-      color:#00a6de;
-    }
-  }
-
-  .active::after{
-   border-color:#00a6de;
-  }
-
-}
-
 .shopping-list-page{
-  width: 1200px;
+  width: 1060px;
   margin: 10px auto;
   box-sizing: border-box;
 }
@@ -75,101 +7,108 @@
 .product-item{
   width: 100%;
   min-height: 120px;
-  padding:0 10px;
   box-sizing: border-box;
-  border:1px solid #ececec;
+  border-bottom:1px solid #ddd;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   font-size:14px;
   background: #fff;
-  margin:10px 0;
-  box-sizing: border-box;
-  transition:border-color .5s ease, background .5s ease;
+  padding:10px 0;
+  transition: background .5s ease;
+  .product-select{
+    width: 50px;
+  }
   .product-img{
     float:left;
-    width: 120px;
-    height: 80px;
-    line-height: 80px;
+    width: 140px;
+    height: 140px;
+    //background: #ddd;
+    margin-right: 10px;
+    box-sizing: border-box;
     img{
-      width: 80px;
-      height: 80px;
+      width: 140px;
+      height: 140px;
     }
   }
 
   .product-info{
     float:left;
-    width: 250px;
+    width: 200px;
     height: 100%;
-    padding:10px 0;
-  }
-
-  .standards{
-    float:left;
-    width: 250px;
-    margin:0 10px;
+    //background: #ccc;
+    color:#666;
+    padding-right:10px;
+    a{
+      display: inline-block;
+      color:#333;
+      text-decoration: underline;
+      padding:5px 0;
+    }
   }
 
   .product-price{
     float:left;
-    width: 120px;
+    width: 150px;
     height: 150px;
     line-height: 150px;
-    text-align: center;
     font-size:16px;
+    //background: #aaa;
   }
 
   .product-quantity{
-    width: 130px;
-    height: 150px;
-    overflow: hidden;
+    width: 100px;
+    display: flex;
+    align-items: center;
+    //overflow: hidden;
     margin:0 10px;
     position: relative;
-
+    //background: #999;
     .quantity-tool{
       border:1px solid #ccc;
-      margin-top:50%;
-      transform: translate(0,-25%);
     }
     input{
-      width: 100px;
-      height: 40px;
+      width: 60px;
+      height: 30px;
       border:none;
       text-align: center;
       outline: none;
       box-sizing:border-box;
+      position: relative;
+      margin: 0 0 0 20px;
     }
 
-    .operate-num{
-      display: inline-block;
+    .add-num,.reduce-num{
+      width: 20px;
+      height: 30px;
+      line-height: 30px;
+      background: #DDD;
       position: absolute;
-      right: 0;
-      width: 30px;
-      height: 40px;
-      font-size:14px;
-      .add-num,.reduce-num{
-        width: 30px;
-        height: 20px;
-        line-height: 20px;
-        background: #ddd;
-        position: relative;
-        text-align: center;
-        cursor: pointer;
-      }
-      .add-num{
-        top:0;
-        border-bottom:1px solid #bbb;
-        box-sizing: border-box;
-        font-size:16px;
-        color:#333;
-      }
-      .add-num::after{
-        content: '+';
-      }
-      .reduce-num::after{
-        content: '-';
-      }
+      text-align: center;
+      cursor: pointer;
+      top:0;
+      border:1px solid #ccc;
+      color:#666;
     }
+    .add-num{
+      right:0;
+      font-size:16px;
+
+    }
+    .reduce-num{
+      left: 0;
+    }
+    .add-num::after{
+      content: '+';
+    }
+    .reduce-num::after{
+      content: '-';
+    }
+  }
+
+  .preferential{
+    width: 100px;
+    //background: #888;
+    padding-right: 10px;
   }
 
   .count{
@@ -177,14 +116,19 @@
     width: 150px;
     height: 150px;
     line-height: 150px;
-    text-align: center;
-    font-size:16px;
+    font-size:18px;
+    //font-weight: bold;
+    color:#333;
+    //background: #777;
   }
 
   .del{
     float:left;
+    width: 100px;
+    text-align: center;
     height: 150px;
     line-height: 150px;
+    //background: #666;
     i{
       font-size: 18px;
       color:#999;
@@ -199,12 +143,15 @@
 }
 
 .product-item:hover{
-  border-color:#00a6de;
+  background: rgba(0,166,222,.1);
 }
 
 .product-selected{
-  background: rgba(0,166,222,.3);
-  border-color:#00a6de;
+  background: rgba(0,166,222,.2);
+}
+
+.product-selected:hover{
+  background: rgba(0,166,222,.2);
 }
 
 .to-pay{
@@ -219,9 +166,14 @@
   bottom: 0;
   background: #fff;
   border-top:1px solid #ddd;
+  .order-quantity{
+    color:#f00;
+    font-size:25px;
+    font-size:25px;
+  }
 
   .pay-container{
-    width: 1200px;
+    width: 1060px;
     margin:0 auto;
     display: flex;
     justify-content: space-between;
@@ -248,28 +200,45 @@
       color:#fff;
       margin: 0 0 0 30px;
     }
+    .pay-tips{
+      font-size: 16px;
+      color:#666;
+    }
   }
 }
 
 .to-pay-bottom{
+  padding:0;
+  width:1060px;
   position: relative;
-  margin:0 0 10px 0;
+  margin:0 auto 10px auto;
   background: transparent;
-  border-top:1px solid #ddd;
-  border-bottom:1px solid #ddd;
+  border:none;
 }
 
 .batch-operation{
   visibility: hidden;
-  width: 1200px;
+  width: 1060px;
   box-sizing: border-box;
   display: flex;
-  justify-content: space-between;
   height: 50px;
   align-items: center;
-  background: #ececec;
-  padding:0 10px;
+  border-bottom:2px solid #ddd;
   margin:10px auto;
+  color:#999;
+  .title-item{
+    width: 100px;
+    padding-right: 10px;
+  }
+  .title-item:last-child{
+    text-align: center;
+  }
+  .width200{
+    width: 200px;
+  }
+  .width150{
+    width: 150px;
+  }
   i{
     color:#f00;
     font-size:18px;

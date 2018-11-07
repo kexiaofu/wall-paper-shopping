@@ -44,9 +44,9 @@ let apiRequire = async (name,url,method,data,storage=true) => {
   }
 };
 
-export const getCarousel = async ()=> await apiRequire('getCarousel','/api/Config/GetCarousel');
+export const getCarousel = async ()=> await apiRequire('getCarousel','/api/Home/GetCarousel');
 
-export const getProductionList = async ()=> await apiRequire('getProductionList','/api/Config/GetHomeProduct');
+export const getProductionList = async ()=> await apiRequire('getProductionList','/api/Home/GetHomeProduct');
 
 export const toLogin = async (account) => await apiRequire('account','/api/account/login',null,account);
 
@@ -79,6 +79,8 @@ export const setDefaultAddress = async (data) => await apiRequire('setDefaultAdd
 
 export const addressOperate = async (data) => await apiRequire('addressOperate','/api/account/AddressOperate','post',data,false);
 
+
+export const getHomeGroup =async () => await apiRequire('getHomeGroup','/api/Home/GetHomeGroup',null,null,true);
 
 
 ///api/order/AddShoppingCart

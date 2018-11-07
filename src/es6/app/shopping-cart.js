@@ -21,52 +21,59 @@ getShoppingCarInfo().then(res => {
   });
   let html = template('shopping-list-page', {data: productInfo});
   document.querySelector('.shopping-list-page').innerHTML = html;
-  productInfo.length > 0 && (document.querySelector('.to-pay').style.visibility = 'visible');
+  productInfo.length > 0 && (document.querySelector('.to-pay').style.visibility = 'visible',toPayBar());
   productInfo.length > 0 && (document.querySelector('.batch-operation').style.visibility = 'visible');
+
 });
 
 //改变商品的数量
 window.opProductQuantity = (ele) => {
-  let id =  ele.getAttribute('data-op-id'),
+  let id =  ele.getAttribute('data-op-id') - 0,
     _index = productIds.indexOf(id),
-    _op = ele.getAttribute('data-op');
+    _op = ele.getAttribute('data-op'),
+    inputEle = ele.parentNode.querySelector('input');
 
   let product = productInfo[_index],
     selected = document.querySelector(`#select${product.id}`).checked;
 
-  console.log(selected);
+  console.log(ele.parentNode,inputEle);
+
 
   if (_op === 'add') {
+    let num = product.number + 1;
     productInfo.splice(_index, 1, Object.assign({}, product, {
-      number: product.number + 1
+      number: num
     }));
+    inputEle.value = num;
+    inputEle.setAttribute('value',num)
   } else {
+    let num = product.number > 1 ? product.number - 1 : 1;
     productInfo.splice(_index, 1, Object.assign({}, product, {
-      number: product.number > 1 ? product.number - 1 : 1
+      number:num
     }));
+    inputEle.value = num;
+    inputEle.setAttribute('value',num)
   }
 
   if (selected) {
-    let count = 0;
-    productInfo.map(item => {
-      item.selected && (count += (item.money * item.number));
-    });
-    orderCount = count.toFixed(2) - 0;
-    document.querySelector('.order-count').innerHTML = orderCount;
+    calculateCost();
   }
 
 
-  let html = template('shopping-list-page', {data: productInfo});
-  document.querySelector('.shopping-list-page').innerHTML = html;
+  //let html = template('shopping-list-page', {data: productInfo});
+  //document.querySelector('.shopping-list-page').innerHTML = html;
 
 };
 
 //添加或者移除商品进订单里面
 window.addProductToOrder = (ele) => {
   console.log(ele.checked);
-  let id = ele.getAttribute('data-op-id'),
+  let id = ele.getAttribute('data-op-id') - 0,
     _index = productIds.indexOf(id),
     product = productInfo[_index];
+
+  console.log(id,_index,product);
+
   if (ele.checked) {
     productInfo.splice(_index, 1, Object.assign({}, product, {
       selected: true
@@ -82,14 +89,14 @@ window.addProductToOrder = (ele) => {
 
   }
 
-  calculateCount();
+  calculateCost();
 
 };
 
 //删除商品
 window.deleteThisProduct = (ele) => {
-  console.log(productInfo,'0000',ele.getAttribute('data-op-id'));
-  let id = ele.getAttribute('data-op-id');
+  console.log(productInfo,'0000',ele.getAttribute('data-op-id') - 0);
+  let id = ele.getAttribute('data-op-id') - 0;
 
   deleteShoppingCart({id: id})
     .then(res => {
@@ -100,7 +107,7 @@ window.deleteThisProduct = (ele) => {
       console.log(document.querySelector('#product-id-'+id));
       document.querySelector('.shopping-list-page').removeChild(document.querySelector('#product-id-'+id));
       productInfo.splice(productIds.indexOf(id), 1);
-      calculateCount();
+      calculateCost();
 
       window.dispatchEvent(new CustomEvent('updateShoppingCart'));
 
@@ -129,12 +136,12 @@ window.toSumbitOrder = () => {
   console.log(products)
 };
 
-//计算价格
-let calculateCount = () =>{
+//计算购买总价格
+let calculateCost = () =>{
   let orderCount = 0,
     productCount = 0;
 
-  if(productCount.length > 0) {
+  if(productInfo.length > 0) {
     productInfo.map(item=>{
       if(item.selected) {
         orderCount  += item.money * item.number;
@@ -165,6 +172,13 @@ let calculateCount = () =>{
 
 
 
+};
+
+//计算某个商品的总价
+let calculateCount = (index) =>{
+  let product = productInfo[index];
+
+  document.querySelector('#count'+product.id).innerHTML = '￥' + (product.money * product.number).toFixed(2);
 };
 
 //渲染函数
@@ -231,6 +245,29 @@ window.selectAll = (ele) => {
     })
   }
   rendering();
+
+};
+
+//监听商品数量改变
+window.checkNumber = (ele) =>{
+  console.log(ele);
+  let index = productIds.indexOf(ele.getAttribute('data-op-id')-0),
+      product = productInfo[index];
+  ele.setAttribute('value',ele.value);
+  productInfo.splice(index,1,Object.assign({},product,{number:ele.value-0}));
+  if((ele.value-0) < 1) {
+    ele.value = 1;
+    ele.setAttribute('value',1);
+    productInfo.splice(index,1,Object.assign({},product,{number:1}));
+  }
+
+  console.log(product,productInfo[index]);
+
+  calculateCount(index);
+
+  if (product.selected) {
+    calculateCost();
+  }
 
 };
 

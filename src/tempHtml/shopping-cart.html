@@ -33,9 +33,26 @@
             </div>
 
         </div>
+
+        <div class="nav-container">
+            <a href="./index.html">首页</a>
+            <a href="#">购物车</a>
+        </div>
+
         <div class="batch-operation">
-            <input type="checkbox" name="batch-operation" id="batch-operation-btn" onchange="selectAll(this)">
-            <i class="iconfont icon-delete"></i>
+            <div class="title-item  width200">
+                <div class="my-checkbox">
+                    <input type="checkbox" name="batch-operation" id="batch-operation-btn" onchange="selectAll(this)">
+                    <label for="batch-operation-btn"></label>
+                    全选
+                </div>
+            </div>
+            <div class="title-item  width200">产品信息</div>
+            <div class="title-item width150">单价</div>
+            <div class="title-item">数量</div>
+            <div class="title-item">优惠/件</div>
+            <div class="title-item width150">总价</div>
+            <div class="title-item">操作</div>
         </div>
         <div class="shopping-list-page"></div>
         <div class="to-pay">
@@ -44,7 +61,7 @@
                     共 <span class="order-quantity">0</span> 件商品
                 </div>
                 <div class="to-submit-order">
-                    <div class="count-money"><i>￥</i><span class="order-count">0</span></div>
+                    <div class="count-money"><span class="pay-tips">(全场全能通包邮)合计</span><i>￥</i><span class="order-count">0</span></div>
                     <div class="to-order" onclick="toSumbitOrder()">确定订单</div>
                 </div>
             </div>
@@ -58,44 +75,48 @@
         {{each data product i}}
             <div class="product-item" id={{ 'product-id-'+ product.id }}>
 
-                {{ if product.selected }}
+                <div class="product-select">
+                    {{ if product.selected }}
+                    <div class="my-checkbox">
+                        <input type="checkbox" name={{ product.id }} id={{ 'select'+product.id }} data-op-id={{ product.id }} checked onchange="addProductToOrder(this)">
+                        <label for={{'select'+product.id }}></label>
+                    </div>
 
-                <input type="checkbox" name={{ product.id }} id={{  'select'+product.id }} data-op-id={{ product.id }} checked onchange="addProductToOrder(this)">
-
-                {{ else }}
-
-                <input type="checkbox" name={{ product.id }} id={{  'select'+product.id }} data-op-id={{ product.id }} onchange="addProductToOrder(this)">
-
-                {{ /if }}
+                    {{ else }}
+                    <div class="my-checkbox">
+                        <input type="checkbox" name={{ product.id }} id={{ 'select'+product.id }} data-op-id={{ product.id }} onchange="addProductToOrder(this)">
+                        <label for={{'select'+product.id }}></label>
+                    </div>
+                    {{ /if }}
+                </div>
 
                 <div class="product-img">
                         <img src={{ product.introductImage }} alt=""/>
                 </div>
 
                 <div class="product-info">
-                    <div class="product-name"> {{ product.productName }} </div>
-                    <div class="product-description">{{ product.description }}</div>
-                </div>
-
-                <div class="standards">
+                    <a href={{ "./product.html?productId="+product.productId }}> {{ product.productName }}  </a>
                     {{ each product.standards s i}}
                     <p>{{ s.optionName }}: {{ s.optionValueName }}</p>
                     {{ /each }}
+                    <!--<div class="product-description">{{ product.description }}</div>-->
                 </div>
 
                 <div class="product-price">￥{{ product.money }}</div>
 
                 <div class="product-quantity">
                     <div class="quantity-tool">
-                        <input type="text" value={{ product.number }}>
-                        <div class="operate-num">
-                            <div class="add-num" onclick="opProductQuantity(this)" data-op="add" data-op-id={{ product.id }}></div>
-                            <div class="reduce-num" onclick="opProductQuantity(this)" data-op="reduce" data-op-id={{ product.id }}></div>
-                        </div>
+                        <div class="reduce-num" onclick="opProductQuantity(this)" data-op="reduce" data-op-id={{ product.id }}></div>
+                        <input type="text" value={{ product.number }} onchange="checkNumber(this)" data-op-id={{ product.id }}>
+                        <div class="add-num" onclick="opProductQuantity(this)" data-op="add" data-op-id={{ product.id }}></div>
                     </div>
                 </div>
 
-                <div class="count">
+                <div class="preferential">
+                    ￥0
+                </div>
+
+                <div class="count" id={{ 'count' + product.id }}>
                    ￥{{ product.money * product.number | toFixed2 }}
                 </div>
 

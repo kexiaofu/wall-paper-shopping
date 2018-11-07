@@ -17,7 +17,7 @@ body {
   color: #333;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   height: 100%;
-  background: #f5f5f5;
+  background: #fff;
 }
 a {
   text-decoration: none;
@@ -294,6 +294,7 @@ p {
   font-size: 14px;
   text-align: center;
   float: right;
+  margin: 10px 0 0 0;
 }
 .shopping-car-container::before {
   position: absolute;
@@ -641,4 +642,133 @@ p {
   line-height: 32px;
   border: 1px solid #ececec;
   margin: 0 10px;
+}
+.my-checkbox {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.my-checkbox input {
+  display: none;
+}
+.my-checkbox label {
+  width: 18px;
+  height: 18px;
+  border: 1px solid #ddd;
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+  margin: 0 5px;
+}
+.my-checkbox label::after {
+  content: '';
+  position: absolute;
+  width: 5px;
+  height: 12px;
+  border-right: 2px solid #eee;
+  border-bottom: 2px solid #eee;
+  -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+          transform: rotate(45deg);
+  margin: 0 5px;
+  transition: border-color 0.3s ease;
+}
+.my-checkbox input:checked ~ label {
+  border-color: #00a6de;
+}
+.my-checkbox input:checked ~ label::after {
+  border-color: #00a6de;
+}
+/*nav-container*/
+.nav-container {
+  width: 1060px;
+  height: 40px;
+  line-height: 40px;
+  margin: 10px auto;
+}
+.nav-container a {
+  font-size: 14px;
+  color: #999;
+}
+.nav-container a:last-child {
+  color: #666;
+}
+.nav-container a::after {
+  content: '/';
+  padding: 0 5px;
+}
+.nav-container a:last-child::after {
+  content: '';
+}
+/*shopping-status*/
+.shopping-status {
+  background-color: #ececec;
+  background: url('../../images/4.jpg') 100% 100% no-repeat;
+  background-size: cover;
+  height: 150px;
+}
+.shopping-status .shopping-status-container {
+  width: 800px;
+  margin: 0 auto;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-transform: translate(0, 20px);
+      -ms-transform: translate(0, 20px);
+          transform: translate(0, 20px);
+}
+.shopping-status .shopping-status-item {
+  width: 90px;
+  height: 90px;
+  line-height: 90px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 100%;
+  position: relative;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  box-sizing: border-box;
+}
+.shopping-status .shopping-status-item i {
+  font-size: 50px;
+  color: #bbb;
+}
+.shopping-status .shopping-status-item span {
+  position: absolute;
+  display: block;
+  width: 90px;
+  height: 30px;
+  bottom: -5px;
+  font-size: 14px;
+  color: #fff;
+}
+.shopping-status .shopping-status-item::after {
+  content: '';
+  position: absolute;
+  width: 100px;
+  height: 1px;
+  border-top: 1.5px dashed #fff;
+  top: 50%;
+  left: 110px;
+  -webkit-transform: translate(0, -50%);
+      -ms-transform: translate(0, -50%);
+          transform: translate(0, -50%);
+}
+.shopping-status .shopping-status-item:last-child::after {
+  border: none;
+}
+.shopping-status .active {
+  border-color: #00a6de;
+}
+.shopping-status .active i {
+  color: #00a6de;
 }

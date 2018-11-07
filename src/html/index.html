@@ -83,7 +83,9 @@
         </a>
         {{/each}}
     </div>
+    {{ if data.quantity > 0 }}
     <p class="more-product-quantity">您还有{{ data.quantity }}件商品在购物车</p>
+    {{ /if }}
     {{/if}}
     <a href="./shopping-cart.html" class="to-my-shopping-car-btn">
         查看我的购物车
@@ -96,33 +98,10 @@
     <div class="carousel-container"></div>
 
     <div class="production-list"></div>
+    <div class="show-box">
 
-</div>
-<script id="production-list" type="text/html">
-    <p class="b-title">明星产品</p>
-    <div class="product-container">
-        {{each data value i}}
-        <div class="production-item">
-            <div class="product-img">
-                <a href={{"./product.html?productId="+value.productId}}>
-                    <img src="" alt="" data-origin-src={{value.introductImage}} data-is-load="false" class="lazy-load-img">
-                </a>
-            </div>
-            <div class="product-content">
-                <p class="product-name">{{ value.name }}</p>
-                <p>
-                    <span class="current-price">￥{{ value.currentPrice }}</span>
-                    <span class="original-price">{{ value.originalPrice }}</span>
-                </p>
-            </div>
-        </div>
-        {{/each}}
     </div>
-    <a href="./product-list.html" class="get-more-product">
-        更多产品
-        <i class="iconfont icon-left"></i>
-    </a>
-</script>
+</div>
 <div class="back-to-top" onclick="backToTop()">
     <div class="icon-out-container"></div>
     <div class="icon-in-container"></div>
@@ -156,6 +135,136 @@
         </div>
     </div>
 </div>
+<script id="production-list" type="text/html">
+    <p class="b-title">明星产品</p>
+    <div class="product-container">
+        {{each data value i}}
+        <div class="production-item">
+            <div class="product-img">
+                <a href={{"./product.html?productId="+value.productId}}>
+                    <img src="" alt="" data-origin-src={{value.introductImage}} data-is-load="false" class="lazy-load-img">
+                </a>
+            </div>
+            <div class="product-content">
+                <p class="product-name">{{ value.name }}</p>
+                <p>
+                    <span class="current-price">￥{{ value.currentPrice }}</span>
+                    <span class="original-price">{{ value.originalPrice }}</span>
+                </p>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+    <a href="./product-list.html" class="get-more-product">
+        更多产品
+        <i class="iconfont icon-right"></i>
+    </a>
+</script>
+<script id="show-images-box-a" type="text/html">
+    <div class="show-images-box show-images-box-a">
+        <div class="images-box-title">{{ data.name }}</div>
+        <div class="images-box">
+            <div class="side-images-box">
+                <a href={{ data.groupImages[0].linkUrl }} target="_blank">
+                    <img src="" alt="" data-origin-src={{ data.groupImages[0].imageUrl }} data-is-load="false" class="lazy-load-img">
+                </a>
+                <a href={{ data.groupImages[1].linkUrl }} target="_blank">
+                    <img src="" alt="" data-origin-src={{ data.groupImages[1].imageUrl }} data-is-load="false" class="lazy-load-img">
+                </a>
+            </div>
+            <div class="center-images-box">
+                <a href={{ data.groupImages[2].linkUrl }} target="_blank">
+                    <img src="" alt="" data-origin-src={{ data.groupImages[2].imageUrl }} data-is-load="false" class="lazy-load-img">
+                </a>
+            </div>
+            <div class="side-images-box">
+                <a href={{ data.groupImages[3].linkUrl }} target="_blank">
+                    <img src="" alt="" data-origin-src={{ data.groupImages[3].imageUrl }} data-is-load="false" class="lazy-load-img">
+                </a>
+                <a href={{ data.groupImages[4].linkUrl }} target="_blank">
+                    <img src="" alt="" data-origin-src={{ data.groupImages[4].imageUrl }} data-is-load="false" class="lazy-load-img">
+                </a>
+            </div>
+        </div>
+    </div>
+</script>
+<script id="show-text-images-box" type="text/html">
+    <div class="show-text-images-box">
+        <div class="images-box-title">{{ data.name }}</div>
+        <div class="text-images-box">
+            <div class="up-box">
+                <a href={{ data.groupImages[0].linkUrl }} target="_blank">
+                    <div class="images-box">
+                        <img src="" alt="" data-origin-src={{ data.groupImages[0].imageUrl }} data-is-load="false" class="lazy-load-img">
+                    </div>
+                    <div class="text-box">
+                        <p>{{ data.groupImages[0].name }}</p>
+                        {{#data.groupImages[0].description }}
+                        <p class="get-more-info">
+                            查看详情
+                            <i class="iconfont icon-right"></i>
+                        </p>
+                    </div>
+                </a>
+                <a href={{ data.groupImages[1].linkUrl }} target="_blank">
+                    <div class="images-box">
+                        <img src="" alt="" data-origin-src={{ data.groupImages[1].imageUrl }} data-is-load="false" class="lazy-load-img">
+                    </div>
+                    <div class="text-box">
+                        <p>{{ data.groupImages[1].name }}</p>
+                        {{#data.groupImages[1].description }}
+                        <p class="get-more-info">
+                            查看详情
+                            <i class="iconfont icon-right"></i>
+                        </p>
+                    </div>
+                </a>
+            </div>
+            <div class="down-box">
+                <a href={{ data.groupImages[2].linkUrl }} target="_blank">
+                    <div class="text-box">
+                        <p>{{ data.groupImages[2].name }}</p>
+                        {{#data.groupImages[2].description }}
+                        <p class="get-more-info">
+                            查看详情
+                            <i class="iconfont icon-right"></i>
+                        </p>
+                    </div>
+                    <div class="images-box">
+                        <img src="" alt="" data-origin-src={{ data.groupImages[2].imageUrl }} data-is-load="false" class="lazy-load-img">
+                    </div>
+                </a>
+                <a href={{ data.groupImages[3].linkUrl }} target="_blank">
+                    <div class="text-box">
+                        <p>{{ data.groupImages[3].name }}</p>
+                        {{#data.groupImages[3].description }}
+                        <p class="get-more-info">
+                            查看详情
+                            <i class="iconfont icon-right"></i>
+                        </p>
+                    </div>
+                    <div class="images-box">
+                        <img src="" alt="" data-origin-src={{ data.groupImages[3].imageUrl }} data-is-load="false" class="lazy-load-img">
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</script>
+<script id="show-more-info" type="text/html">
+    <div class="show-more-info">
+        <div class="images-box-title">{{ data.name }}</div>
+        <div class="more-info-box">
+            {{ each data.groupImages info i }}
+                <a href={{ info.linkUrl }} class="info-box">
+                    <img src={{info.imageUrl }} alt="">
+                    <p>{{ info.description }}</p>
+                </a>
+            {{ /each }}
+        </div>
+
+    </div>
+</script>
 <script src="../js/app/index.js"></script>
 </body>
 </html>

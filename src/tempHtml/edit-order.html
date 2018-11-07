@@ -11,9 +11,141 @@
 <body>
 @@include('./common/head.html')
     <div id="edit-order" class="edit-order container">
-        div
+        <div class="shopping-status">
+            <div class="shopping-status-container">
+                <div class="shopping-status-item active">
+                    <i class="iconfont icon-gouwuche"></i>
+                    <span>购物车</span>
+                </div>
+                <div class="shopping-status-item active">
+                    <i class="iconfont icon-order"></i>
+                    <span>填写订单</span>
+                </div>
+                <div class="shopping-status-item">
+                    <i class="iconfont icon-pay"></i>
+                    <span>等待付款</span>
+                </div>
+                <div class="shopping-status-item">
+                    <i class="iconfont icon-paid"></i>
+                    <span>已付款</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="nav-container">
+            <a href="./index.html">首页</a>
+            <a href="./shopping-cart.html">购物车</a>
+            <a href="#">填写订单</a>
+        </div>
+
+        <div class="order-detail">
+            <p class="order-title">
+                填写并核对订单信息
+            </p>
+            <div class="order-address-info">
+                <div class="info-title">
+                    <span>收货人信息</span>
+                    <span>+新增收货地址</span>
+                </div>
+                <div class="info-content">
+
+                </div>
+            </div>
+            <div class="batch-operation">
+                <div class="title-item  width200">
+                    商品清单
+                </div>
+                <div class="title-item  width200">产品信息</div>
+                <div class="title-item width150">单价</div>
+                <div class="title-item">数量</div>
+                <div class="title-item">优惠/件</div>
+                <div class="title-item width150">总价</div>
+                <div class="title-item">库存状态</div>
+            </div>
+            <div class="shopping-list-page"></div>
+            <div class="order-remark">
+                <input type="text" placeholder="选填，订单留言备注，限45个字">
+            </div>
+            <div class="invoice">
+                <span>发票信息</span>
+                <span>如有需要，请联系客服开发票</span>
+            </div>
+            <div class="order-pay-info">
+                <div class="pay-info">
+                    <span>总商品金额:</span>
+                    <span>￥100</span>
+                </div>
+                <div class="pay-info">
+                    <span>运费:</span>
+                    <span>￥0</span>
+                </div>
+                <div class="pay-info">
+                    <span>应付总额:</span>
+                    <span>￥100</span>
+                </div>
+            </div>
+            <div class="need-to-pay">
+                <span>应付总额: <i>￥100</i></span>
+                <a href="#">提交订单</a>
+            </div>
+        </div>
+
+
+
     </div>
 @@include('./common/footer.html')
+
+<script id="shopping-list-page" type="text/html">
+
+    {{ if data.length > 0  }}
+
+    {{ each data order index}}
+
+        {{each order.orderProductDetails product i}}
+        <div class="product-item" id={{ 'product-id-'+ product.id }}>
+
+        <div class="product-img">
+            <img src={{ product.introductImage }} alt=""/>
+        </div>
+
+        <div class="product-info">
+            <a href={{ "./product.html?productId="+product.productId }}> {{ product.productName }}  </a>
+            {{ each product.standards s i}}
+            <p>{{ s.optionName }}: {{ s.optionValueName }}</p>
+            {{ /each }}
+            <!--<div class="product-description">{{ product.description }}</div>-->
+        </div>
+
+        <div class="product-price">￥{{ product.money }}</div>
+
+        <div class="product-quantity">
+            {{ product.number }}
+        </div>
+
+        <div class="preferential">
+            ￥0
+        </div>
+
+        <div class="count" id={{ 'count' + product.id }}>
+        ￥{{ product.money * product.number | toFixed2 }}
+        </div>
+
+        <div class="other-info">
+            暂无库存
+        </div>
+
+        </div>
+        {{ /each }}
+    {{ /each }}
+    {{ else if data.length === 0}}
+    <div class="empty-shopping-cart">
+        <i class="iconfont icon-empty-shopping-cart"></i>
+        <p>您的购物车空白如雪</p>
+    </div>
+    {{ /if }}
+</script>
+
     <script src="../js/app/edit-order.js"></script>
 </body>
 </html>

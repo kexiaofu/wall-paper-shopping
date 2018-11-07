@@ -1,0 +1,261 @@
+@borderColor:#ddd;
+.order-detail{
+  width: 1060px;
+  margin: 0 auto;
+  font-size:14px;
+  .order-title{
+    border-bottom:1px solid @borderColor;
+    color:#333;
+    font-size:14px;
+    padding:10px 0;
+  }
+  .order-address-info{
+    padding:20px 0;
+    border-bottom:1px solid @borderColor;
+    .info-title{
+      font-size:12px;
+      span{
+        color:#999;
+        display: inline-block;
+        width: 200px;
+      }
+      span:last-child{
+        color:#00a6de;
+      }
+    }
+  }
+}
+
+.batch-operation{
+  width: 1060px;
+  box-sizing: border-box;
+  display: flex;
+  height: 50px;
+  align-items: center;
+  border-bottom:2px solid #ddd;
+  margin:10px auto;
+  color:#999;
+  font-size: 14px;
+  .title-item{
+    width: 100px;
+    padding-right: 10px;
+  }
+  .title-item:last-child{
+    text-align: center;
+  }
+  .width200{
+    width: 200px;
+  }
+  .width150{
+    width: 150px;
+  }
+  i{
+    color:#f00;
+    font-size:18px;
+  }
+}
+
+.shopping-list-page{
+  width: 1060px;
+  margin: 10px auto;
+  box-sizing: border-box;
+  border-bottom:1px solid @borderColor;
+}
+
+.product-item{
+  width: 100%;
+  min-height: 120px;
+  box-sizing: border-box;
+  border-bottom:1px solid #ddd;
+  display: flex;
+  align-items: center;
+  font-size:14px;
+  background: #fff;
+  padding:10px 0;
+  transition: background .5s ease;
+  .product-img{
+    float:left;
+    width: 190px;
+    height: 140px;
+    //background: #ddd;
+    margin-right: 10px;
+    box-sizing: border-box;
+    img{
+      width: 140px;
+      height: 140px;
+    }
+  }
+
+  .product-info{
+    float:left;
+    width: 200px;
+    height: 100%;
+    //background: #ccc;
+    color:#666;
+    padding-right:10px;
+    a{
+      display: inline-block;
+      color:#333;
+      text-decoration: underline;
+      padding:5px 0;
+    }
+  }
+
+  .product-price{
+    float:left;
+    width: 150px;
+    height: 150px;
+    line-height: 150px;
+    font-size:16px;
+    //background: #aaa;
+  }
+
+  .product-quantity{
+    width: 100px;
+    display: flex;
+    align-items: center;
+    //overflow: hidden;
+    margin:0 10px;
+    position: relative;
+    //background: #999;
+    .quantity-tool{
+      border:1px solid #ccc;
+    }
+    input{
+      width: 60px;
+      height: 30px;
+      border:none;
+      text-align: center;
+      outline: none;
+      box-sizing:border-box;
+      position: relative;
+      margin: 0 0 0 20px;
+    }
+
+    .add-num,.reduce-num{
+      width: 20px;
+      height: 30px;
+      line-height: 30px;
+      background: #DDD;
+      position: absolute;
+      text-align: center;
+      cursor: pointer;
+      top:0;
+      border:1px solid #ccc;
+      color:#666;
+    }
+    .add-num{
+      right:0;
+      font-size:16px;
+
+    }
+    .reduce-num{
+      left: 0;
+    }
+    .add-num::after{
+      content: '+';
+    }
+    .reduce-num::after{
+      content: '-';
+    }
+  }
+
+  .preferential{
+    width: 100px;
+    //background: #888;
+    padding-right: 10px;
+  }
+
+  .count{
+    float:left;
+    width: 150px;
+    height: 150px;
+    line-height: 150px;
+    font-size:18px;
+    //font-weight: bold;
+    color:#333;
+    //background: #777;
+  }
+
+  .other-info{
+    float:left;
+    width: 100px;
+    text-align: center;
+    height: 150px;
+    line-height: 150px;
+    //background: #666;
+    color:#999;
+    i{
+      font-size: 18px;
+      color:#999;
+      cursor: pointer;
+      transition:color .5s ease;
+    }
+    i:hover{
+      color:#f00;
+    }
+  }
+
+}
+
+.order-remark{
+  padding:20px 0;
+  border-bottom:1px solid @borderColor;
+  input{
+    border:1px solid @borderColor;
+    width: 400px;
+    height: 30px;
+    font-size:14px;
+    box-sizing: border-box;
+    padding:0 10px;
+    border-radius:3px;
+    color:#333;
+  }
+}
+
+.invoice{
+  padding:20px 0;
+  border-bottom:1px solid @borderColor;
+  color:#666;
+  span:first-child{
+    margin-right: 100px;
+    color:#999;
+  }
+}
+
+.order-pay-info{
+  padding:20px 0;
+  text-align: right;
+  .pay-info{
+    padding:5px 0;
+    span{
+      display: inline-block;
+      color:#666;
+    }
+    span:last-child{
+      width: 120px;
+    }
+  }
+}
+
+.need-to-pay{
+  text-align: right;
+  padding:20px 0;
+  margin:0 0 30px 0;
+  color:#999;
+  i{
+    font-style: normal;
+    color:#f00;
+    font-size:18px;
+    font-weight: bold;
+  }
+  a{
+    padding:10px 40px;
+    border-radius:3px;
+    background: #f00;
+    text-align: center;
+    font-size:14px;
+    color:#fff;
+    margin:0 0 0 10px;
+  }
+}

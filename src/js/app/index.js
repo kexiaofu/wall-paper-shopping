@@ -2511,16 +2511,51 @@ window.onload = function () {
       data: res
     });
     document.querySelector('.production-list').innerHTML = html;
+    var images = document.querySelectorAll('.lazy-load-img');
+    (0, _tools.imageLazyLoad)(images);
+  });
+  (0, _api.getHomeGroup)().then(function (res) {
+    console.log(res);
+    var html = '';
+    res.map(function (item) {
+      switch (item.templetType) {
+        case 1:
+          break;
+
+        case 2:
+          html += (0, _template.default)('show-text-images-box', {
+            data: item
+          });
+          break;
+
+        case 3:
+          html += (0, _template.default)('show-images-box-a', {
+            data: item
+          });
+          break;
+
+        case 4:
+          console.log(item);
+          html += (0, _template.default)('show-more-info', {
+            data: item
+          });
+          break;
+      }
+
+      document.querySelector('.show-box').innerHTML = html;
+    });
+    var images = document.querySelectorAll('.lazy-load-img');
+    (0, _tools.imageLazyLoad)(images);
+  });
+
+  window.onscroll = function () {
     var images = document.querySelectorAll('.lazy-load-img'),
         len = images.length;
-    (0, _tools.imageLazyLoad)(images);
 
-    window.onscroll = function () {
-      if (images[len - 1].getAttribute('data-is-load') === 'false') {
-        (0, _tools.imageLazyLoad)(images);
-      }
-    };
-  });
+    if (images[len - 1].getAttribute('data-is-load') === 'false') {
+      (0, _tools.imageLazyLoad)(images);
+    }
+  };
 };
 },{"../common/api":37,"../common/carousel":38,"../common/mask":39,"../common/template.js":40,"../common/tools":41,"@babel/runtime/helpers/interopRequireDefault":4}],37:[function(require,module,exports){
 "use strict";
@@ -2530,7 +2565,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.addressOperate = exports.setDefaultAddress = exports.getAddress = exports.addOrder = exports.getOrder = exports.deleteShoppingCart = exports.addShoppingCart = exports.getShoppingCarInfo = exports.getProductDetail = exports.getProductClassify = exports.getAllProductList = exports.toLogin = exports.getProductionList = exports.getCarousel = void 0;
+exports.getHomeGroup = exports.addressOperate = exports.setDefaultAddress = exports.getAddress = exports.addOrder = exports.getOrder = exports.deleteShoppingCart = exports.addShoppingCart = exports.getShoppingCarInfo = exports.getProductDetail = exports.getProductClassify = exports.getAllProductList = exports.toLogin = exports.getProductionList = exports.getCarousel = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -2631,7 +2666,7 @@ function () {
         switch (_context2.prev = _context2.next) {
           case 0:
             _context2.next = 2;
-            return apiRequire('getCarousel', '/api/Config/GetCarousel');
+            return apiRequire('getCarousel', '/api/Home/GetCarousel');
 
           case 2:
             return _context2.abrupt("return", _context2.sent);
@@ -2662,7 +2697,7 @@ function () {
         switch (_context3.prev = _context3.next) {
           case 0:
             _context3.next = 2;
-            return apiRequire('getProductionList', '/api/Config/GetHomeProduct');
+            return apiRequire('getProductionList', '/api/Home/GetHomeProduct');
 
           case 2:
             return _context3.abrupt("return", _context3.sent);
@@ -3064,11 +3099,42 @@ function () {
   return function addressOperate(_x14) {
     return _ref15.apply(this, arguments);
   };
+}();
+
+exports.addressOperate = addressOperate;
+
+var getHomeGroup =
+/*#__PURE__*/
+function () {
+  var _ref16 = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee16() {
+    return _regenerator.default.wrap(function _callee16$(_context16) {
+      while (1) {
+        switch (_context16.prev = _context16.next) {
+          case 0:
+            _context16.next = 2;
+            return apiRequire('getHomeGroup', '/api/Home/GetHomeGroup', null, null, true);
+
+          case 2:
+            return _context16.abrupt("return", _context16.sent);
+
+          case 3:
+          case "end":
+            return _context16.stop();
+        }
+      }
+    }, _callee16, this);
+  }));
+
+  return function getHomeGroup() {
+    return _ref16.apply(this, arguments);
+  };
 }(); ///api/order/AddShoppingCart
 //getProductClassify,api/Product/GetProductDetail?id=
 
 
-exports.addressOperate = addressOperate;
+exports.getHomeGroup = getHomeGroup;
 },{"@babel/runtime/helpers/asyncToGenerator":1,"@babel/runtime/helpers/interopRequireDefault":4,"@babel/runtime/regenerator":6,"axios":7}],38:[function(require,module,exports){
 "use strict";
 

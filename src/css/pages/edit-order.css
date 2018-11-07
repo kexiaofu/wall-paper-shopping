@@ -1,0 +1,248 @@
+.order-detail {
+  width: 1060px;
+  margin: 0 auto;
+  font-size: 14px;
+}
+.order-detail .order-title {
+  border-bottom: 1px solid #ddd;
+  color: #333;
+  font-size: 14px;
+  padding: 10px 0;
+}
+.order-detail .order-address-info {
+  padding: 20px 0;
+  border-bottom: 1px solid #ddd;
+}
+.order-detail .order-address-info .info-title {
+  font-size: 12px;
+}
+.order-detail .order-address-info .info-title span {
+  color: #999;
+  display: inline-block;
+  width: 200px;
+}
+.order-detail .order-address-info .info-title span:last-child {
+  color: #00a6de;
+}
+.batch-operation {
+  width: 1060px;
+  box-sizing: border-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 50px;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border-bottom: 2px solid #ddd;
+  margin: 10px auto;
+  color: #999;
+  font-size: 14px;
+}
+.batch-operation .title-item {
+  width: 100px;
+  padding-right: 10px;
+}
+.batch-operation .title-item:last-child {
+  text-align: center;
+}
+.batch-operation .width200 {
+  width: 200px;
+}
+.batch-operation .width150 {
+  width: 150px;
+}
+.batch-operation i {
+  color: #f00;
+  font-size: 18px;
+}
+.shopping-list-page {
+  width: 1060px;
+  margin: 10px auto;
+  box-sizing: border-box;
+  border-bottom: 1px solid #ddd;
+}
+.product-item {
+  width: 100%;
+  min-height: 120px;
+  box-sizing: border-box;
+  border-bottom: 1px solid #ddd;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: 14px;
+  background: #fff;
+  padding: 10px 0;
+  transition: background 0.5s ease;
+}
+.product-item .product-img {
+  float: left;
+  width: 190px;
+  height: 140px;
+  margin-right: 10px;
+  box-sizing: border-box;
+}
+.product-item .product-img img {
+  width: 140px;
+  height: 140px;
+}
+.product-item .product-info {
+  float: left;
+  width: 200px;
+  height: 100%;
+  color: #666;
+  padding-right: 10px;
+}
+.product-item .product-info a {
+  display: inline-block;
+  color: #333;
+  text-decoration: underline;
+  padding: 5px 0;
+}
+.product-item .product-price {
+  float: left;
+  width: 150px;
+  height: 150px;
+  line-height: 150px;
+  font-size: 16px;
+}
+.product-item .product-quantity {
+  width: 100px;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin: 0 10px;
+  position: relative;
+}
+.product-item .product-quantity .quantity-tool {
+  border: 1px solid #ccc;
+}
+.product-item .product-quantity input {
+  width: 60px;
+  height: 30px;
+  border: none;
+  text-align: center;
+  outline: none;
+  box-sizing: border-box;
+  position: relative;
+  margin: 0 0 0 20px;
+}
+.product-item .product-quantity .add-num,
+.product-item .product-quantity .reduce-num {
+  width: 20px;
+  height: 30px;
+  line-height: 30px;
+  background: #DDD;
+  position: absolute;
+  text-align: center;
+  cursor: pointer;
+  top: 0;
+  border: 1px solid #ccc;
+  color: #666;
+}
+.product-item .product-quantity .add-num {
+  right: 0;
+  font-size: 16px;
+}
+.product-item .product-quantity .reduce-num {
+  left: 0;
+}
+.product-item .product-quantity .add-num::after {
+  content: '+';
+}
+.product-item .product-quantity .reduce-num::after {
+  content: '-';
+}
+.product-item .preferential {
+  width: 100px;
+  padding-right: 10px;
+}
+.product-item .count {
+  float: left;
+  width: 150px;
+  height: 150px;
+  line-height: 150px;
+  font-size: 18px;
+  color: #333;
+}
+.product-item .other-info {
+  float: left;
+  width: 100px;
+  text-align: center;
+  height: 150px;
+  line-height: 150px;
+  color: #999;
+}
+.product-item .other-info i {
+  font-size: 18px;
+  color: #999;
+  cursor: pointer;
+  transition: color 0.5s ease;
+}
+.product-item .other-info i:hover {
+  color: #f00;
+}
+.order-remark {
+  padding: 20px 0;
+  border-bottom: 1px solid #ddd;
+}
+.order-remark input {
+  border: 1px solid #ddd;
+  width: 400px;
+  height: 30px;
+  font-size: 14px;
+  box-sizing: border-box;
+  padding: 0 10px;
+  border-radius: 3px;
+  color: #333;
+}
+.invoice {
+  padding: 20px 0;
+  border-bottom: 1px solid #ddd;
+  color: #666;
+}
+.invoice span:first-child {
+  margin-right: 100px;
+  color: #999;
+}
+.order-pay-info {
+  padding: 20px 0;
+  text-align: right;
+}
+.order-pay-info .pay-info {
+  padding: 5px 0;
+}
+.order-pay-info .pay-info span {
+  display: inline-block;
+  color: #666;
+}
+.order-pay-info .pay-info span:last-child {
+  width: 120px;
+}
+.need-to-pay {
+  text-align: right;
+  padding: 20px 0;
+  margin: 0 0 30px 0;
+  color: #999;
+}
+.need-to-pay i {
+  font-style: normal;
+  color: #f00;
+  font-size: 18px;
+  font-weight: bold;
+}
+.need-to-pay a {
+  padding: 10px 40px;
+  border-radius: 3px;
+  background: #f00;
+  text-align: center;
+  font-size: 14px;
+  color: #fff;
+  margin: 0 0 0 10px;
+}
