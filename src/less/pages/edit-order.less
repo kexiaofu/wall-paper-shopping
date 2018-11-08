@@ -19,7 +19,7 @@
         display: inline-block;
         width: 200px;
       }
-      span:last-child{
+      .add-new-address{
         color:#00a6de;
       }
     }
@@ -257,5 +257,45 @@
     font-size:14px;
     color:#fff;
     margin:0 0 0 10px;
+  }
+}
+
+.order-address-info{
+  .show-address{
+    cursor: pointer;
+    display: inline-block;
+    transition:transform .3s ease;
+    transform: scale(1);
+    width: 50px;
+    text-align: center;
+  }
+  .active{
+    transform: scale(-1);
+  }
+}
+
+.address-content{
+  margin-top:10px;
+  transition:height .3s ease;
+  .addr-item{
+    padding:10px 0;
+    cursor: pointer;
+    font-size:16px;
+    span{
+      margin-right: 30px;
+    }
+    span:nth-child(5){
+      color:#f00;
+    }
+    i{
+      color:#999;
+    }
+    .active{
+      color:#00a6de;
+    }
+  }
+  .addr-item:hover{
+    background: rgba(0,161,222,.3);
+    box-shadow: 0 0 10px rgba(0,0,0,.3);
   }
 }

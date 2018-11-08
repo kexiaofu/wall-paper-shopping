@@ -124,7 +124,8 @@ window.toSumbitOrder = function () {
 
   if (products.length > 0) {
     (0, _api.addOrder)(products).then(function (res) {
-      window.location.href = './my-order.html#wait2pay';
+      console.log(res);
+      window.location.href = './edit-order.html?orderId=' + res;
     });
   }
 

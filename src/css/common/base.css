@@ -17,7 +17,7 @@ body {
   color: #333;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   height: 100%;
-  background: #fff;
+  background: #f4f4f4;
 }
 a {
   text-decoration: none;
@@ -362,7 +362,7 @@ p {
 }
 /*classify*/
 .classify {
-  height: 60px;
+  height: 100px;
   width: 100%;
   position: fixed;
   top: 60px;
@@ -374,15 +374,15 @@ p {
   width: 1000px;
   height: 60px;
   line-height: 60px;
-  margin: 0 auto;
+  margin: 40px auto;
 }
 .classify .classify-container ul {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-justify-content: space-between;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  -webkit-justify-content: left;
+      -ms-flex-pack: left;
+          justify-content: left;
   -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
@@ -392,6 +392,16 @@ p {
   position: relative;
   min-width: 150px;
   text-align: center;
+}
+.classify .classify-container ul li .classify-img {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  left: 50%;
+  top: -20px;
+  -webkit-transform: translate(-50%, 0);
+      -ms-transform: translate(-50%, 0);
+          transform: translate(-50%, 0);
 }
 .classify .classify-container ul span::after {
   content: '';
@@ -427,7 +437,7 @@ p {
   -webkit-transform: translate(-50%, 0);
       -ms-transform: translate(-50%, 0);
           transform: translate(-50%, 0);
-  min-width: 300px;
+  min-width: 250px;
   margin: 0 auto;
   padding: 0 20px;
   box-sizing: border-box;
@@ -771,4 +781,44 @@ p {
 }
 .shopping-status .active i {
   color: #00a6de;
+}
+/*pagination*/
+.pagination {
+  margin: 30px auto;
+}
+.pagination .prev-page,
+.pagination .next-page {
+  width: 80px;
+}
+.pagination ul {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+.pagination ul li {
+  width: 36px;
+  height: 36px;
+  line-height: 36px;
+  border: 1px solid #ddd;
+  text-align: center;
+  color: #00a6de;
+  border-radius: 3px;
+  margin: 0 2px;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+.pagination ul li:hover {
+  border-color: rgba(0, 161, 222, 0.8);
+}
+.pagination ul .current-page {
+  border-color: rgba(0, 161, 222, 0.8);
+  background: #00a6de;
+  color: #fff;
 }

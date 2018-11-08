@@ -37,6 +37,32 @@ function _asyncToGenerator(fn) {
 
 module.exports = _asyncToGenerator;
 },{}],2:[function(require,module,exports){
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+
+module.exports = _classCallCheck;
+},{}],3:[function(require,module,exports){
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, descriptor.key, descriptor);
+  }
+}
+
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
+  return Constructor;
+}
+
+module.exports = _createClass;
+},{}],4:[function(require,module,exports){
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : {
     default: obj
@@ -44,7 +70,7 @@ function _interopRequireDefault(obj) {
 }
 
 module.exports = _interopRequireDefault;
-},{}],3:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
 
 function _typeof(obj) {
@@ -62,12 +88,12 @@ function _typeof(obj) {
 }
 
 module.exports = _typeof;
-},{}],4:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 module.exports = require("regenerator-runtime");
 
-},{"regenerator-runtime":32}],5:[function(require,module,exports){
+},{"regenerator-runtime":34}],7:[function(require,module,exports){
 module.exports = require('./lib/axios');
-},{"./lib/axios":7}],6:[function(require,module,exports){
+},{"./lib/axios":9}],8:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -251,7 +277,7 @@ module.exports = function xhrAdapter(config) {
 };
 
 }).call(this,require('_process'))
-},{"../core/createError":13,"./../core/settle":16,"./../helpers/btoa":20,"./../helpers/buildURL":21,"./../helpers/cookies":23,"./../helpers/isURLSameOrigin":25,"./../helpers/parseHeaders":27,"./../utils":29,"_process":31}],7:[function(require,module,exports){
+},{"../core/createError":15,"./../core/settle":18,"./../helpers/btoa":22,"./../helpers/buildURL":23,"./../helpers/cookies":25,"./../helpers/isURLSameOrigin":27,"./../helpers/parseHeaders":29,"./../utils":31,"_process":33}],9:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -305,7 +331,7 @@ module.exports = axios;
 // Allow use of default import syntax in TypeScript
 module.exports.default = axios;
 
-},{"./cancel/Cancel":8,"./cancel/CancelToken":9,"./cancel/isCancel":10,"./core/Axios":11,"./defaults":18,"./helpers/bind":19,"./helpers/spread":28,"./utils":29}],8:[function(require,module,exports){
+},{"./cancel/Cancel":10,"./cancel/CancelToken":11,"./cancel/isCancel":12,"./core/Axios":13,"./defaults":20,"./helpers/bind":21,"./helpers/spread":30,"./utils":31}],10:[function(require,module,exports){
 'use strict';
 
 /**
@@ -326,7 +352,7 @@ Cancel.prototype.__CANCEL__ = true;
 
 module.exports = Cancel;
 
-},{}],9:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 'use strict';
 
 var Cancel = require('./Cancel');
@@ -385,14 +411,14 @@ CancelToken.source = function source() {
 
 module.exports = CancelToken;
 
-},{"./Cancel":8}],10:[function(require,module,exports){
+},{"./Cancel":10}],12:[function(require,module,exports){
 'use strict';
 
 module.exports = function isCancel(value) {
   return !!(value && value.__CANCEL__);
 };
 
-},{}],11:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
 var defaults = require('./../defaults');
@@ -473,7 +499,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = Axios;
 
-},{"./../defaults":18,"./../utils":29,"./InterceptorManager":12,"./dispatchRequest":14}],12:[function(require,module,exports){
+},{"./../defaults":20,"./../utils":31,"./InterceptorManager":14,"./dispatchRequest":16}],14:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -527,7 +553,7 @@ InterceptorManager.prototype.forEach = function forEach(fn) {
 
 module.exports = InterceptorManager;
 
-},{"./../utils":29}],13:[function(require,module,exports){
+},{"./../utils":31}],15:[function(require,module,exports){
 'use strict';
 
 var enhanceError = require('./enhanceError');
@@ -547,7 +573,7 @@ module.exports = function createError(message, config, code, request, response) 
   return enhanceError(error, config, code, request, response);
 };
 
-},{"./enhanceError":15}],14:[function(require,module,exports){
+},{"./enhanceError":17}],16:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -635,7 +661,7 @@ module.exports = function dispatchRequest(config) {
   });
 };
 
-},{"../cancel/isCancel":10,"../defaults":18,"./../helpers/combineURLs":22,"./../helpers/isAbsoluteURL":24,"./../utils":29,"./transformData":17}],15:[function(require,module,exports){
+},{"../cancel/isCancel":12,"../defaults":20,"./../helpers/combineURLs":24,"./../helpers/isAbsoluteURL":26,"./../utils":31,"./transformData":19}],17:[function(require,module,exports){
 'use strict';
 
 /**
@@ -658,7 +684,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
   return error;
 };
 
-},{}],16:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 'use strict';
 
 var createError = require('./createError');
@@ -686,7 +712,7 @@ module.exports = function settle(resolve, reject, response) {
   }
 };
 
-},{"./createError":13}],17:[function(require,module,exports){
+},{"./createError":15}],19:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -708,7 +734,7 @@ module.exports = function transformData(data, headers, fns) {
   return data;
 };
 
-},{"./../utils":29}],18:[function(require,module,exports){
+},{"./../utils":31}],20:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -804,7 +830,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 module.exports = defaults;
 
 }).call(this,require('_process'))
-},{"./adapters/http":6,"./adapters/xhr":6,"./helpers/normalizeHeaderName":26,"./utils":29,"_process":31}],19:[function(require,module,exports){
+},{"./adapters/http":8,"./adapters/xhr":8,"./helpers/normalizeHeaderName":28,"./utils":31,"_process":33}],21:[function(require,module,exports){
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -817,7 +843,7 @@ module.exports = function bind(fn, thisArg) {
   };
 };
 
-},{}],20:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 'use strict';
 
 // btoa polyfill for IE<10 courtesy https://github.com/davidchambers/Base64.js
@@ -855,7 +881,7 @@ function btoa(input) {
 
 module.exports = btoa;
 
-},{}],21:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -925,7 +951,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
   return url;
 };
 
-},{"./../utils":29}],22:[function(require,module,exports){
+},{"./../utils":31}],24:[function(require,module,exports){
 'use strict';
 
 /**
@@ -941,7 +967,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
     : baseURL;
 };
 
-},{}],23:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -996,7 +1022,7 @@ module.exports = (
   })()
 );
 
-},{"./../utils":29}],24:[function(require,module,exports){
+},{"./../utils":31}],26:[function(require,module,exports){
 'use strict';
 
 /**
@@ -1012,7 +1038,7 @@ module.exports = function isAbsoluteURL(url) {
   return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
 };
 
-},{}],25:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -1082,7 +1108,7 @@ module.exports = (
   })()
 );
 
-},{"./../utils":29}],26:[function(require,module,exports){
+},{"./../utils":31}],28:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -1096,7 +1122,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
   });
 };
 
-},{"../utils":29}],27:[function(require,module,exports){
+},{"../utils":31}],29:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -1151,7 +1177,7 @@ module.exports = function parseHeaders(headers) {
   return parsed;
 };
 
-},{"./../utils":29}],28:[function(require,module,exports){
+},{"./../utils":31}],30:[function(require,module,exports){
 'use strict';
 
 /**
@@ -1180,7 +1206,7 @@ module.exports = function spread(callback) {
   };
 };
 
-},{}],29:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 'use strict';
 
 var bind = require('./helpers/bind');
@@ -1485,7 +1511,7 @@ module.exports = {
   trim: trim
 };
 
-},{"./helpers/bind":19,"is-buffer":30}],30:[function(require,module,exports){
+},{"./helpers/bind":21,"is-buffer":32}],32:[function(require,module,exports){
 /*!
  * Determine if an object is a Buffer
  *
@@ -1508,7 +1534,7 @@ function isSlowBuffer (obj) {
   return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
 }
 
-},{}],31:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -1694,7 +1720,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],32:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
  *
@@ -1733,7 +1759,7 @@ if (hadRuntime) {
   }
 }
 
-},{"./runtime":33}],33:[function(require,module,exports){
+},{"./runtime":35}],35:[function(require,module,exports){
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
  *
@@ -2456,27 +2482,58 @@ if (hadRuntime) {
   })() || Function("return this")()
 );
 
-},{}],34:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 var _api = require("../common/api");
 
+var _pagination = _interopRequireDefault(require("../common/pagination"));
+
 var _tools = require("../common/tools");
 
 var _template = _interopRequireDefault(require("../common/template.js"));
 
+var pages = null,
+    tagId = null,
+    searchWord = null,
+    groupId = null;
+
+var toPage = function toPage(index) {
+  getData({
+    pageIndex: index,
+    groupId: groupId,
+    tags: tagId,
+    name: searchWord
+  });
+};
+
 var getData = function getData(obj) {
   (0, _api.getAllProductList)(obj).then(function (res) {
-    console.log(res);
     var html = (0, _template.default)('production-list', {
-      data: res
+      data: res.products
     });
     document.querySelector('.production-list').innerHTML = html;
     var images = document.querySelectorAll('.lazy-load-img'),
         len = images.length;
     (0, _tools.imageLazyLoad)(images);
+
+    if (pages === null) {
+      pages = new _pagination.default({
+        parent: document.querySelector('.product-list'),
+        totalPages: res.totalPageCount,
+        currentPage: res.currentPageIndex,
+        toPage: toPage
+      });
+    } else {
+      pages.init({
+        parent: document.querySelector('.product-list'),
+        totalPages: res.totalPageCount,
+        currentPage: res.currentPageIndex,
+        toPage: toPage
+      });
+    }
 
     window.onscroll = function () {
       if (images[len - 1].getAttribute('data-is-load') === 'false') {
@@ -2488,32 +2545,62 @@ var getData = function getData(obj) {
 
 window.onload = function () {
   var search = (0, _tools.getParameter)('search');
+  (0, _api.getTags)().then(function (res) {
+    console.log(res);
+    var tags = (0, _template.default)('tags-container', {
+      data: res
+    });
+    document.querySelector('.tags-container').innerHTML = tags;
+  });
 
   if (search !== null) {
+    searchWord = decodeURIComponent(search);
     getData({
-      name: decodeURIComponent(search)
+      tags: tagId,
+      name: searchWord
     });
   } else {
-    var hash = document.location.hash,
-        groupId = '';
+    var hash = document.location.hash;
     hash !== '' && (groupId = hash.substring(1));
-
-    if (groupId !== '') {
-      getData({
-        groupId: groupId
-      });
-    } else {
-      getData();
-    }
+    getData({
+      groupId: groupId,
+      tags: tagId,
+      name: searchWord
+    });
   }
 };
 
 window.addEventListener("hashchange", function () {
+  groupId = document.location.hash.substring(1);
   getData({
-    groupId: document.location.hash.substring(1)
+    groupId: groupId,
+    tags: tagId,
+    name: searchWord
   });
 });
-},{"../common/api":35,"../common/template.js":36,"../common/tools":37,"@babel/runtime/helpers/interopRequireDefault":2}],35:[function(require,module,exports){
+
+window.pickThisTag = function (ele) {
+  var prevTag = document.querySelector('.tag-content >.active');
+  prevTag.className = '';
+  ele.className = 'active';
+
+  if (ele.getAttribute('data-op-id') !== 'all') {
+    tagId = ele.getAttribute('data-op-id');
+    getData({
+      groupId: groupId,
+      tags: tagId,
+      name: searchWord
+    });
+  } else {
+    tagId = null;
+    getData({
+      groupId: groupId,
+      tags: tagId,
+      name: searchWord
+    });
+  }
+};
+},{"../common/api":37,"../common/pagination":38,"../common/template.js":39,"../common/tools":40,"@babel/runtime/helpers/interopRequireDefault":4}],37:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -2521,7 +2608,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getHomeGroup = exports.addressOperate = exports.setDefaultAddress = exports.getAddress = exports.addOrder = exports.getOrder = exports.deleteShoppingCart = exports.addShoppingCart = exports.getShoppingCarInfo = exports.getProductDetail = exports.getProductClassify = exports.getAllProductList = exports.toLogin = exports.getProductionList = exports.getCarousel = void 0;
+exports.addOrder = exports.getOrder = exports.deleteShoppingCart = exports.addShoppingCart = exports.getShoppingCarInfo = exports.addressOperate = exports.setDefaultAddress = exports.getAddress = exports.toLogin = exports.getHomeGroup = exports.getProductionList = exports.getCarousel = exports.getTags = exports.getProductDetail = exports.getProductClassify = exports.getAllProductList = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -2609,20 +2696,21 @@ function () {
   return function apiRequire(_x, _x2, _x3, _x4) {
     return _ref.apply(this, arguments);
   };
-}();
+}(); //product
 
-var getCarousel =
+
+var getAllProductList =
 /*#__PURE__*/
 function () {
   var _ref2 = (0, _asyncToGenerator2.default)(
   /*#__PURE__*/
-  _regenerator.default.mark(function _callee2() {
+  _regenerator.default.mark(function _callee2(data) {
     return _regenerator.default.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
             _context2.next = 2;
-            return apiRequire('getCarousel', '/api/Home/GetCarousel');
+            return apiRequire('getAllProductList', '/api/Product/getproductList', null, data, false);
 
           case 2:
             return _context2.abrupt("return", _context2.sent);
@@ -2635,14 +2723,14 @@ function () {
     }, _callee2, this);
   }));
 
-  return function getCarousel() {
+  return function getAllProductList(_x5) {
     return _ref2.apply(this, arguments);
   };
 }();
 
-exports.getCarousel = getCarousel;
+exports.getAllProductList = getAllProductList;
 
-var getProductionList =
+var getProductClassify =
 /*#__PURE__*/
 function () {
   var _ref3 = (0, _asyncToGenerator2.default)(
@@ -2653,7 +2741,7 @@ function () {
         switch (_context3.prev = _context3.next) {
           case 0:
             _context3.next = 2;
-            return apiRequire('getProductionList', '/api/Home/GetHomeProduct');
+            return apiRequire('getProductClassify', '/api/Product/GetGroup', null);
 
           case 2:
             return _context3.abrupt("return", _context3.sent);
@@ -2666,25 +2754,25 @@ function () {
     }, _callee3, this);
   }));
 
-  return function getProductionList() {
+  return function getProductClassify() {
     return _ref3.apply(this, arguments);
   };
 }();
 
-exports.getProductionList = getProductionList;
+exports.getProductClassify = getProductClassify;
 
-var toLogin =
+var getProductDetail =
 /*#__PURE__*/
 function () {
   var _ref4 = (0, _asyncToGenerator2.default)(
   /*#__PURE__*/
-  _regenerator.default.mark(function _callee4(account) {
+  _regenerator.default.mark(function _callee4(data) {
     return _regenerator.default.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
             _context4.next = 2;
-            return apiRequire('account', '/api/account/login', null, account);
+            return apiRequire('getProductDetail', '/api/Product/GetProductDetail', null, data, false);
 
           case 2:
             return _context4.abrupt("return", _context4.sent);
@@ -2697,44 +2785,30 @@ function () {
     }, _callee4, this);
   }));
 
-  return function toLogin(_x5) {
+  return function getProductDetail(_x6) {
     return _ref4.apply(this, arguments);
   };
 }();
 
-exports.toLogin = toLogin;
+exports.getProductDetail = getProductDetail;
 
-var getAllProductList =
+var getTags =
 /*#__PURE__*/
 function () {
   var _ref5 = (0, _asyncToGenerator2.default)(
   /*#__PURE__*/
-  _regenerator.default.mark(function _callee5(data) {
+  _regenerator.default.mark(function _callee5() {
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            console.log(data);
+            _context5.next = 2;
+            return apiRequire('getTags', '/api/Product/getTags', null, null, true);
 
-            if (!(data && data.hasOwnProperty('name'))) {
-              _context5.next = 7;
-              break;
-            }
-
-            _context5.next = 4;
-            return apiRequire('getAllProductList', '/api/Product/SearchProduct', null, data, false);
-
-          case 4:
+          case 2:
             return _context5.abrupt("return", _context5.sent);
 
-          case 7:
-            _context5.next = 9;
-            return apiRequire('getAllProductList', '/api/Product/getproductList', null, data, false);
-
-          case 9:
-            return _context5.abrupt("return", _context5.sent);
-
-          case 10:
+          case 3:
           case "end":
             return _context5.stop();
         }
@@ -2742,14 +2816,15 @@ function () {
     }, _callee5, this);
   }));
 
-  return function getAllProductList(_x6) {
+  return function getTags() {
     return _ref5.apply(this, arguments);
   };
-}();
+}(); //home
 
-exports.getAllProductList = getAllProductList;
 
-var getProductClassify =
+exports.getTags = getTags;
+
+var getCarousel =
 /*#__PURE__*/
 function () {
   var _ref6 = (0, _asyncToGenerator2.default)(
@@ -2760,7 +2835,7 @@ function () {
         switch (_context6.prev = _context6.next) {
           case 0:
             _context6.next = 2;
-            return apiRequire('getProductClassify', '/api/Product/GetGroup', null);
+            return apiRequire('getCarousel', '/api/Home/GetCarousel');
 
           case 2:
             return _context6.abrupt("return", _context6.sent);
@@ -2773,25 +2848,25 @@ function () {
     }, _callee6, this);
   }));
 
-  return function getProductClassify() {
+  return function getCarousel() {
     return _ref6.apply(this, arguments);
   };
 }();
 
-exports.getProductClassify = getProductClassify;
+exports.getCarousel = getCarousel;
 
-var getProductDetail =
+var getProductionList =
 /*#__PURE__*/
 function () {
   var _ref7 = (0, _asyncToGenerator2.default)(
   /*#__PURE__*/
-  _regenerator.default.mark(function _callee7(data) {
+  _regenerator.default.mark(function _callee7() {
     return _regenerator.default.wrap(function _callee7$(_context7) {
       while (1) {
         switch (_context7.prev = _context7.next) {
           case 0:
             _context7.next = 2;
-            return apiRequire('getProductDetail', '/api/Product/GetProductDetail', null, data, false);
+            return apiRequire('getProductionList', '/api/Home/GetHomeProduct');
 
           case 2:
             return _context7.abrupt("return", _context7.sent);
@@ -2804,25 +2879,25 @@ function () {
     }, _callee7, this);
   }));
 
-  return function getProductDetail(_x7) {
+  return function getProductionList() {
     return _ref7.apply(this, arguments);
   };
 }();
 
-exports.getProductDetail = getProductDetail;
+exports.getProductionList = getProductionList;
 
-var getShoppingCarInfo =
+var getHomeGroup =
 /*#__PURE__*/
 function () {
   var _ref8 = (0, _asyncToGenerator2.default)(
   /*#__PURE__*/
-  _regenerator.default.mark(function _callee8(data) {
+  _regenerator.default.mark(function _callee8() {
     return _regenerator.default.wrap(function _callee8$(_context8) {
       while (1) {
         switch (_context8.prev = _context8.next) {
           case 0:
             _context8.next = 2;
-            return apiRequire('getShoppingCarInfo', '/api/order/GetShoppingCart', null, data, false);
+            return apiRequire('getHomeGroup', '/api/Home/GetHomeGroup', null, null, true);
 
           case 2:
             return _context8.abrupt("return", _context8.sent);
@@ -2835,25 +2910,26 @@ function () {
     }, _callee8, this);
   }));
 
-  return function getShoppingCarInfo(_x8) {
+  return function getHomeGroup() {
     return _ref8.apply(this, arguments);
   };
-}();
+}(); //account
 
-exports.getShoppingCarInfo = getShoppingCarInfo;
 
-var addShoppingCart =
+exports.getHomeGroup = getHomeGroup;
+
+var toLogin =
 /*#__PURE__*/
 function () {
   var _ref9 = (0, _asyncToGenerator2.default)(
   /*#__PURE__*/
-  _regenerator.default.mark(function _callee9(data) {
+  _regenerator.default.mark(function _callee9(account) {
     return _regenerator.default.wrap(function _callee9$(_context9) {
       while (1) {
         switch (_context9.prev = _context9.next) {
           case 0:
             _context9.next = 2;
-            return apiRequire('addShoppingCart', '/api/order/AddShoppingCart', 'post', data, false);
+            return apiRequire('account', '/api/account/login', null, account);
 
           case 2:
             return _context9.abrupt("return", _context9.sent);
@@ -2866,25 +2942,25 @@ function () {
     }, _callee9, this);
   }));
 
-  return function addShoppingCart(_x9) {
+  return function toLogin(_x7) {
     return _ref9.apply(this, arguments);
   };
 }();
 
-exports.addShoppingCart = addShoppingCart;
+exports.toLogin = toLogin;
 
-var deleteShoppingCart =
+var getAddress =
 /*#__PURE__*/
 function () {
   var _ref10 = (0, _asyncToGenerator2.default)(
   /*#__PURE__*/
-  _regenerator.default.mark(function _callee10(data) {
+  _regenerator.default.mark(function _callee10() {
     return _regenerator.default.wrap(function _callee10$(_context10) {
       while (1) {
         switch (_context10.prev = _context10.next) {
           case 0:
             _context10.next = 2;
-            return apiRequire('deleteShoppingCart', '/api/order/DeleteShoppingCart', 'post', data, false);
+            return apiRequire('getAddress', '/api/account/GetAddressList', null, null, false);
 
           case 2:
             return _context10.abrupt("return", _context10.sent);
@@ -2897,14 +2973,14 @@ function () {
     }, _callee10, this);
   }));
 
-  return function deleteShoppingCart(_x10) {
+  return function getAddress() {
     return _ref10.apply(this, arguments);
   };
 }();
 
-exports.deleteShoppingCart = deleteShoppingCart;
+exports.getAddress = getAddress;
 
-var getOrder =
+var setDefaultAddress =
 /*#__PURE__*/
 function () {
   var _ref11 = (0, _asyncToGenerator2.default)(
@@ -2915,7 +2991,7 @@ function () {
         switch (_context11.prev = _context11.next) {
           case 0:
             _context11.next = 2;
-            return apiRequire('getOrder', '/api/order/GetOrder', null, data, false);
+            return apiRequire('setDefaultAddress', '/api/account/SetDefaultAddress', 'post', data, false);
 
           case 2:
             return _context11.abrupt("return", _context11.sent);
@@ -2928,14 +3004,14 @@ function () {
     }, _callee11, this);
   }));
 
-  return function getOrder(_x11) {
+  return function setDefaultAddress(_x8) {
     return _ref11.apply(this, arguments);
   };
 }();
 
-exports.getOrder = getOrder;
+exports.setDefaultAddress = setDefaultAddress;
 
-var addOrder =
+var addressOperate =
 /*#__PURE__*/
 function () {
   var _ref12 = (0, _asyncToGenerator2.default)(
@@ -2946,7 +3022,7 @@ function () {
         switch (_context12.prev = _context12.next) {
           case 0:
             _context12.next = 2;
-            return apiRequire('addOrder', '/api/order/AddOrder', 'post', data, false);
+            return apiRequire('addressOperate', '/api/account/AddressOperate', 'post', data, false);
 
           case 2:
             return _context12.abrupt("return", _context12.sent);
@@ -2959,25 +3035,26 @@ function () {
     }, _callee12, this);
   }));
 
-  return function addOrder(_x12) {
+  return function addressOperate(_x9) {
     return _ref12.apply(this, arguments);
   };
-}();
+}(); //order
 
-exports.addOrder = addOrder;
 
-var getAddress =
+exports.addressOperate = addressOperate;
+
+var getShoppingCarInfo =
 /*#__PURE__*/
 function () {
   var _ref13 = (0, _asyncToGenerator2.default)(
   /*#__PURE__*/
-  _regenerator.default.mark(function _callee13() {
+  _regenerator.default.mark(function _callee13(data) {
     return _regenerator.default.wrap(function _callee13$(_context13) {
       while (1) {
         switch (_context13.prev = _context13.next) {
           case 0:
             _context13.next = 2;
-            return apiRequire('getAddress', '/api/account/GetAddressList', null, null, false);
+            return apiRequire('getShoppingCarInfo', '/api/order/GetShoppingCart', null, data, false);
 
           case 2:
             return _context13.abrupt("return", _context13.sent);
@@ -2990,14 +3067,14 @@ function () {
     }, _callee13, this);
   }));
 
-  return function getAddress() {
+  return function getShoppingCarInfo(_x10) {
     return _ref13.apply(this, arguments);
   };
 }();
 
-exports.getAddress = getAddress;
+exports.getShoppingCarInfo = getShoppingCarInfo;
 
-var setDefaultAddress =
+var addShoppingCart =
 /*#__PURE__*/
 function () {
   var _ref14 = (0, _asyncToGenerator2.default)(
@@ -3008,7 +3085,7 @@ function () {
         switch (_context14.prev = _context14.next) {
           case 0:
             _context14.next = 2;
-            return apiRequire('setDefaultAddress', '/api/account/SetDefaultAddress', 'post', data, false);
+            return apiRequire('addShoppingCart', '/api/order/AddShoppingCart', 'post', data, false);
 
           case 2:
             return _context14.abrupt("return", _context14.sent);
@@ -3021,14 +3098,14 @@ function () {
     }, _callee14, this);
   }));
 
-  return function setDefaultAddress(_x13) {
+  return function addShoppingCart(_x11) {
     return _ref14.apply(this, arguments);
   };
 }();
 
-exports.setDefaultAddress = setDefaultAddress;
+exports.addShoppingCart = addShoppingCart;
 
-var addressOperate =
+var deleteShoppingCart =
 /*#__PURE__*/
 function () {
   var _ref15 = (0, _asyncToGenerator2.default)(
@@ -3039,7 +3116,7 @@ function () {
         switch (_context15.prev = _context15.next) {
           case 0:
             _context15.next = 2;
-            return apiRequire('addressOperate', '/api/account/AddressOperate', 'post', data, false);
+            return apiRequire('deleteShoppingCart', '/api/order/DeleteShoppingCart', 'post', data, false);
 
           case 2:
             return _context15.abrupt("return", _context15.sent);
@@ -3052,25 +3129,25 @@ function () {
     }, _callee15, this);
   }));
 
-  return function addressOperate(_x14) {
+  return function deleteShoppingCart(_x12) {
     return _ref15.apply(this, arguments);
   };
 }();
 
-exports.addressOperate = addressOperate;
+exports.deleteShoppingCart = deleteShoppingCart;
 
-var getHomeGroup =
+var getOrder =
 /*#__PURE__*/
 function () {
   var _ref16 = (0, _asyncToGenerator2.default)(
   /*#__PURE__*/
-  _regenerator.default.mark(function _callee16() {
+  _regenerator.default.mark(function _callee16(data) {
     return _regenerator.default.wrap(function _callee16$(_context16) {
       while (1) {
         switch (_context16.prev = _context16.next) {
           case 0:
             _context16.next = 2;
-            return apiRequire('getHomeGroup', '/api/Home/GetHomeGroup', null, null, true);
+            return apiRequire('getOrder', '/api/order/GetOrder', null, data, false);
 
           case 2:
             return _context16.abrupt("return", _context16.sent);
@@ -3083,15 +3160,172 @@ function () {
     }, _callee16, this);
   }));
 
-  return function getHomeGroup() {
+  return function getOrder(_x13) {
     return _ref16.apply(this, arguments);
+  };
+}();
+
+exports.getOrder = getOrder;
+
+var addOrder =
+/*#__PURE__*/
+function () {
+  var _ref17 = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee17(data) {
+    return _regenerator.default.wrap(function _callee17$(_context17) {
+      while (1) {
+        switch (_context17.prev = _context17.next) {
+          case 0:
+            _context17.next = 2;
+            return apiRequire('addOrder', '/api/order/AddOrder', 'post', data, false);
+
+          case 2:
+            return _context17.abrupt("return", _context17.sent);
+
+          case 3:
+          case "end":
+            return _context17.stop();
+        }
+      }
+    }, _callee17, this);
+  }));
+
+  return function addOrder(_x14) {
+    return _ref17.apply(this, arguments);
   };
 }(); ///api/order/AddShoppingCart
 //getProductClassify,api/Product/GetProductDetail?id=
 
 
-exports.getHomeGroup = getHomeGroup;
-},{"@babel/runtime/helpers/asyncToGenerator":1,"@babel/runtime/helpers/interopRequireDefault":2,"@babel/runtime/regenerator":4,"axios":5}],36:[function(require,module,exports){
+exports.addOrder = addOrder;
+},{"@babel/runtime/helpers/asyncToGenerator":1,"@babel/runtime/helpers/interopRequireDefault":4,"@babel/runtime/regenerator":6,"axios":7}],38:[function(require,module,exports){
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
+var Pagination =
+/*#__PURE__*/
+function () {
+  function Pagination(options) {
+    (0, _classCallCheck2.default)(this, Pagination);
+    this.ul = null;
+    this.prevPage = null;
+    this.nextPage = null;
+    this.lis = [];
+    this.options = Object.assign({}, {
+      currentPage: 1,
+      totalPages: 1,
+      toPage: this.toPage
+    }, options);
+    this.init(options);
+  }
+
+  (0, _createClass2.default)(Pagination, [{
+    key: "init",
+    value: function init(options) {
+      var _this = this;
+
+      var ele = document.querySelector('.pagination');
+
+      if (ele !== null) {
+        options.parent.removeChild(ele);
+      }
+
+      ele = document.createElement('div');
+      ele.className = 'pagination';
+      var ul = document.createElement('ul');
+      var prevPage = document.createElement('li'),
+          nextPage = document.createElement('li');
+      prevPage.className = 'prev-page';
+      prevPage.innerHTML = '上一页';
+      nextPage.className = 'next-page';
+      nextPage.innerHTML = '下一页';
+      ul.appendChild(prevPage);
+      this.prevPage = prevPage;
+      prevPage.style.visibility = 'hidden';
+      prevPage.addEventListener('click', function () {
+        if (_this.options.currentPage > 1) {
+          options.toPage(_this.options.currentPage - 1);
+
+          _this.setCurrentPage(_this.options.currentPage - 1);
+        }
+      });
+
+      for (var i = 1; i <= options.totalPages; i++) {
+        var li = document.createElement('li');
+
+        if (i === options.currentPage) {
+          li.className = 'current-page';
+        }
+
+        li.innerHTML = i;
+        ul.appendChild(li);
+        li.setAttribute('data-op-index', i);
+        this.lis.push(li);
+      }
+
+      ul.appendChild(nextPage);
+      this.nextPage = nextPage;
+      options.totalPages < 2 && (nextPage.style.visibility = 'hidden');
+      nextPage.addEventListener('click', function () {
+        if (_this.options.currentPage < options.totalPages) {
+          options.toPage(_this.options.currentPage + 1);
+
+          _this.setCurrentPage(_this.options.currentPage + 1);
+        }
+      });
+      ele.appendChild(ul);
+      this.ul = ul;
+      ul.addEventListener('click', function (e) {
+        if (e.target.tagName.toLowerCase() === 'li' && e.target.className === '') {
+          var index = e.target.getAttribute('data-op-index');
+          _this.options.currentPage !== index && (options.toPage(index), _this.setCurrentPage(index));
+        }
+      });
+      options.parent.appendChild(ele);
+    }
+  }, {
+    key: "setCurrentPage",
+    value: function setCurrentPage(index) {
+      index -= 0;
+      this.ul.querySelector('.current-page').className = '';
+      this.lis[index - 1].className = 'current-page';
+      this.options.currentPage = index;
+
+      if (index === 1) {
+        this.prevPage.style.visibility = 'hidden';
+      } else {
+        this.prevPage.style.visibility = 'visible';
+      }
+
+      if (index === this.options.totalPages) {
+        this.nextPage.style.visibility = 'hidden';
+      } else {
+        this.nextPage.style.visibility = 'visible';
+      }
+    }
+  }, {
+    key: "toPage",
+    value: function toPage(index) {
+      console.log("\u7B2C".concat(index, "\u9875"));
+    }
+  }]);
+  return Pagination;
+}();
+
+exports.default = Pagination;
+;
+},{"@babel/runtime/helpers/classCallCheck":2,"@babel/runtime/helpers/createClass":3,"@babel/runtime/helpers/interopRequireDefault":4}],39:[function(require,module,exports){
 (function (process){
 "use strict";
 
@@ -4048,7 +4282,7 @@ var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
   }]);
 });
 }).call(this,require('_process'))
-},{"@babel/runtime/helpers/interopRequireDefault":2,"@babel/runtime/helpers/typeof":3,"_process":31}],37:[function(require,module,exports){
+},{"@babel/runtime/helpers/interopRequireDefault":4,"@babel/runtime/helpers/typeof":5,"_process":33}],40:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4079,4 +4313,4 @@ var getParameter = function getParameter(sProp) {
 };
 
 exports.getParameter = getParameter;
-},{}]},{},[34]);
+},{}]},{},[36]);

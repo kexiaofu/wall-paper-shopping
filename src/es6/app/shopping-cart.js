@@ -129,7 +129,8 @@ window.toSumbitOrder = () => {
   if (products.length > 0) {
     addOrder(products)
       .then(res => {
-        window.location.href = './my-order.html#wait2pay';
+        console.log(res);
+        window.location.href = './edit-order.html?orderId='+res;
       })
   }
 

@@ -6,8 +6,6 @@
     <link rel="stylesheet" href="../css/common/base.css">
     <link href="../css/common/iconfont.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/pages/product-list.css">
-
-
 </head>
 <body>
 <div class="nav-bar">
@@ -104,7 +102,9 @@
         {{each data val i}}
         <a href={{ "./product-list.html#"+val.id }}>
             <li>
-                <i><img src="" alt=""></i>
+                <i>
+                    <img src={{val.icon}} alt="" class="classify-img">
+                </i>
                 <span>{{val.name}}</span>
                 <div class="sec-classify-container">
                     {{each val.children sec si}}
@@ -122,9 +122,13 @@
 
 <script src="../js/app/classify.js"></script>
 
-    <div id="product-list" class="container product-list">
-        <div class="production-list"></div>
+<div id="product-list" class="container product-list">
+    <div class="view-image">
+        <img src="../images/1.jpg" alt="">
     </div>
+    <div class="tags-container"></div>
+    <div class="production-list"></div>
+</div>
 <div class="back-to-top" onclick="backToTop()">
     <div class="icon-out-container"></div>
     <div class="icon-in-container"></div>
@@ -158,22 +162,34 @@
         </div>
     </div>
 </div>
-    <script id="production-list" type="text/html">
-        <div class="product-container">
-            {{each data value i}}
-            <div class="production-item">
-                <div class="product-img">
-                    <a href={{"./product.html?productId="+value.id}} target="_blank">
-                        <img src="" alt="" data-origin-src={{value.introductImage}} data-is-load="false" class="lazy-load-img">
-                    </a>
-                </div>
-                <div class="product-content">
-                    <p class="product-name">{{ value.name }}</p>
-                </div>
+<script id="production-list" type="text/html">
+    <div class="product-container">
+        {{each data value i}}
+        <div class="production-item">
+            <div class="product-img">
+                <a href={{"./product.html?productId="+value.id}} target="_blank">
+                    <img src="" alt="" data-origin-src={{value.introductImage}} data-is-load="false"
+                         class="lazy-load-img">
+                </a>
             </div>
-            {{/each}}
+            <div class="product-content">
+                <p class="product-name">{{ value.name }}</p>
+            </div>
         </div>
-    </script>
-    <script src="../js/app/product-list.js"></script>
+        {{/each}}
+    </div>
+</script>
+<script id="tags-container" type="text/html">
+<div class="tag-item">
+    <div class="tag-title">标签：</div>
+    <div class="tag-content">
+        <span class="active" onclick="pickThisTag(this)" data-op-id="all" id="tag-all">全部</span>
+        {{ each data tag i }}
+        <span data-op-id={{ tag.id }} onclick="pickThisTag(this)" id={{ 'tag' + tag.id }}>{{ tag.name }}</span>
+        {{ /each}}
+    </div>
+</div>
+</script>
+<script src="../js/app/product-list.js"></script>
 </body>
 </html>

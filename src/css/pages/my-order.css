@@ -1,16 +1,33 @@
-.my-order-container {
-  width: 1000px;
-  margin: 10px auto;
-  background: #fff;
+.my-order {
+  background: #f4f4f4;
 }
-.my-order-container .order-title {
+.my-order-container {
+  width: 100%;
+  min-height: 100%;
+  margin: 50px auto;
+  padding: 10px 0;
+}
+.my-order-container .order-content {
+  width: 1000px;
+  min-height: 100px;
+  margin: 0 auto;
+}
+.order-title-container {
+  width: 100%;
+  position: fixed;
+  top: 60px;
+  border-bottom: 1px solid #ececec;
+  background: rgba(255, 255, 255, 0.9);
+}
+.order-title {
   height: 50px;
   line-height: 50px;
-  border-bottom: 1px solid #ececec;
+  width: 1000px;
+  margin: 0 auto;
   padding: 0 20px;
   box-sizing: border-box;
 }
-.my-order-container .order-title .order-type {
+.order-title .order-type {
   width: 150px;
   height: 48px;
   float: left;
@@ -18,7 +35,7 @@
   text-align: center;
   cursor: pointer;
 }
-.my-order-container .order-title a::after {
+.order-title a::after {
   content: '';
   width: 120px;
   height: 1px;
@@ -33,19 +50,19 @@
   position: absolute;
   left: 50%;
 }
-.my-order-container .order-title .order-type:hover > a {
+.order-title .order-type:hover > a {
   color: #00a6de;
 }
-.my-order-container .order-title .order-type:hover > a::after {
+.order-title .order-type:hover > a::after {
   content: '';
   -webkit-transform: translate(-50%, 0) scale(1);
       -ms-transform: translate(-50%, 0) scale(1);
           transform: translate(-50%, 0) scale(1);
 }
-.my-order-container .order-title .active > a {
+.order-title .active > a {
   color: #00a6de;
 }
-.my-order-container .order-title .active::after {
+.order-title .active::after {
   content: '';
   position: absolute;
   width: 120px;
@@ -56,12 +73,6 @@
       -ms-transform: translate(-50%, 0);
           transform: translate(-50%, 0);
   background: #00a6de;
-}
-.my-order-container .order-content {
-  width: 1000px;
-  min-height: 100px;
-  background: #f4f4f4;
-  margin: 0 auto;
 }
 .introduction {
   height: 50px;
@@ -93,30 +104,92 @@
   border-bottom: 1px solid #ececec;
   padding: 0 20px;
   font-size: 14px;
+  background: #e6e6e6;
+  color: #666;
 }
 .order-head .order-date {
-  margin-right: 20px;
+  margin-left: 20px;
+  color: #999;
 }
 .product-item {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center;
   min-height: 80px;
   border-bottom: 1px solid #ececec;
+  font-size: 14px;
+  color: #333;
+  box-sizing: border-box;
 }
 .product-item .props {
-  width: 140px;
+  padding: 10px;
+  width: 190px;
   text-align: center;
+  border-right: 1px solid #ececec;
 }
-.product-item .pic {
+.product-item .props:last-child {
+  border: none;
+}
+.product-item a {
+  display: inline-block;
+  width: 100%;
+  color: #00a6de;
+  margin: 5px 0 0 0;
+}
+.product-item .continue-shopping {
+  width: 80px;
+  padding: 5px 10px;
+  margin: 0;
+  border: 1px solid #ccc;
+  display: inline-block;
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+.product-item .continue-shopping:hover {
+  border-color: #00a6de;
+  color: #00a6de;
+}
+.product-item .product-info {
+  border-right: 1px solid #ececec;
+  width: 400px;
+}
+.product-item .product-info .info-item {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 400px;
+  border-bottom: 1px solid #ececec;
+}
+.product-item .product-info .info-item .name {
   float: left;
+  text-align: left;
+  width: 270px;
+  padding: 5px 0 20px 0;
 }
-.product-item .pic img {
-  width: 60px;
-  height: 60px;
+.product-item .product-info .info-item .name a {
+  text-decoration: underline;
+  color: rgba(0, 161, 222, 0.9);
+}
+.product-item .product-info .info-item .name p {
+  color: #999;
+  margin: 10px 0 -10px 0;
+}
+.product-item .product-info .info-item .pic {
+  width: 120px;
+}
+.product-item .product-info .info-item .pic img {
+  margin: 10px;
+  width: 100px;
+  height: 100px;
+}
+.product-item .product-info .info-item:last-child {
+  border-bottom: none;
+}
+.product-item .paid {
+  font-weight: bold;
+}
+.product-item .paid p {
+  font-weight: normal;
+  font-size: 12px;
 }
 .product-item:last-child {
   border: none;

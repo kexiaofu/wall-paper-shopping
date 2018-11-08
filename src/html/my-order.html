@@ -95,21 +95,26 @@
 <script src="../js/app/head.js"></script>
 
     <div id="my-order" class="my-order container">
-        <div class="my-order-container">
+        <div class="order-title-container">
             <div class="order-title">
-                <div class="order-type " onclick="orderTypeActive('#all')">
-                    <a href="#all">所有订单</a>
+                <div class="order-type " onclick="orderTypeActive(1,'#all')">
+                    <a href="#all">全部订单</a>
                 </div>
-                <div class="order-type " onclick="orderTypeActive('#wait2pay')">
-                    <a href="#wait2pay">待付款</a>
+                <div class="order-type " onclick="orderTypeActive(1,'#order-done')">
+                    <a href="#order-done">已完成订单</a>
                 </div>
-                <div class="order-type" onclick="orderTypeActive('#wait2send')">
-                    <a href="#wait2send">待发货</a>
+                <div class="order-type" onclick="orderTypeActive(1,'#order-no-pay')">
+                    <a href="#order-no-pay">未支付订单</a>
                 </div>
-                <div class="order-type" onclick="orderTypeActive('#wait2take')">
-                    <a href="#wait2take">待收货</a>
+                <div class="order-type" onclick="orderTypeActive(1,'#order-close')">
+                    <a href="#order-close">已关闭订单</a>
+                </div>
+                <div class="order-type" onclick="orderTypeActive(1,'#order-income')">
+                    <a href="#order-income">收入订单</a>
                 </div>
             </div>
+        </div>
+        <div class="my-order-container">
             <div class="order-content"></div>
         </div>
     </div>
@@ -135,46 +140,78 @@
     </div>
 </div>
 <script id="order-content" type="text/html">
-    <div class="introduction">
-        <div class="in-title">产品</div>
-        <div class="in-title">单价</div>
-        <div class="in-title">数量</div>
-        <div class="in-title">实际付款</div>
-        <div class="in-title">状态</div>
-        <div class="in-title">操作</div>
-    </div>
     {{ each data order i }}
     <div class="order-container">
         <div class="order-head">
+            <div class="order-no">订单编号：{{ order.orderNumber }}</div>
             <div class="order-date">{{ order.createTime }}</div>
-            <div class="order-no">订单号：{{ order.orderNumber }}</div>
         </div>
         <div class="order-product-list">
-            {{ each order.orderProductDetails product _i }}
+
             <div class="product-item">
-                <div class=" props pic">
-                    <img src={{ product.introductImage }} alt="">
+                <div class="product-info">
+                    {{ each order.orderProductDetails product _i }}
+                    <div class=" info-item">
+                        <div class="pic">
+                            <img src={{ product.introductImage }} alt="">
+                        </div>
+                        <div class="name">
+                            <a href={{"./product.html?id="+product.id}}>
+                                {{ product.productName }}
+                            </a>
+                            <p>￥{{ product.money }}</p>
+                            <p>x{{ product.number }}</p>
+
+                            {{ each product.standards s _s }}
+                                <p>
+                                    <span>{{ s.optionName }}:</span>
+                                    <span> {{ s.optionValueName }} </span>
+                                </p>
+                            {{ /each }}
+
+                        </div>
+                    </div>
+                    {{ /each }}
                 </div>
-                <div class=" props name">
-                    {{ product.productName }}
-                </div>
-                <div class=" props money">
-                    {{ product.money }}
-                </div>
-                <div class=" props quantity">
-                    {{ product.number }}
-                </div>
+
                 <div class=" props paid">
-                    {{ product.cost }}
+                    ￥{{ order.money }}
+                    <p>(使用优惠券省 0 元)</p>
+                    <p>(含运费 0 元)</p>
                 </div>
+                {{ if order.status === 0 }}
                 <div class=" props product-status">
-                    {{ product.status }}
+                    等待买家编辑
+                    <a href={{ "./edit-order.html?orderId="+order.id }}> 去编辑 </a>
                 </div>
+                {{ else if order.status === 1 }}
+                <div class=" props product-status">
+                    等待买家付款
+                    <a href={{ "./edit-order.html?orderId="+order.id }}> 去付款 </a>
+                </div>
+                {{ else if order.status === 2 }}
+                <div class=" props product-status">
+                    买家已付款
+                </div>
+                {{ else if order.status === 3 }}
+                <div class=" props product-status">
+                    订单已完成
+                </div>
+                {{ /if }}
                 <div class=" props operation">
-                    暂无
+                    <p>
+                        <a href="./product-list.html" class="continue-shopping">
+                            <i class="iconfont icon-gouwuche"></i>
+                            继续购物
+                        </a>
+                    </p>
+
+                    <a href={{"./edit-order.html?orderId=" + order.id }} class="check-order">
+                        查看订单详情
+                    </a>
                 </div>
             </div>
-            {{ /each }}
+
         </div>
     </div>
     {{ /each }}

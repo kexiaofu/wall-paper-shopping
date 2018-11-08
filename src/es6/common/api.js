@@ -44,25 +44,33 @@ let apiRequire = async (name,url,method,data,storage=true) => {
   }
 };
 
-export const getCarousel = async ()=> await apiRequire('getCarousel','/api/Home/GetCarousel');
 
-export const getProductionList = async ()=> await apiRequire('getProductionList','/api/Home/GetHomeProduct');
-
-export const toLogin = async (account) => await apiRequire('account','/api/account/login',null,account);
-
-export const getAllProductList = async (data) => {
-  console.log(data);
-  if(data && data.hasOwnProperty('name')) {
-    return await apiRequire('getAllProductList','/api/Product/SearchProduct',null,data,false);
-  } else {
-    return await apiRequire('getAllProductList','/api/Product/getproductList',null,data,false);
-  }
-};
+//product
+export const getAllProductList = async (data) => await apiRequire('getAllProductList','/api/Product/getproductList',null,data,false);
 
 export const getProductClassify = async () => await apiRequire('getProductClassify','/api/Product/GetGroup',null);
 
 export const getProductDetail = async (data) => await apiRequire('getProductDetail','/api/Product/GetProductDetail',null,data,false);
 
+export const getTags =async () => await apiRequire('getTags','/api/Product/getTags',null,null,true);
+
+//home
+export const getCarousel = async ()=> await apiRequire('getCarousel','/api/Home/GetCarousel');
+
+export const getProductionList = async ()=> await apiRequire('getProductionList','/api/Home/GetHomeProduct');
+
+export const getHomeGroup =async () => await apiRequire('getHomeGroup','/api/Home/GetHomeGroup',null,null,true);
+
+//account
+export const toLogin = async (account) => await apiRequire('account','/api/account/login',null,account);
+
+export const getAddress = async () => await apiRequire('getAddress','/api/account/GetAddressList',null,null,false);
+
+export const setDefaultAddress = async (data) => await apiRequire('setDefaultAddress','/api/account/SetDefaultAddress','post',data,false);
+
+export const addressOperate = async (data) => await apiRequire('addressOperate','/api/account/AddressOperate','post',data,false);
+
+//order
 export const getShoppingCarInfo = async (data) => await apiRequire('getShoppingCarInfo','/api/order/GetShoppingCart',null,data,false);
 
 export const addShoppingCart = async (data) => await apiRequire('addShoppingCart','/api/order/AddShoppingCart','post',data,false);
@@ -72,16 +80,6 @@ export const deleteShoppingCart = async (data) => await apiRequire('deleteShoppi
 export const getOrder = async (data) => await apiRequire('getOrder','/api/order/GetOrder',null,data,false);
 
 export const addOrder = async (data) => await apiRequire('addOrder','/api/order/AddOrder','post',data,false);
-
-export const getAddress = async () => await apiRequire('getAddress','/api/account/GetAddressList',null,null,false);
-
-export const setDefaultAddress = async (data) => await apiRequire('setDefaultAddress','/api/account/SetDefaultAddress','post',data,false);
-
-export const addressOperate = async (data) => await apiRequire('addressOperate','/api/account/AddressOperate','post',data,false);
-
-
-export const getHomeGroup =async () => await apiRequire('getHomeGroup','/api/Home/GetHomeGroup',null,null,true);
-
 
 ///api/order/AddShoppingCart
 //getProductClassify,api/Product/GetProductDetail?id=

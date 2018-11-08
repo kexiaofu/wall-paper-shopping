@@ -4,20 +4,51 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 
 var _api = require("../common/api");
 
+var _pagination = _interopRequireDefault(require("../common/pagination"));
+
 var _tools = require("../common/tools");
 
 var _template = _interopRequireDefault(require("../common/template.js"));
 
+var pages = null,
+    tagId = null,
+    searchWord = null,
+    groupId = null;
+
+var toPage = function toPage(index) {
+  getData({
+    pageIndex: index,
+    groupId: groupId,
+    tags: tagId,
+    name: searchWord
+  });
+};
+
 var getData = function getData(obj) {
   (0, _api.getAllProductList)(obj).then(function (res) {
-    console.log(res);
     var html = (0, _template.default)('production-list', {
-      data: res
+      data: res.products
     });
     document.querySelector('.production-list').innerHTML = html;
     var images = document.querySelectorAll('.lazy-load-img'),
         len = images.length;
     (0, _tools.imageLazyLoad)(images);
+
+    if (pages === null) {
+      pages = new _pagination.default({
+        parent: document.querySelector('.product-list'),
+        totalPages: res.totalPageCount,
+        currentPage: res.currentPageIndex,
+        toPage: toPage
+      });
+    } else {
+      pages.init({
+        parent: document.querySelector('.product-list'),
+        totalPages: res.totalPageCount,
+        currentPage: res.currentPageIndex,
+        toPage: toPage
+      });
+    }
 
     window.onscroll = function () {
       if (images[len - 1].getAttribute('data-is-load') === 'false') {
@@ -29,28 +60,58 @@ var getData = function getData(obj) {
 
 window.onload = function () {
   var search = (0, _tools.getParameter)('search');
+  (0, _api.getTags)().then(function (res) {
+    console.log(res);
+    var tags = (0, _template.default)('tags-container', {
+      data: res
+    });
+    document.querySelector('.tags-container').innerHTML = tags;
+  });
 
   if (search !== null) {
+    searchWord = decodeURIComponent(search);
     getData({
-      name: decodeURIComponent(search)
+      tags: tagId,
+      name: searchWord
     });
   } else {
-    var hash = document.location.hash,
-        groupId = '';
+    var hash = document.location.hash;
     hash !== '' && (groupId = hash.substring(1));
-
-    if (groupId !== '') {
-      getData({
-        groupId: groupId
-      });
-    } else {
-      getData();
-    }
+    getData({
+      groupId: groupId,
+      tags: tagId,
+      name: searchWord
+    });
   }
 };
 
 window.addEventListener("hashchange", function () {
+  groupId = document.location.hash.substring(1);
   getData({
-    groupId: document.location.hash.substring(1)
+    groupId: groupId,
+    tags: tagId,
+    name: searchWord
   });
 });
+
+window.pickThisTag = function (ele) {
+  var prevTag = document.querySelector('.tag-content >.active');
+  prevTag.className = '';
+  ele.className = 'active';
+
+  if (ele.getAttribute('data-op-id') !== 'all') {
+    tagId = ele.getAttribute('data-op-id');
+    getData({
+      groupId: groupId,
+      tags: tagId,
+      name: searchWord
+    });
+  } else {
+    tagId = null;
+    getData({
+      groupId: groupId,
+      tags: tagId,
+      name: searchWord
+    });
+  }
+};

@@ -21,7 +21,7 @@
   display: inline-block;
   width: 200px;
 }
-.order-detail .order-address-info .info-title span:last-child {
+.order-detail .order-address-info .info-title .add-new-address {
   color: #00a6de;
 }
 .batch-operation {
@@ -245,4 +245,46 @@
   font-size: 14px;
   color: #fff;
   margin: 0 0 0 10px;
+}
+.order-address-info .show-address {
+  cursor: pointer;
+  display: inline-block;
+  transition: -webkit-transform 0.3s ease;
+  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, -webkit-transform 0.3s ease;
+  -webkit-transform: scale(1);
+      -ms-transform: scale(1);
+          transform: scale(1);
+  width: 50px;
+  text-align: center;
+}
+.order-address-info .active {
+  -webkit-transform: scale(-1);
+      -ms-transform: scale(-1);
+          transform: scale(-1);
+}
+.address-content {
+  margin-top: 10px;
+  transition: height 0.3s ease;
+}
+.address-content .addr-item {
+  padding: 10px 0;
+  cursor: pointer;
+  font-size: 16px;
+}
+.address-content .addr-item span {
+  margin-right: 30px;
+}
+.address-content .addr-item span:nth-child(5) {
+  color: #f00;
+}
+.address-content .addr-item i {
+  color: #999;
+}
+.address-content .addr-item .active {
+  color: #00a6de;
+}
+.address-content .addr-item:hover {
+  background: rgba(0, 161, 222, 0.3);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
