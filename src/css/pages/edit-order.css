@@ -1,3 +1,7 @@
+html,
+body {
+  background: #fff;
+}
 .order-detail {
   width: 1060px;
   margin: 0 auto;
@@ -237,7 +241,8 @@
   font-size: 18px;
   font-weight: bold;
 }
-.need-to-pay a {
+.need-to-pay .submitOrder {
+  display: inline-block;
   padding: 10px 40px;
   border-radius: 3px;
   background: #f00;
@@ -245,6 +250,7 @@
   font-size: 14px;
   color: #fff;
   margin: 0 0 0 10px;
+  cursor: pointer;
 }
 .order-address-info .show-address {
   cursor: pointer;

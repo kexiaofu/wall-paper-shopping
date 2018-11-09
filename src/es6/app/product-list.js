@@ -9,7 +9,8 @@ import template from '../common/template.js';
 let pages = null,
     tagId = null,
     searchWord = null,
-    groupId = null;
+    groupId = null,
+    tagList = [];
 
 let toPage = (index) =>{
   getData({pageIndex:index,groupId:groupId,tags:tagId,name:searchWord});
@@ -56,7 +57,8 @@ window.onload = () => {
 
   getTags().then(res=>{
     console.log(res);
-    let tags = template('tags-container',{data:res});
+    tagList = res;
+    let tags = template('tags-container',{data:res.slice(0,11),more2less:false});
     document.querySelector('.tags-container').innerHTML = tags;
   });
 
@@ -92,4 +94,17 @@ window.pickThisTag = (ele) =>{
     tagId = null;
     getData({groupId:groupId,tags:tagId,name:searchWord});
   }
+};
+
+window.moreTags = (ele) => {
+  console.log(ele,ele.className,ele.className.indexOf('less-tags'));
+  //ele.className = ele.className === 'more-tags'?ele.className = 'more-tags less-tags':ele.className = 'more-tags';
+  let tags = [];
+  if(ele.getAttribute('data-op-bool') === 'false') {
+    tags = template('tags-container',{data:tagList,more2less:true});
+  } else {
+    tags = template('tags-container',{data:tagList.slice(0,11),more2less:false});
+  }
+  document.querySelector('.tags-container').innerHTML = tags;
+
 };

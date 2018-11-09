@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.addOrder = exports.getOrder = exports.deleteShoppingCart = exports.addShoppingCart = exports.getShoppingCarInfo = exports.addressOperate = exports.setDefaultAddress = exports.getAddress = exports.toLogin = exports.getHomeGroup = exports.getProductionList = exports.getCarousel = exports.getTags = exports.getProductDetail = exports.getProductClassify = exports.getAllProductList = void 0;
+exports.payOrder = exports.checkOrder = exports.submitOrder = exports.getOrderStatus = exports.addOrder = exports.getOrder = exports.deleteShoppingCart = exports.addShoppingCart = exports.getShoppingCarInfo = exports.addressOperate = exports.setDefaultAddress = exports.getAddress = exports.toLogin = exports.getHomeGroup = exports.getProductionList = exports.getCarousel = exports.getTags = exports.getProductDetail = exports.getProductClassify = exports.getAllProductList = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -56,10 +56,10 @@ function () {
                 storage && window.sessionStorage.setItem(name + '-time', storageTime);
                 return res.data.result;
               } else {
-                alert(res.data.msg);
+                return alert(res.data.msg);
               }
             }).catch(function (err) {
-              alert(err);
+              return alert(err);
             });
 
           case 11:
@@ -73,10 +73,10 @@ function () {
                 storage && window.sessionStorage.setItem(name + '-time', storageTime);
                 return res.data.result;
               } else {
-                alert(res.data.msg);
+                return alert(res.data.msg);
               }
             }).catch(function (err) {
-              alert(err);
+              return alert(err);
             });
 
           case 16:
@@ -591,8 +591,133 @@ function () {
   return function addOrder(_x14) {
     return _ref17.apply(this, arguments);
   };
+}();
+
+exports.addOrder = addOrder;
+
+var getOrderStatus =
+/*#__PURE__*/
+function () {
+  var _ref18 = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee18(data) {
+    return _regenerator.default.wrap(function _callee18$(_context18) {
+      while (1) {
+        switch (_context18.prev = _context18.next) {
+          case 0:
+            _context18.next = 2;
+            return apiRequire('getOrderStatus', '/api/order/GetOrderStatus', null, data, false);
+
+          case 2:
+            return _context18.abrupt("return", _context18.sent);
+
+          case 3:
+          case "end":
+            return _context18.stop();
+        }
+      }
+    }, _callee18, this);
+  }));
+
+  return function getOrderStatus(_x15) {
+    return _ref18.apply(this, arguments);
+  };
+}();
+
+exports.getOrderStatus = getOrderStatus;
+
+var submitOrder =
+/*#__PURE__*/
+function () {
+  var _ref19 = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee19(data) {
+    return _regenerator.default.wrap(function _callee19$(_context19) {
+      while (1) {
+        switch (_context19.prev = _context19.next) {
+          case 0:
+            _context19.next = 2;
+            return apiRequire('submitOrder', '/api/order/SubmitOrder', 'post', data, false);
+
+          case 2:
+            return _context19.abrupt("return", _context19.sent);
+
+          case 3:
+          case "end":
+            return _context19.stop();
+        }
+      }
+    }, _callee19, this);
+  }));
+
+  return function submitOrder(_x16) {
+    return _ref19.apply(this, arguments);
+  };
+}();
+
+exports.submitOrder = submitOrder;
+
+var checkOrder =
+/*#__PURE__*/
+function () {
+  var _ref20 = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee20(data) {
+    return _regenerator.default.wrap(function _callee20$(_context20) {
+      while (1) {
+        switch (_context20.prev = _context20.next) {
+          case 0:
+            _context20.next = 2;
+            return apiRequire('checkOrder', '/api/order/CheckOrderPaid', null, data, false);
+
+          case 2:
+            return _context20.abrupt("return", _context20.sent);
+
+          case 3:
+          case "end":
+            return _context20.stop();
+        }
+      }
+    }, _callee20, this);
+  }));
+
+  return function checkOrder(_x17) {
+    return _ref20.apply(this, arguments);
+  };
+}(); //pay
+
+
+exports.checkOrder = checkOrder;
+
+var payOrder =
+/*#__PURE__*/
+function () {
+  var _ref21 = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee21(data) {
+    return _regenerator.default.wrap(function _callee21$(_context21) {
+      while (1) {
+        switch (_context21.prev = _context21.next) {
+          case 0:
+            _context21.next = 2;
+            return apiRequire('payOrder', '/api/pay/PayOrder', null, data, false);
+
+          case 2:
+            return _context21.abrupt("return", _context21.sent);
+
+          case 3:
+          case "end":
+            return _context21.stop();
+        }
+      }
+    }, _callee21, this);
+  }));
+
+  return function payOrder(_x18) {
+    return _ref21.apply(this, arguments);
+  };
 }(); ///api/order/AddShoppingCart
 //getProductClassify,api/Product/GetProductDetail?id=
 
 
-exports.addOrder = addOrder;
+exports.payOrder = payOrder;

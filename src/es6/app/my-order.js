@@ -1,9 +1,14 @@
 import { getOrder } from '../common/api'
 import template from '../common/template';
 import Pagination from '../common/pagination';
+import {format} from "../common/tools";
 
 let pages = null,
   orderStatus = '';
+
+template.defaults.imports.formDate = (val) => {
+  return format(new Date(val),'yyyy年MM月dd日 hh:mm:ss')
+};
 
 window.orderTypeActive = (index, hash) =>{
   let orderType = document.querySelectorAll('.order-type'),

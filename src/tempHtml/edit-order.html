@@ -68,30 +68,14 @@
             </div>
             <div class="shopping-list-page"></div>
             <div class="order-remark">
-                <input type="text" placeholder="选填，订单留言备注，限45个字">
+                <input type="text" placeholder="选填，订单留言备注，限45个字" class="remark-input" value="">
             </div>
             <div class="invoice">
                 <span>发票信息</span>
                 <span>如有需要，请联系客服开发票</span>
             </div>
-            <div class="order-pay-info">
-                <div class="pay-info">
-                    <span>总商品金额:</span>
-                    <span class="total-paid">￥100</span>
-                </div>
-                <div class="pay-info">
-                    <span>运费:</span>
-                    <span>￥0</span>
-                </div>
-                <div class="pay-info">
-                    <span>应付总额:</span>
-                    <span class="total-paid">￥100</span>
-                </div>
-            </div>
-            <div class="need-to-pay">
-                <span>应付总额: <i class="total-paid">￥100</i></span>
-                <a href="#">提交订单</a>
-            </div>
+            <div class="order-pay-info"></div>
+
         </div>
 
 
@@ -185,6 +169,25 @@
 
     {{ /if }}
 
+</script>
+
+<script id="order-pay-info" type="text/html">
+    <div class="pay-info">
+        <span>总商品金额:</span>
+        <span class="total-paid">￥{{ data.money }}</span>
+    </div>
+    <div class="pay-info">
+        <span>运费:</span>
+        <span>￥0</span>
+    </div>
+    <div class="pay-info">
+        <span>应付总额:</span>
+        <span class="total-paid">￥{{ data.money }}</span>
+    </div>
+    <div class="need-to-pay">
+        <span>应付总额: <i class="total-paid">￥{{ data.money }}</i></span>
+        <div class="submitOrder" onclick="submitOrder()">提交订单</div>
+    </div>
 </script>
 
     <script src="../js/app/edit-order.js"></script>

@@ -2463,113 +2463,108 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 
 var _api = require("../common/api");
 
-var _tools = require("../common/tools");
-
 var _template = _interopRequireDefault(require("../common/template"));
 
-_template.default.defaults.imports.toFixed2 = function (val) {
-  return val.toFixed(2);
-};
+var _tools = require("../common/tools");
 
-var address = [],
-    isShowAddress = false,
-    orderId = '';
+var orderInfo = {},
+    payWay = 'wechat',
+    orderId = null;
+
+_template.default.defaults.imports.formDate = function (val) {
+  return (0, _tools.format)(new Date(val), 'yyyy年MM月dd日 hh:mm:ss');
+};
 
 window.onload = function () {
   orderId = (0, _tools.getParameter)('orderId');
-  console.log(orderId);
-  (0, _api.getAddress)().then(function (res) {
-    console.log(res);
-    res = res.map(function (item) {
-      item.selected = false;
-      return item;
-    });
-    res[0].selected = true;
-    address = res.slice(0);
-    var html = (0, _template.default)('address-content', {
-      data: res,
-      isShowAddress: isShowAddress
-    });
-    document.querySelector('.address-content').innerHTML = html;
-  });
 
-  if (orderId !== null) {
+  if (orderId === null) {
+    alert('订单不存在');
+  } else {
     (0, _api.getOrder)({
       id: orderId
     }).then(function (res) {
       console.log(res);
 
-      if (res.orderInfos[0].status === 1) {
-        window.location.href = './to-pay.html?orderId=' + orderId;
+      if (res && res.hasOwnProperty('orderInfos') && res.orderInfos.length === 0) {
+        document.querySelector('.to-pay-container').style.display = 'none';
+        alert('订单不存在');
+        return false;
+      }
+
+      orderInfo = res;
+
+      if (res.orderInfos[0].status === 0) {
+        window.location.href = './edit-order.html?orderId=' + orderId;
       } else if (res.orderInfos[0].status > 1) {
         window.location.href = './my-order.html?orderId=' + orderId;
       }
 
-      var html = (0, _template.default)('shopping-list-page', {
-        data: res.orderInfos
+      var baseInfo = (0, _template.default)('base-info', {
+        data: res.orderInfos[0],
+        showDetail: true
       });
-      document.querySelector('.shopping-list-page').innerHTML = html;
-      var count = (0, _template.default)('order-pay-info', {
-        data: res.orderInfos[0]
-      });
-      document.querySelector('.order-pay-info').innerHTML = count;
+      document.querySelector('.base-info').innerHTML = baseInfo;
+      document.querySelector('.money').innerHTML = '￥' + res.orderInfos[0].money;
     });
-  } else {
-    alert('订单不存在');
   }
 };
 
-window.selectAddr = function (ele) {
-  var index = ele.getAttribute('data-op-index') - 0;
-  address = address.map(function (item) {
-    item.selected = false;
-    return item;
-  });
-  address[index].selected = true;
-  var html = (0, _template.default)('address-content', {
-    data: address,
-    isShowAddress: isShowAddress
-  });
-  document.querySelector('.address-content').innerHTML = html;
-};
+window.showDetail = function (ele) {
+  var baseInfo = [];
 
-window.showAddress = function (ele) {
-  var bool = ele.getAttribute('data-op-show');
-  ele.setAttribute('data-op-show', bool === 'false' ? true : false);
-  isShowAddress = !isShowAddress;
-  ele.className = bool === 'true' ? 'show-address' : 'show-address active';
-  var html = (0, _template.default)('address-content', {
-    data: address,
-    isShowAddress: isShowAddress
-  });
-  document.querySelector('.address-content').innerHTML = html;
-};
-
-window.addNewAddress = function (ele) {};
-
-window.submitOrder = function () {
-  var addrId = '',
-      remark = document.querySelector('.remark-input').value;
-
-  if (address.length > 0) {
-    address.map(function (item) {
-      if (item.selected) {
-        console.log(item);
-        addrId = item.id;
-      }
-    });
-    (0, _api.submitOrder)({
-      id: orderId,
-      addressId: addrId,
-      description: remark
-    }).then(function (res) {
-      console.log(res);
-      window.location.href = './to-pay.html?orderId=' + orderId;
+  if (ele.getAttribute('data-op-bool') === 'true') {
+    baseInfo = (0, _template.default)('base-info', {
+      data: orderInfo.orderInfos[0],
+      showDetail: true
     });
   } else {
-    alert('请新增您的地址');
+    baseInfo = (0, _template.default)('base-info', {
+      data: [],
+      showDetail: false
+    });
+  }
+
+  document.querySelector('.base-info').innerHTML = baseInfo;
+};
+
+window.selectThisPayWay = function (ele) {
+  if (ele !== ele.getAttribute('data-op-way')) {
+    payWay = ele.getAttribute('data-op-way');
+    document.querySelector('.pay-way-active').className = 'pay-way';
+    ele.className = 'pay-way pay-way-active';
   }
 };
+
+window.toPay = function () {
+  (0, _api.payOrder)({
+    orderId: orderId,
+    channelId: payWay === 'wechat' ? 2 : 1
+  }).then(function (res) {
+    if (payWay === 'wechat') {
+      document.querySelector('.pay-code').setAttribute('src', res);
+      document.querySelector('.show-pay-box').style.display = 'block';
+    } else {
+      document.querySelector('body').style.display = 'none';
+      document.querySelector('body').innerHTML = res;
+      document.querySelector('#alipaysubmit').submit();
+    }
+
+    console.log(res);
+  });
+};
+
+window.closePayBox = function () {
+  document.querySelector('.show-pay-box').style.display = 'none';
+};
+
+document.querySelector('.pay-done').addEventListener('click', function () {
+  (0, _api.checkOrder)({
+    orderId: orderId
+  }).then(function (res) {
+    console.log(res);
+  });
+});
 },{"../common/api":35,"../common/template":36,"../common/tools":37,"@babel/runtime/helpers/interopRequireDefault":2}],35:[function(require,module,exports){
 "use strict";
 

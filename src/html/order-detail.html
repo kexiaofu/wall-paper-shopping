@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>订单详情</title>
+    <link rel="stylesheet" href="../css/common/base.css">
+    <link href="../css/common/iconfont.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/pages/order-detail.css">
+
+</head>
+<body>
+<div class="nav-bar">
+    <div class="left-part">
+        <div class="logo">
+            <a href="./index.html">
+                <img src="../images/logo.png" alt="">
+            </a>
+        </div>
+        <div class="func-item hover-blue">
+            <a href="./product-list.html">商店</a>
+        </div>
+    </div>
+    <div class="right-part">
+        <div class="func-item search">
+            <i class="iconfont icon-cx"></i>
+            <!--<i class="fa fa-search"></i>-->
+            <input type="text" class="search-input" placeholder="搜索百成墙纸网" style="display: none;">
+            <span class="to-search" >搜索</span>
+            <i class="iconfont icon-close" style="display: none;"></i>
+        </div>
+        <div class="func-item hover-blue to-login">登录</div>
+        <div class="func-item hover-blue to-sign-up">注册</div>
+        <div class="func-item show-shopping-car">
+            <span class="shopping-quantity">0</span>
+            <i class="iconfont icon-gouwuche shopping-car"></i>
+            <div class="shopping-car-container"></div>
+        </div>
+    </div>
+</div>
+
+<div class="login">
+    <div class="close-login-box">
+        <i class="iconfont icon-close"></i>
+    </div>
+    <div class="title">
+       Baicheng Digital
+    </div>
+    <p>登录到您的账户</p>
+    <div class="login-input">
+        <i class="iconfont icon-wode"></i>
+        <input type="text" placeholder="请输入您的账号" id="account" value="aaa">
+    </div>
+    <div class="login-input">
+        <i class="iconfont icon-suo"></i>
+        <input type="password" placeholder="请输入您的密码" id="password" value="1qaz2wsx">
+    </div>
+    <div class="submit">登录</div>
+    <p>我没有账户</p>
+    <div class="sign-up">注册</div>
+</div>
+
+<script id="shopping-car-container" type="text/html">
+    {{ if data.data.length === 0 }}
+    <div class="shopping-list-no">
+        您的购物车空空如也
+    </div>
+    {{ else if data.data.length > 0}}
+    <div class="shopping-list">
+        {{ each data.data item i }}
+        <a href={{ "./product.html?productId=" + item.productId }} target="_blank" class="shopping-item">
+            <div class="item-pic">
+                <img src={{ item.introductImage }} alt="">
+            </div>
+            <div class="item-info">
+                <div class="item-base-info">
+                    <div class="item-name">{{ item.productName }}</div>
+                    <div class="item-price">￥{{ item.money }}</div>
+                </div>
+                <div class="item-intro-info">
+                    {{ item.description }}
+                </div>
+            </div>
+        </a>
+        {{/each}}
+    </div>
+    {{ if data.quantity > 0 }}
+    <p class="more-product-quantity">您还有{{ data.quantity }}件商品在购物车</p>
+    {{ /if }}
+    {{/if}}
+    <a href="./shopping-cart.html" class="to-my-shopping-car-btn">
+        查看我的购物车
+    </a>
+</script>
+
+<script src="../js/app/head.js"></script>
+
+    <div id="order-detail" class="order-detail container">
+        <div class="nav-container">
+            <a href="./index.html">首页</a>
+            <a href="./my-order.html">我的订单</a>
+            <a href="#">订单详情</a>
+        </div>
+        <div class="base-info"></div>
+        <div class="order-flow">
+            <div class="flow-item">
+                <span class="flow-title">提交订单</span>
+                <span>----_--_--</span>
+            </div>
+            <div class="flow-item">
+                <span class="flow-title">商品出库</span>
+                <span>----_--_--</span>
+            </div>
+            <div class="flow-item">
+                <span class="flow-title">等待收货</span>
+                <span>----_--_--</span>
+            </div>
+            <div class="flow-item">
+                <span class="flow-title">确认收货</span>
+                <span>----_--_--</span>
+            </div>
+        </div>
+        <div class="order-express-info"></div>
+        <div class="order-pay-info"></div>
+    </div>
+<div class="footer">
+    <div class="left-part">
+        <div class="feedback">
+            <span>意见反馈</span>
+            <span>liangjiafu@deepmind.cn</span>
+        </div>
+        <div class="copy-right">
+            &copy;2015 baicheng.com 版权所有 浙ICP备xxxxxxx号
+        </div>
+    </div>
+    <div class="right-part">
+        <div class="web-info">
+            <span>
+                <a href="#">关于百成</a>
+            </span>
+            <span>
+                <a href="#">联系我们</a>
+            </span>
+        </div>
+    </div>
+</div>
+<script id="order-flow" type="text/html">
+    <div class="flow-item">
+        <span class="flow-title">提交订单</span>
+        <span>----_--_--</span>
+    </div>
+    <div class="flow-item">
+        <span class="flow-title">商品出库</span>
+        <span>----_--_--</span>
+    </div>
+    <div class="flow-item">
+        <span class="flow-title">等待收货</span>
+        <span>----_--_--</span>
+    </div>
+    <div class="flow-item">
+        <span class="flow-title">确认收货</span>
+        <span>----_--_--</span>
+    </div>
+</script>
+<script id="order-express-info" type="text/html">
+    <div class="order-title">物流信息</div>
+    <div class="order-content">
+        <div class="order-td">
+            {{ each data.orderProductDetails product i }}
+            <div class="info-item">
+                <div class="pic">
+                    <img src={{ product.introductImage }} alt="">
+                </div>
+                <div class="name">
+                    <a href={{"./product.html?id="+product.id}}>
+                        {{ product.productName }}
+                    </a>
+
+                    {{ each product.standards s _s }}
+                    <p>
+                        <span>{{ s.optionName }}:</span>
+                        <span> {{ s.optionValueName }} </span>
+                    </p>
+                    {{ /each }}
+
+                </div>
+                <div class="price">
+                    ￥{{ product.money }}
+                </div>
+                <div class="quantity">
+                    x{{ product.number }}
+                </div>
+            </div>
+
+            {{ /each }}
+        </div>
+        <div class="order-td">
+            {{ if data.status === 0 }}
+            <div class=" props product-status">
+                等待买家编辑
+                <a href={{ "./edit-order.html?orderId="+data.id }}> 去编辑 </a>
+            </div>
+            {{ else if data.status === 1 }}
+            <div class=" props product-status">
+                等待买家付款
+                <a href={{ "./edit-order.html?orderId="+data.id }}> 去付款 </a>
+            </div>
+            {{ else if data.status === 2 }}
+            <div class=" props product-status">
+                买家已付款
+            </div>
+            {{ else if data.status === 3 }}
+            <div class=" props product-status">
+                订单已完成
+            </div>
+            {{ /if }}
+        </div>
+        <div class="order-td">
+            <p>
+                <a href="./product-list.html" class="continue-shopping">
+                    <i class="iconfont icon-gouwuche"></i>
+                    继续购物
+                </a>
+            </p>
+        </div>
+    </div>
+</script>
+<script id="base-info" type="text/html">
+    <p>
+        {{ if showDetail }}
+        <span onclick="showDetail(this)" data-op-bool="false">
+           基础信息
+            <i class="iconfont icon-drop-up"></i>
+        </span>
+        {{ else }}
+        <span onclick="showDetail(this)" data-op-bool="true">
+           基础信息
+            <i class="iconfont icon-drop-down"></i>
+        </span>
+        {{ /if }}
+    </p>
+    {{ if showDetail }}
+    <p>
+        <span>订单编号:  </span>
+        <span>{{ data.orderNumber }}</span>
+    </p>
+    <p>
+        <span>购买时间:</span>
+        <span>{{ data.createTime | formDate}}</span>
+    </p>
+    <p>
+        <span>收货人信息:</span>
+        <span>{{ data.linkMan }}</span>
+        <span>{{ data.address }}</span>
+        <span>{{ data.telephone }}</span>
+    </p>
+    <p>
+        <span>支付配送:</span>
+        <span>在线支付/运费:0</span>
+    </p>
+    <p>
+        <span>订单备注:</span>
+        <span>{{ data.description }}</span>
+    </p>
+    {{ /if }}
+</script>
+<script id="order-pay-info" type="text/html">
+    <p>
+        <span>商品总价:</span>
+        <span>{{ data.money }}元</span>
+    </p>
+    <p>
+        <span>运费:</span>
+        <span>0元</span>
+    </p>
+    <p>
+        <span>实付金额:</span>
+        <span>{{ data.money }}元</span>
+    </p>
+</script>
+    <script src="../js/app/order-detail.js"></script>
+</body>
+</html>

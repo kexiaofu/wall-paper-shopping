@@ -19,11 +19,11 @@ let apiRequire = async (name,url,method,data,storage=true) => {
             storage && window.sessionStorage.setItem(name+'-time',storageTime);
             return res.data.result;
           } else {
-            alert(res.data.msg);
+            return alert(res.data.msg);
           }
         })
         .catch(err=>{
-          alert(err);
+          return alert(err);
         })
     } else {
       return await axios.post(url,data)
@@ -33,11 +33,11 @@ let apiRequire = async (name,url,method,data,storage=true) => {
             storage && window.sessionStorage.setItem(name+'-time',storageTime);
             return res.data.result;
           } else {
-            alert(res.data.msg);
+            return alert(res.data.msg);
           }
         })
         .catch(err=>{
-          alert(err);
+          return alert(err);
         })
     }
 
@@ -80,6 +80,16 @@ export const deleteShoppingCart = async (data) => await apiRequire('deleteShoppi
 export const getOrder = async (data) => await apiRequire('getOrder','/api/order/GetOrder',null,data,false);
 
 export const addOrder = async (data) => await apiRequire('addOrder','/api/order/AddOrder','post',data,false);
+
+export const getOrderStatus = async (data) => await apiRequire('getOrderStatus','/api/order/GetOrderStatus',null,data,false);
+
+export const submitOrder = async (data) => await apiRequire('submitOrder','/api/order/SubmitOrder','post',data,false);
+
+export const checkOrder = async (data) => await apiRequire('checkOrder','/api/order/CheckOrderPaid',null,data,false);
+
+//pay
+export const payOrder = async (data) => await apiRequire('payOrder','/api/pay/PayOrder',null,data,false);
+
 
 ///api/order/AddShoppingCart
 //getProductClassify,api/Product/GetProductDetail?id=

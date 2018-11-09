@@ -13,7 +13,8 @@ var _template = _interopRequireDefault(require("../common/template.js"));
 var pages = null,
     tagId = null,
     searchWord = null,
-    groupId = null;
+    groupId = null,
+    tagList = [];
 
 var toPage = function toPage(index) {
   getData({
@@ -62,8 +63,10 @@ window.onload = function () {
   var search = (0, _tools.getParameter)('search');
   (0, _api.getTags)().then(function (res) {
     console.log(res);
+    tagList = res;
     var tags = (0, _template.default)('tags-container', {
-      data: res
+      data: res.slice(0, 11),
+      more2less: false
     });
     document.querySelector('.tags-container').innerHTML = tags;
   });
@@ -114,4 +117,24 @@ window.pickThisTag = function (ele) {
       name: searchWord
     });
   }
+};
+
+window.moreTags = function (ele) {
+  console.log(ele, ele.className, ele.className.indexOf('less-tags')); //ele.className = ele.className === 'more-tags'?ele.className = 'more-tags less-tags':ele.className = 'more-tags';
+
+  var tags = [];
+
+  if (ele.getAttribute('data-op-bool') === 'false') {
+    tags = (0, _template.default)('tags-container', {
+      data: tagList,
+      more2less: true
+    });
+  } else {
+    tags = (0, _template.default)('tags-container', {
+      data: tagList.slice(0, 11),
+      more2less: false
+    });
+  }
+
+  document.querySelector('.tags-container').innerHTML = tags;
 };

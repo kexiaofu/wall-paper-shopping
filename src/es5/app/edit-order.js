@@ -13,11 +13,12 @@ _template.default.defaults.imports.toFixed2 = function (val) {
 };
 
 var address = [],
-    isShowAddress = false;
+    isShowAddress = false,
+    orderId = '';
 
 window.onload = function () {
-  var id = (0, _tools.getParameter)('orderId');
-  console.log(id);
+  orderId = (0, _tools.getParameter)('orderId');
+  console.log(orderId);
   (0, _api.getAddress)().then(function (res) {
     console.log(res);
     res = res.map(function (item) {
@@ -33,24 +34,26 @@ window.onload = function () {
     document.querySelector('.address-content').innerHTML = html;
   });
 
-  if (id !== null) {
+  if (orderId !== null) {
     (0, _api.getOrder)({
-      id: id
+      id: orderId
     }).then(function (res) {
       console.log(res);
+
+      if (res.orderInfos[0].status === 1) {
+        window.location.href = './to-pay.html?orderId=' + orderId;
+      } else if (res.orderInfos[0].status > 1) {
+        window.location.href = './my-order.html?orderId=' + orderId;
+      }
+
       var html = (0, _template.default)('shopping-list-page', {
-        data: res
+        data: res.orderInfos
       });
       document.querySelector('.shopping-list-page').innerHTML = html;
-      var totalPaid = document.querySelectorAll('.total-paid');
-      var paidCount = 0;
-      res.map(function (item) {
-        paidCount += item.money;
+      var count = (0, _template.default)('order-pay-info', {
+        data: res.orderInfos[0]
       });
-
-      for (var i = totalPaid.length - 1; i >= 0; i--) {
-        totalPaid[i].innerHTML = '￥' + paidCount;
-      }
+      document.querySelector('.order-pay-info').innerHTML = count;
     });
   } else {
     alert('订单不存在');
@@ -84,3 +87,27 @@ window.showAddress = function (ele) {
 };
 
 window.addNewAddress = function (ele) {};
+
+window.submitOrder = function () {
+  var addrId = '',
+      remark = document.querySelector('.remark-input').value;
+
+  if (address.length > 0) {
+    address.map(function (item) {
+      if (item.selected) {
+        console.log(item);
+        addrId = item.id;
+      }
+    });
+    (0, _api.submitOrder)({
+      id: orderId,
+      addressId: addrId,
+      description: remark
+    }).then(function (res) {
+      console.log(res);
+      window.location.href = './to-pay.html?orderId=' + orderId;
+    });
+  } else {
+    alert('请新增您的地址');
+  }
+};

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>E:\node\node.exe</title>
+    <link rel="stylesheet" href="../css/common/base.css">
+    <link href="../css/common/iconfont.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/pages/to-pay.css">
+
+</head>
+<body>
+@@include('./common/head.html')
+<div id="to-pay" class="to-pay container">
+    <div class="nav-container">
+        <a href="./index.html">首页</a>
+        <a href="./my-order.html">购物车</a>
+        <a href="#">填写订单</a>
+        <a href="#">等待支付</a>
+    </div>
+    <div class="to-pay-container">
+        <div class="to-pay-content">
+            <p class="to-pay-title">订单提交成功，请您尽快付款！</p>
+            <div class="order-detail">
+                <div class="base-info"></div>
+            </div>
+        </div>
+        <div class="to-pay-method">
+            <p>
+                <span>支付金额:</span>
+                <span class="money"></span>
+            </p>
+            <p>
+                <span>支付方式:</span>
+                <span class="pay-way pay-way-active" onclick="selectThisPayWay(this)" data-op-way="wechat">
+                <i class="iconfont icon-wechatpay"></i>微信支付
+            </span>
+                <span class="pay-way"  onclick="selectThisPayWay(this)" data-op-way="ali">
+                <i class="iconfont icon-alipay" ></i>支付宝支付
+            </span>
+            </p>
+            <div class="to-pay-btn" onclick="toPay()">
+                确认付款
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="show-pay-box">
+        <div class="box-title">
+            付款状态
+            <i class="iconfont icon-close" onclick="closePayBox()"></i>
+        </div>
+        <div class="box-content">
+            <p>请用微信扫一扫，进行支付</p>
+            <img src="" alt="" class="pay-code">
+            <div class="pay-done">已完成支付</div>
+        </div>
+
+    </div>
+
+</div>
+@@include('./common/footer.html')
+<script id="base-info" type="text/html">
+    <p>
+        {{ if showDetail }}
+        <span onclick="showDetail(this)" data-op-bool="false">
+           订单详情
+            <i class="iconfont icon-drop-up"></i>
+        </span>
+        {{ else }}
+        <span onclick="showDetail(this)" data-op-bool="true">
+           订单详情
+            <i class="iconfont icon-drop-down"></i>
+        </span>
+        {{ /if }}
+    </p>
+    {{ if showDetail }}
+    <p>
+        <span>订单编号:  </span>
+        <span>{{ data.orderNumber }}</span>
+    </p>
+    <p>
+        <span>商品明细:  </span>
+    </p>
+    <div class="product-info">
+        {{ each data.orderProductDetails product i }}
+        <p class="standards">
+            <span>{{ product.productName }}/</span>
+            {{ each product.standards s _s }}
+                <span>{{ s.optionName }}{{ s.optionValueName }}/</span>
+            {{ /each }}
+        </p>
+        {{ /each }}
+    </div>
+
+    <p>
+        <span>交易金额:</span>
+        <span>{{ data.money}}元</span>
+    </p>
+    <p>
+        <span>购买时间:</span>
+        <span>{{ data.createTime | formDate}}</span>
+    </p>
+    <p>
+        <span>收货地址:</span>
+        <span>{{ data.address }}</span>
+        <span>{{ data.linkMan }}</span>
+        <span>{{ data.telephone }}</span>
+    </p>
+    <p>
+        <span>订单备注:</span>
+        <span>{{ data.description }}</span>
+    </p>
+    {{ /if }}
+</script>
+<script src="../js/app/to-pay.js"></script>
+</body>
+</html>

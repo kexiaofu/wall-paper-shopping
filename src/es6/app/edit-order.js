@@ -1,4 +1,4 @@
-import { getOrder, getAddress } from '../common/api';
+import { getOrder, getAddress, submitOrder } from '../common/api';
 import { getParameter } from '../common/tools';
 
 import template from '../common/template';
@@ -8,14 +8,15 @@ template.defaults.imports.toFixed2 = (val) => {
 };
 
 let address = [],
-    isShowAddress = false;
+    isShowAddress = false,
+    orderId = '';
 
 
 window.onload = () =>{
 
-  let id = getParameter('orderId');
+  orderId = getParameter('orderId');
 
-  console.log(id);
+  console.log(orderId);
 
   getAddress().then(res=>{
     console.log(res);
@@ -29,20 +30,22 @@ window.onload = () =>{
     document.querySelector('.address-content').innerHTML = html;
   });
 
-  if(id !== null) {
-    getOrder({id:id})
+  if(orderId !== null) {
+    getOrder({id:orderId})
       .then(res=>{
         console.log(res);
-        let html = template('shopping-list-page', {data: res});
-        document.querySelector('.shopping-list-page').innerHTML = html;
-        let totalPaid = document.querySelectorAll('.total-paid');
-        let paidCount = 0;
-          res.map(item=>{
-            paidCount += item.money;
-          });
-        for(let i=totalPaid.length-1;i>=0;i--) {
-          totalPaid[i].innerHTML = '￥' + paidCount;
+
+        if(res.orderInfos[0].status === 1) {
+          window.location.href = './to-pay.html?orderId='+ orderId
+        } else if(res.orderInfos[0].status > 1){
+          window.location.href = './my-order.html?orderId='+ orderId
         }
+
+        let html = template('shopping-list-page', {data: res.orderInfos});
+        document.querySelector('.shopping-list-page').innerHTML = html;
+
+        let count = template('order-pay-info',{data: res.orderInfos[0]});
+        document.querySelector('.order-pay-info').innerHTML = count;
 
       });
   } else {
@@ -83,3 +86,27 @@ window.showAddress = (ele) =>{
 };
 
 window.addNewAddress = (ele) =>{};
+
+window.submitOrder = () =>{
+  let addrId = '',remark = document.querySelector('.remark-input').value;
+  if(address.length > 0) {
+    address.map(item=>{
+      if(item.selected) {
+        console.log(item);
+        addrId = item.id;
+      }
+    });
+
+
+    submitOrder({id:orderId,addressId:addrId,description:remark})
+      .then(res=>{
+        console.log(res);
+        window.location.href = './to-pay.html?orderId='+orderId;
+      })
+
+  } else {
+    alert('请新增您的地址')
+  }
+
+
+};

@@ -12,3 +12,11 @@ var _template = _interopRequireDefault(require("../common/template"));
   });
   document.querySelector('.classify-container').innerHTML = html;
 });
+
+window.onhashchange = function () {
+  console.log();
+  var newActive = document.querySelector('#classify-' + window.location.hash.substring(1)),
+      oldEle = document.querySelector('.sec-active');
+  oldEle !== null && (oldEle.className = 'sec-classify-item');
+  newActive.className = 'sec-classify-item sec-active';
+};

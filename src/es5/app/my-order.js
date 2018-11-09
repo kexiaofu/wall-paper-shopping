@@ -10,8 +10,14 @@ var _template = _interopRequireDefault(require("../common/template"));
 
 var _pagination = _interopRequireDefault(require("../common/pagination"));
 
+var _tools = require("../common/tools");
+
 var pages = null,
     orderStatus = '';
+
+_template.default.defaults.imports.formDate = function (val) {
+  return (0, _tools.format)(new Date(val), 'yyyy年MM月dd日 hh:mm:ss');
+};
 
 window.orderTypeActive = function (index, hash) {
   var orderType = document.querySelectorAll('.order-type'),

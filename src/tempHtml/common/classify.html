@@ -14,7 +14,7 @@
                 <div class="sec-classify-container">
                     {{each val.children sec si}}
                     <a href={{ "./product-list.html#"+sec.id }} >
-                        <div class="sec-classify-item">{{ sec.name }}</div>
+                        <div class="sec-classify-item" id={{ "classify-" + sec.id }}>{{ sec.name }}</div>
                     </a>
                     {{/each}}
                 </div>

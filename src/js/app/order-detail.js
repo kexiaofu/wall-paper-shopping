@@ -2463,112 +2463,65 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 
 var _api = require("../common/api");
 
-var _tools = require("../common/tools");
-
 var _template = _interopRequireDefault(require("../common/template"));
 
-_template.default.defaults.imports.toFixed2 = function (val) {
-  return val.toFixed(2);
+var _tools = require("../common/tools");
+
+var orderInfo = {};
+
+_template.default.defaults.imports.formDate = function (val) {
+  return (0, _tools.format)(new Date(val), 'yyyy年MM月dd日 hh:mm:ss');
 };
 
-var address = [],
-    isShowAddress = false,
-    orderId = '';
-
 window.onload = function () {
-  orderId = (0, _tools.getParameter)('orderId');
-  console.log(orderId);
-  (0, _api.getAddress)().then(function (res) {
-    console.log(res);
-    res = res.map(function (item) {
-      item.selected = false;
-      return item;
-    });
-    res[0].selected = true;
-    address = res.slice(0);
-    var html = (0, _template.default)('address-content', {
-      data: res,
-      isShowAddress: isShowAddress
-    });
-    document.querySelector('.address-content').innerHTML = html;
-  });
+  var orderId = (0, _tools.getParameter)('orderId');
 
-  if (orderId !== null) {
+  if (orderId === null) {
+    alert('订单不存在');
+  } else {
+    (0, _api.getOrderStatus)({
+      orderId: orderId
+    }).then(function (res) {
+      console.log(res);
+    });
     (0, _api.getOrder)({
       id: orderId
     }).then(function (res) {
       console.log(res);
-
-      if (res.orderInfos[0].status === 1) {
-        window.location.href = './to-pay.html?orderId=' + orderId;
-      } else if (res.orderInfos[0].status > 1) {
-        window.location.href = './my-order.html?orderId=' + orderId;
-      }
-
-      var html = (0, _template.default)('shopping-list-page', {
-        data: res.orderInfos
-      });
-      document.querySelector('.shopping-list-page').innerHTML = html;
-      var count = (0, _template.default)('order-pay-info', {
+      orderInfo = res;
+      var order = (0, _template.default)('order-express-info', {
         data: res.orderInfos[0]
       });
-      document.querySelector('.order-pay-info').innerHTML = count;
+      document.querySelector('.order-express-info').innerHTML = order;
+      var pay = (0, _template.default)('order-pay-info', {
+        data: res.orderInfos[0]
+      });
+      document.querySelector('.order-pay-info').innerHTML = pay;
+      var baseInfo = (0, _template.default)('base-info', {
+        data: res.orderInfos[0],
+        showDetail: true
+      });
+      document.querySelector('.base-info').innerHTML = baseInfo;
     });
-  } else {
-    alert('订单不存在');
   }
 };
 
-window.selectAddr = function (ele) {
-  var index = ele.getAttribute('data-op-index') - 0;
-  address = address.map(function (item) {
-    item.selected = false;
-    return item;
-  });
-  address[index].selected = true;
-  var html = (0, _template.default)('address-content', {
-    data: address,
-    isShowAddress: isShowAddress
-  });
-  document.querySelector('.address-content').innerHTML = html;
-};
+window.showDetail = function (ele) {
+  var baseInfo = [];
 
-window.showAddress = function (ele) {
-  var bool = ele.getAttribute('data-op-show');
-  ele.setAttribute('data-op-show', bool === 'false' ? true : false);
-  isShowAddress = !isShowAddress;
-  ele.className = bool === 'true' ? 'show-address' : 'show-address active';
-  var html = (0, _template.default)('address-content', {
-    data: address,
-    isShowAddress: isShowAddress
-  });
-  document.querySelector('.address-content').innerHTML = html;
-};
-
-window.addNewAddress = function (ele) {};
-
-window.submitOrder = function () {
-  var addrId = '',
-      remark = document.querySelector('.remark-input').value;
-
-  if (address.length > 0) {
-    address.map(function (item) {
-      if (item.selected) {
-        console.log(item);
-        addrId = item.id;
-      }
-    });
-    (0, _api.submitOrder)({
-      id: orderId,
-      addressId: addrId,
-      description: remark
-    }).then(function (res) {
-      console.log(res);
-      window.location.href = './to-pay.html?orderId=' + orderId;
+  if (ele.getAttribute('data-op-bool') === 'true') {
+    baseInfo = (0, _template.default)('base-info', {
+      data: orderInfo.orderInfos[0],
+      showDetail: true
     });
   } else {
-    alert('请新增您的地址');
+    baseInfo = (0, _template.default)('base-info', {
+      data: [],
+      showDetail: false
+    });
   }
+
+  document.querySelector('.base-info').innerHTML = baseInfo;
 };
 },{"../common/api":35,"../common/template":36,"../common/tools":37,"@babel/runtime/helpers/interopRequireDefault":2}],35:[function(require,module,exports){
 "use strict";

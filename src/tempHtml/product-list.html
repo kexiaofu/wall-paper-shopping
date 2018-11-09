@@ -44,6 +44,11 @@
         {{ each data tag i }}
         <span data-op-id={{ tag.id }} onclick="pickThisTag(this)" id={{ 'tag' + tag.id }}>{{ tag.name }}</span>
         {{ /each}}
+        {{ if more2less }}
+            <span class="more-tags" onclick="moreTags(this)" data-op-bool="true"><i class="iconfont icon-drop-up"></i></span>
+        {{ else }}
+            <span class="more-tags" onclick="moreTags(this)" data-op-bool="false"><i class="iconfont icon-drop-down"></i></span>
+        {{ /if }}
     </div>
 </div>
 </script>

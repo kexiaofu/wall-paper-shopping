@@ -16,7 +16,7 @@ window.onload = function () {
   var mask = new _mask.default();
   (0, _api.getCarousel)().then(function (res) {
     var carousel = new _carousel.default({
-      autoPlay: false,
+      autoPlay: true,
       parent: 'carousel-container',
       images: res
     });

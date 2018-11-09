@@ -1,0 +1,156 @@
+.to-pay-content{
+  width: 1060px;
+  margin: 10px auto 1px auto;
+  background: #fff;
+  padding:0 0 10px 0;
+}
+
+.to-pay-title{
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  font-size:14px;
+  color:#999;
+}
+
+.base-info{
+  width: 1060px;
+  margin: 10px auto 0 auto;
+  font-size:14px;
+  color:#666;
+  padding: 0 10px;
+  p{
+    padding:3px 80px;
+    span:first-child{
+      padding:0 10px 0 0;
+    }
+  }
+  p:first-child{
+    padding:5px 0;
+    color:#00a6de;
+  }
+  .product-info{
+    position: relative;
+    width: 800px;
+    margin:-26px 0 0 154px;
+    padding:0;
+    box-sizing: border-box;
+    p{
+      padding:3px 0;
+      color:#666;
+      span{
+        padding:0 3px 0 0;
+      }
+    }
+  }
+}
+
+.to-pay-method{
+  width: 1060px;
+  margin:0 auto;
+  min-height: 200px;
+  background: #fff;
+  padding: 10px 80px;
+  box-sizing: border-box;
+  font-size:14px;
+  p{
+    margin:20px 0;
+    span:first-child{
+      display: inline-block;
+      margin-right:30px;
+    }
+  }
+  .money{
+    font-size:20px;
+    color:#f00;
+    font-weight: bold;
+  }
+  .pay-way{
+    display: inline-flex;
+    align-items: center;
+    padding:3px 15px;
+    border:1px solid #ddd;
+    width: 140px;
+    font-weight: bold;
+    box-sizing: border-box;
+    font-size:12px;
+    cursor: pointer;
+    transition:border-color .3s ease, color .3s ease;
+    i{
+      font-size:26px;
+      margin:0 10px 0 0;
+      font-weight:normal;
+      box-sizing: border-box;
+    }
+    .icon-wechatpay{
+      color:#24df15;
+    }
+    .icon-alipay{
+      color:#1296db;
+    }
+  }
+  .pay-way-active{
+    border-color:#00a6de;
+    color:#00a6de;
+  }
+}
+
+.to-pay-btn{
+  width: 130px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  background: #f00;
+  color:#fff;
+  margin-left:90px;
+  border-radius:3px;
+  font-size:16px;
+  cursor: pointer;
+}
+
+.show-pay-box{
+  position: fixed;
+  width: 500px;
+  height: 500px;
+  left:50%;
+  top:50%;
+  transform: translate(-50%,-50%);
+  background: #fff;
+  z-index: 100;
+  box-shadow: 0 0 10px #999;
+  border-radius:3px;
+  display: none;
+  .box-title{
+    height:40px;
+    line-height:40px;
+    border-bottom:1px solid #ddd;
+    padding:0 10px;
+    color:#666;
+    i{
+      float:right;
+      cursor: pointer;
+    }
+  }
+  .box-content{
+    padding:30px 0;
+    text-align: center;
+    p{
+      padding:10px 0;
+      color:#666;
+      font-size:18px;
+    }
+    img{
+      width: 180px;
+      height: 180px;
+      margin:20px 0;
+    }
+    .pay-done{
+      width: 150px;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      color:#fff;
+      background: #00a6de;
+      margin:30px auto;
+    }
+  }
+}

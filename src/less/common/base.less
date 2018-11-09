@@ -394,7 +394,7 @@ p{
     transform: translate(-50%,0);
     min-width: 250px;
     margin:0 auto;
-    padding:0 20px;
+    padding:0 10px;
     box-sizing: border-box;
     text-align: center;
     display: none;
@@ -402,8 +402,8 @@ p{
     border:1px solid #ececec;
     .sec-classify-item{
       border-bottom:1px solid #ececec;
-      height: 45px;
-      line-height: 45px;
+      height: 40px;
+      line-height: 40px;
       transition:color .3s ease,border-color .3s ease;
 
     }
@@ -413,6 +413,13 @@ p{
     }
     .sec-classify-item:last-child{
       border:none;
+    }
+    .sec-active{
+      background: #00a6de;
+      color:#fff;
+    }
+    .sec-active:hover{
+      color:#fff;
     }
   }
 }
@@ -626,6 +633,7 @@ p{
   height: 40px;
   line-height: 40px;
   margin:10px auto;
+  border-bottom:1px solid #dcdcdc;
   a{
     font-size:14px;
     color:#999;

@@ -4,6 +4,7 @@
 .tags-container {
   width: 1060px;
   margin: 10px auto 0 auto;
+  position: relative;
 }
 .tags-container .tag-item {
   display: -webkit-flex;
@@ -38,6 +39,13 @@
 }
 .tags-container .tag-item .tag-content .active {
   border-color: #ccc;
+}
+.tags-container .tag-item .tag-content .more-tags {
+  position: absolute;
+  top: 5px;
+  right: 0;
+  margin: 0;
+  border: none;
 }
 .production-list {
   width: 1100px;

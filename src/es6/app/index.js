@@ -13,7 +13,7 @@ window.onload = () =>{
 
   getCarousel().then(res=>{
     let carousel = new Carousel({
-      autoPlay:false,
+      autoPlay:true,
       parent:'carousel-container',
       images:res
     });

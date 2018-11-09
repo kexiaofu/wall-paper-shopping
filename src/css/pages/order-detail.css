@@ -1,0 +1,177 @@
+.base-info {
+  width: 1060px;
+  margin: 10px auto 30px auto;
+  font-size: 14px;
+  color: #666;
+}
+.base-info p {
+  padding: 3px 80px;
+}
+.base-info p:first-child {
+  padding: 5px 0;
+  font-size: 16px;
+  color: #00a6de;
+}
+.order-flow {
+  width: 1060px;
+  margin: 10px auto;
+  background: #fff;
+  border: 1px solid #ddd;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding: 20px 0;
+}
+.order-flow .flow-item {
+  position: relative;
+  text-align: center;
+  width: 150px;
+  font-size: 14px;
+}
+.order-flow .flow-item span {
+  display: block;
+  position: relative;
+}
+.order-flow .flow-item .flow-title::after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  left: 30px;
+  top: 50%;
+  -webkit-transform: translate(0, -50%);
+      -ms-transform: translate(0, -50%);
+          transform: translate(0, -50%);
+}
+.order-flow .flow-item .flow-title:before {
+  content: '';
+  position: absolute;
+  width: 100px;
+  height: 1px;
+  border-bottom: 1px solid #ccc;
+  right: -125px;
+  top: 50%;
+  -webkit-transform: translate(0, -50%);
+      -ms-transform: translate(0, -50%);
+          transform: translate(0, -50%);
+}
+.order-flow .flow-item:last-child > .flow-title::before {
+  border: none;
+}
+.order-express-info {
+  position: relative;
+  width: 1060px;
+  background: #fff;
+  margin: 10px auto;
+  border: 1px solid #ddd;
+}
+.order-express-info .order-title {
+  padding: 10px;
+  background: #ddd;
+}
+.order-express-info .order-content {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+.order-express-info .order-content .order-td {
+  width: 200px;
+  font-size: 14px;
+  border-right: 1px solid #ececec;
+  text-align: center;
+  padding: 10px 0;
+}
+.order-express-info .order-content .order-td a {
+  display: inline-block;
+  width: 100%;
+  color: #00a6de;
+  margin: 5px 0 0 0;
+}
+.order-express-info .order-content .order-td .continue-shopping {
+  width: 80px;
+  padding: 5px 10px;
+  margin: 0;
+  border: 1px solid #ccc;
+  display: inline-block;
+  transition: color 0.3s ease, border-color 0.3s ease;
+  color: #666;
+}
+.order-express-info .order-content .order-td .continue-shopping:hover {
+  border-color: #00a6de;
+  color: #00a6de;
+}
+.order-express-info .order-content .order-td:first-child {
+  width: 660px;
+}
+.order-express-info::after {
+  position: absolute;
+  content: '';
+  width: 100%;
+  height: 1px;
+  border-bottom: 1px solid #ccc;
+  bottom: -30px;
+  left: 0;
+}
+.order-pay-info {
+  padding: 30px 0;
+  margin: 0 auto;
+  text-align: right;
+  width: 1060px;
+}
+.order-pay-info p {
+  padding: 5px 0;
+  font-size: 14px;
+  color: #666;
+}
+.order-pay-info p span {
+  display: inline-block;
+  width: 150px;
+}
+.order-pay-info p:last-child span:last-child {
+  color: #f00;
+  font-size: 16px;
+}
+.info-item {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #ececec;
+}
+.info-item .name {
+  float: left;
+  text-align: left;
+  width: 250px;
+  padding: 5px 0 20px 0;
+}
+.info-item .name a {
+  text-decoration: underline;
+  color: rgba(0, 161, 222, 0.9);
+}
+.info-item .name p {
+  color: #999;
+  margin: 10px 0 -10px 0;
+}
+.info-item .pic {
+  width: 220px;
+}
+.info-item .pic img {
+  margin: 10px 20px;
+  width: 100px;
+  height: 100px;
+}
+.info-item .price,
+.info-item .quantity {
+  width: 80px;
+  -webkit-align-self: center;
+      -ms-flex-item-align: center;
+          align-self: center;
+  color: #666;
+}
+.info-item:last-child {
+  border-bottom: none;
+}
