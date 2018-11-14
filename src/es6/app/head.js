@@ -5,6 +5,16 @@ import template from '../common/template';
 
 let mask = new Mask();
 
+if(window.sessionStorage.getItem('account')) {
+  let account = document.querySelector('.account'),
+    accontInfo = JSON.parse(window.sessionStorage.getItem('account'));
+  account.querySelector('img').setAttribute('src',accontInfo.icon);
+  account.querySelector('span').innerHTML = accontInfo.nickName;
+  account.style.display = '-webkit-flex';
+  document.querySelector('.to-login').style.display = 'none';
+  document.querySelector('.to-sign-up').style.display = 'none';
+}
+
 let dispatchSomrthing =  (bool) => {
   if (bool) {
     mask.show();
@@ -40,8 +50,7 @@ let toClose =  () => {
   searchInput.style.display = 'none';
   close.style.display = 'none';
   dispatchSomrthing(false);
-  searchInput.removeEventListener('keyup',keyUpEvent)
-
+  searchInput.removeEventListener('keyup',keyUpEvent);
 };
 
 let toShowLoginBox = () =>{
@@ -75,6 +84,14 @@ let toSumbitLoginData = () =>{
     toLogin({account:name.value,password:SHA256(psw.value)})
       .then(res=>{
         console.log(res);
+        toCloseLoginBox();
+        let account = document.querySelector('.account');
+        account.querySelector('img').setAttribute('src',res.icon);
+        account.querySelector('span').innerHTML = res.nickName;
+        account.style.display = '-webkit-flex';
+        document.querySelector('.to-login').style.display = 'none';
+        document.querySelector('.to-sign-up').style.display = 'none';
+        //window.sessionStorage.setItem('account',JSON.stringify(res));
       })
   }
 

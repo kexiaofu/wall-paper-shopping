@@ -12,6 +12,16 @@ var _template = _interopRequireDefault(require("../common/template"));
 
 var mask = new _mask.default();
 
+if (window.sessionStorage.getItem('account')) {
+  var account = document.querySelector('.account'),
+      accontInfo = JSON.parse(window.sessionStorage.getItem('account'));
+  account.querySelector('img').setAttribute('src', accontInfo.icon);
+  account.querySelector('span').innerHTML = accontInfo.nickName;
+  account.style.display = '-webkit-flex';
+  document.querySelector('.to-login').style.display = 'none';
+  document.querySelector('.to-sign-up').style.display = 'none';
+}
+
 var dispatchSomrthing = function dispatchSomrthing(bool) {
   if (bool) {
     mask.show();
@@ -81,6 +91,13 @@ var toSumbitLoginData = function toSumbitLoginData() {
       password: (0, _encrypt.default)(psw.value)
     }).then(function (res) {
       console.log(res);
+      toCloseLoginBox();
+      var account = document.querySelector('.account');
+      account.querySelector('img').setAttribute('src', res.icon);
+      account.querySelector('span').innerHTML = res.nickName;
+      account.style.display = '-webkit-flex';
+      document.querySelector('.to-login').style.display = 'none';
+      document.querySelector('.to-sign-up').style.display = 'none'; //window.sessionStorage.setItem('account',JSON.stringify(res));
     });
   }
 

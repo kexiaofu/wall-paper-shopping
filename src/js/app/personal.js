@@ -2463,18 +2463,148 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 
 var _api = require("../common/api");
 
+var _encrypt = _interopRequireDefault(require("../common/encrypt"));
+
 var _template = _interopRequireDefault(require("../common/template"));
 
-var address = [];
+var _tools = require("../common/tools");
+
+var address = [],
+    _provcince = '',
+    _city = '',
+    _district = '';
+
+_template.default.defaults.imports.formDate = function (val) {
+  return (0, _tools.format)(new Date(val), 'yyyy-MM-dd');
+};
+
+var addressList = [],
+    personalInfo = {};
 
 window.onload = function () {
-  (0, _api.getAddress)().then(function (res) {
+  /*getAddress().then(res=>{
     address = res.slice(0);
-    var html = (0, _template.default)('addr-info', {
-      data: res
-    });
+    let html = template('addr-info',{data:res});
     document.querySelector('.addr-info').innerHTML = html;
+  })*/
+  getPersonalInfo();
+};
+
+var getPersonalInfo = function getPersonalInfo() {
+  (0, _api.addressConfig)().then(function (res) {
+    console.log(res);
+    addressList = res;
+    (0, _api.getUserInfo)().then(function (info) {
+      console.log(info);
+      document.querySelector('.account-personal-icon').setAttribute('src', info.icon);
+      document.querySelector('.account-nick-name').innerHTML = info.nickName;
+      console.log(document.querySelector('.account-personal-icon'), 1234);
+      info.provinceList = res.map(function (item) {
+        return item.name;
+      });
+
+      for (var i = res.length - 1; i >= 0; i--) {
+        if (info.address.indexOf(res[i].name) > -1) {
+          info.province = res[i].name;
+          var cities = res[i].cities;
+          info.cities = cities;
+
+          for (var c = cities.length - 1; c >= 0; c--) {
+            if (info.address.indexOf(cities[c].name) > -1) {
+              info.city = cities[c].name;
+              var districts = cities[c].districts;
+              info.districts = districts;
+
+              for (var d = districts.length - 1; d >= 0; d--) {
+                if (info.address.indexOf(districts[d].name) > -1) {
+                  info.district = districts[d].name;
+                  break;
+                }
+              }
+
+              break;
+            }
+          }
+
+          break;
+        }
+      }
+
+      personalInfo = JSON.parse(JSON.stringify(info));
+      var hash = window.location.hash;
+
+      if (hash !== null) {
+        changeTab(hash.substring(1));
+      } else {
+        changeTab();
+      }
+    });
   });
+};
+
+window.onhashchange = function () {
+  console.log(window.location.hash);
+  changeTab(window.location.hash.substring(1));
+};
+
+var changeTab = function changeTab(type) {
+  console.log(type);
+  var html = '';
+  var opActive = document.querySelector('.op-active');
+
+  if (opActive !== null) {
+    opActive.className = opActive.className.replace('op-active', '');
+  }
+
+  switch (type) {
+    case 'address':
+      (0, _api.getAddress)().then(function (res) {
+        address = res;
+        html = (0, _template.default)('addr-info', {
+          data: res
+        });
+        document.querySelector('.op-content').innerHTML = html;
+      });
+      document.querySelector('.address').className += ' op-active';
+      break;
+
+    case 'update-password':
+      html = (0, _template.default)('update-password-container', {
+        data: []
+      });
+      document.querySelector('.update-password').className += ' op-active';
+      break;
+
+    case 'personal-icon':
+      html = (0, _template.default)('update-personal-icon', {
+        data: []
+      });
+      document.querySelector('.personal-icon').className += ' op-active';
+      break;
+
+    case 'personal-info':
+    default:
+      html = (0, _template.default)('personal-info', {
+        data: personalInfo
+      });
+      document.querySelector('.personal-info').className += ' op-active';
+      break;
+  }
+
+  if (html !== '') {
+    document.querySelector('.op-content').innerHTML = html;
+  }
+
+  if (type === 'personal-info' || type === undefined) {
+    var addrSelectContainer = (0, _template.default)('addr-select-container', {
+      data: info
+    });
+    document.querySelector('.addr-select-container').innerHTML = addrSelectContainer;
+  }
+};
+
+window.showContent = function (type) {
+  return changeTab(type);
 };
 
 window.toSetDefaultAddress = function (ele) {
@@ -2488,7 +2618,7 @@ window.toSetDefaultAddress = function (ele) {
     var html = (0, _template.default)('addr-info', {
       data: address
     });
-    document.querySelector('.addr-info').innerHTML = html;
+    document.querySelector('.op-content').innerHTML = html;
   });
 };
 
@@ -2505,7 +2635,125 @@ window.toDeleteAddress = function (ele) {
     document.querySelector('.addr-info').innerHTML = html;
   });
 };
-},{"../common/api":35,"../common/template":36,"@babel/runtime/helpers/interopRequireDefault":2}],35:[function(require,module,exports){
+
+window.toShowContainer = function (code) {
+  switch (code) {
+    case 0:
+      document.querySelector('.addr-province').style.display = 'block';
+      break;
+
+    case 1:
+      document.querySelector('.addr-city').style.display = 'block';
+      break;
+
+    case 2:
+      document.querySelector('.addr-district').style.display = 'block';
+      break;
+  }
+
+  console.log(123);
+};
+
+window.selectThisArea = function (code, ele) {
+  switch (code) {
+    case 0:
+      _provcince = ele.innerHTML;
+
+      for (var i = addressList.length - 1; i >= 0; i--) {
+        if (addressList[i].name === _provcince) {
+          var province = addressList[i];
+          personalInfo.province = _provcince;
+          personalInfo.city = province.cities[0].name;
+          personalInfo.cities = province.cities;
+          personalInfo.district = province.cities[0].districts[0].name;
+          personalInfo.districts = province.cities[0].districts;
+        }
+      }
+
+      break;
+
+    case 1:
+      _city = ele.innerHTML;
+      var cities = personalInfo.cities;
+
+      for (var _i = cities.length - 1; _i >= 0; _i--) {
+        if (cities[_i].name === _city) {
+          var city = cities[_i];
+          personalInfo.city = city.name;
+          personalInfo.district = city.districts[0].name;
+          personalInfo.districts = city.districts;
+        }
+      }
+
+      break;
+
+    case 2:
+      _district = ele.innerHTML;
+      personalInfo.district = _district;
+      break;
+  }
+
+  var html = (0, _template.default)('addr-select-container', {
+    data: personalInfo
+  });
+  document.querySelector('.addr-select-container').innerHTML = html;
+  console.log(ele.innerHTML);
+};
+
+window.toHideContainer = function (code) {
+  console.log(code);
+
+  switch (code) {
+    case 0:
+      document.querySelector('.addr-province').style.display = 'none';
+      break;
+
+    case 1:
+      document.querySelector('.addr-city').style.display = 'none';
+      break;
+
+    case 2:
+      document.querySelector('.addr-district').style.display = 'none';
+      break;
+  }
+};
+
+window.toSavePersonalInfo = function () {
+  var sex = null;
+  console.log(document.querySelector('input:checked').value);
+  var obj = {
+    account: personalInfo.account,
+    address: personalInfo.province + personalInfo.city + personalInfo.district,
+    birthday: document.querySelector('.birthday').value,
+    nickName: document.querySelector('.nick-name').value,
+    sex: document.querySelector('input:checked').value,
+    introduction: document.querySelector('#introduction').value
+  };
+  (0, _api.updateUserInfo)(obj).then(function (res) {
+    console.log(res);
+  });
+  console.log(obj);
+}; //更新密码
+
+
+window.toSaveNewPasswork = function () {
+  var oldP = document.querySelector('.old-password'),
+      newP = document.querySelector('.new-password'),
+      newP2 = document.querySelector('.new-password-again');
+
+  if (newP.value !== newP2.value) {
+    alert('新密码输入不正确');
+    return;
+  }
+
+  (0, _api.updatePassword)({
+    oldPassword: (0, _encrypt.default)(oldP.value),
+    newPassword: (0, _encrypt.default)(newP.value)
+  }).then(function (res) {
+    console.log(res);
+  });
+};
+},{"../common/api":35,"../common/encrypt":36,"../common/template":37,"../common/tools":38,"@babel/runtime/helpers/interopRequireDefault":2}],35:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -2513,7 +2761,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.payOrder = exports.checkOrder = exports.submitOrder = exports.getOrderStatus = exports.addOrder = exports.getOrder = exports.deleteShoppingCart = exports.addShoppingCart = exports.getShoppingCarInfo = exports.addressOperate = exports.setDefaultAddress = exports.getAddress = exports.toLogin = exports.getHomeGroup = exports.getProductionList = exports.getCarousel = exports.getTags = exports.getProductDetail = exports.getProductClassify = exports.getAllProductList = void 0;
+exports.addressConfig = exports.payOrder = exports.checkOrder = exports.submitOrder = exports.getOrderStatus = exports.addOrder = exports.getOrder = exports.deleteShoppingCart = exports.addShoppingCart = exports.getShoppingCarInfo = exports.updatePassword = exports.updateUserInfo = exports.getUserInfo = exports.addressOperate = exports.setDefaultAddress = exports.getAddress = exports.toLogin = exports.getHomeGroup = exports.getProductionList = exports.getCarousel = exports.getTags = exports.getProductDetail = exports.getProductClassify = exports.getAllProductList = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -2529,39 +2777,38 @@ function () {
   var _ref = (0, _asyncToGenerator2.default)(
   /*#__PURE__*/
   _regenerator.default.mark(function _callee(name, url, method, data) {
-    var storage,
+    var duration,
         storageTime,
         _args = arguments;
     return _regenerator.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            storage = _args.length > 4 && _args[4] !== undefined ? _args[4] : true;
-            console.log(storage, '---');
+            duration = _args.length > 4 && _args[4] !== undefined ? _args[4] : 0;
             storageTime = new Date().getTime();
 
-            if (!(storage && window.sessionStorage.getItem(name) !== null && storageTime - window.sessionStorage.getItem(name + '-time') < period)) {
-              _context.next = 7;
+            if (!(duration > 0 && window.sessionStorage.getItem(name) !== null && storageTime - window.sessionStorage.getItem(name + '-time') < duration)) {
+              _context.next = 6;
               break;
             }
 
             return _context.abrupt("return", JSON.parse(window.sessionStorage.getItem(name)));
 
-          case 7:
+          case 6:
             console.log("require ".concat(name, " again"));
 
             if (!(method === undefined || method === null)) {
-              _context.next = 14;
+              _context.next = 13;
               break;
             }
 
-            _context.next = 11;
+            _context.next = 10;
             return _axios.default.get(url, {
               params: data
             }).then(function (res) {
               if (res.data.code === 2000) {
-                storage && window.sessionStorage.setItem(name, JSON.stringify(res.data.result));
-                storage && window.sessionStorage.setItem(name + '-time', storageTime);
+                duration > 0 && window.sessionStorage.setItem(name, JSON.stringify(res.data.result));
+                duration > 0 && window.sessionStorage.setItem(name + '-time', storageTime);
                 return res.data.result;
               } else {
                 return alert(res.data.msg);
@@ -2570,15 +2817,15 @@ function () {
               return alert(err);
             });
 
-          case 11:
+          case 10:
             return _context.abrupt("return", _context.sent);
 
-          case 14:
-            _context.next = 16;
+          case 13:
+            _context.next = 15;
             return _axios.default.post(url, data).then(function (res) {
               if (res.data.code === 2000) {
-                storage && window.sessionStorage.setItem(name, JSON.stringify(res.data.result));
-                storage && window.sessionStorage.setItem(name + '-time', storageTime);
+                duration > 0 && window.sessionStorage.setItem(name, JSON.stringify(res.data.result));
+                duration > 0 && window.sessionStorage.setItem(name + '-time', storageTime);
                 return res.data.result;
               } else {
                 return alert(res.data.msg);
@@ -2587,10 +2834,10 @@ function () {
               return alert(err);
             });
 
-          case 16:
+          case 15:
             return _context.abrupt("return", _context.sent);
 
-          case 17:
+          case 16:
           case "end":
             return _context.stop();
         }
@@ -2615,7 +2862,7 @@ function () {
         switch (_context2.prev = _context2.next) {
           case 0:
             _context2.next = 2;
-            return apiRequire('getAllProductList', '/api/Product/getproductList', null, data, false);
+            return apiRequire('getAllProductList', '/api/Product/getproductList', null, data);
 
           case 2:
             return _context2.abrupt("return", _context2.sent);
@@ -2677,7 +2924,7 @@ function () {
         switch (_context4.prev = _context4.next) {
           case 0:
             _context4.next = 2;
-            return apiRequire('getProductDetail', '/api/Product/GetProductDetail', null, data, false);
+            return apiRequire('getProductDetail', '/api/Product/GetProductDetail', null, data);
 
           case 2:
             return _context4.abrupt("return", _context4.sent);
@@ -2708,7 +2955,7 @@ function () {
         switch (_context5.prev = _context5.next) {
           case 0:
             _context5.next = 2;
-            return apiRequire('getTags', '/api/Product/getTags', null, null, true);
+            return apiRequire('getTags', '/api/Product/getTags', null, null, period);
 
           case 2:
             return _context5.abrupt("return", _context5.sent);
@@ -2740,7 +2987,7 @@ function () {
         switch (_context6.prev = _context6.next) {
           case 0:
             _context6.next = 2;
-            return apiRequire('getCarousel', '/api/Home/GetCarousel');
+            return apiRequire('getCarousel', '/api/Home/GetCarousel', null, null, period);
 
           case 2:
             return _context6.abrupt("return", _context6.sent);
@@ -2771,7 +3018,7 @@ function () {
         switch (_context7.prev = _context7.next) {
           case 0:
             _context7.next = 2;
-            return apiRequire('getProductionList', '/api/Home/GetHomeProduct');
+            return apiRequire('getProductionList', '/api/Home/GetHomeProduct', null, null, period);
 
           case 2:
             return _context7.abrupt("return", _context7.sent);
@@ -2802,7 +3049,7 @@ function () {
         switch (_context8.prev = _context8.next) {
           case 0:
             _context8.next = 2;
-            return apiRequire('getHomeGroup', '/api/Home/GetHomeGroup', null, null, true);
+            return apiRequire('getHomeGroup', '/api/Home/GetHomeGroup', null, null, period);
 
           case 2:
             return _context8.abrupt("return", _context8.sent);
@@ -2834,7 +3081,7 @@ function () {
         switch (_context9.prev = _context9.next) {
           case 0:
             _context9.next = 2;
-            return apiRequire('account', '/api/account/login', null, account);
+            return apiRequire('account', '/api/account/login', null, account, period);
 
           case 2:
             return _context9.abrupt("return", _context9.sent);
@@ -2865,7 +3112,7 @@ function () {
         switch (_context10.prev = _context10.next) {
           case 0:
             _context10.next = 2;
-            return apiRequire('getAddress', '/api/account/GetAddressList', null, null, false);
+            return apiRequire('getAddress', '/api/account/GetAddressList', null, null);
 
           case 2:
             return _context10.abrupt("return", _context10.sent);
@@ -2896,7 +3143,7 @@ function () {
         switch (_context11.prev = _context11.next) {
           case 0:
             _context11.next = 2;
-            return apiRequire('setDefaultAddress', '/api/account/SetDefaultAddress', 'post', data, false);
+            return apiRequire('setDefaultAddress', '/api/account/SetDefaultAddress', 'post', data);
 
           case 2:
             return _context11.abrupt("return", _context11.sent);
@@ -2927,7 +3174,7 @@ function () {
         switch (_context12.prev = _context12.next) {
           case 0:
             _context12.next = 2;
-            return apiRequire('addressOperate', '/api/account/AddressOperate', 'post', data, false);
+            return apiRequire('addressOperate', '/api/account/AddressOperate', 'post', data);
 
           case 2:
             return _context12.abrupt("return", _context12.sent);
@@ -2943,12 +3190,11 @@ function () {
   return function addressOperate(_x9) {
     return _ref12.apply(this, arguments);
   };
-}(); //order
-
+}();
 
 exports.addressOperate = addressOperate;
 
-var getShoppingCarInfo =
+var getUserInfo =
 /*#__PURE__*/
 function () {
   var _ref13 = (0, _asyncToGenerator2.default)(
@@ -2959,7 +3205,7 @@ function () {
         switch (_context13.prev = _context13.next) {
           case 0:
             _context13.next = 2;
-            return apiRequire('getShoppingCarInfo', '/api/order/GetShoppingCart', null, data, false);
+            return apiRequire('addressOperate', '/api/account/GetUserInfo', null, data);
 
           case 2:
             return _context13.abrupt("return", _context13.sent);
@@ -2972,14 +3218,14 @@ function () {
     }, _callee13, this);
   }));
 
-  return function getShoppingCarInfo(_x10) {
+  return function getUserInfo(_x10) {
     return _ref13.apply(this, arguments);
   };
 }();
 
-exports.getShoppingCarInfo = getShoppingCarInfo;
+exports.getUserInfo = getUserInfo;
 
-var addShoppingCart =
+var updateUserInfo =
 /*#__PURE__*/
 function () {
   var _ref14 = (0, _asyncToGenerator2.default)(
@@ -2990,7 +3236,7 @@ function () {
         switch (_context14.prev = _context14.next) {
           case 0:
             _context14.next = 2;
-            return apiRequire('addShoppingCart', '/api/order/AddShoppingCart', 'post', data, false);
+            return apiRequire('updateUserInfo', '/api/account/UpdateUserInfo', 'post', data);
 
           case 2:
             return _context14.abrupt("return", _context14.sent);
@@ -3003,14 +3249,14 @@ function () {
     }, _callee14, this);
   }));
 
-  return function addShoppingCart(_x11) {
+  return function updateUserInfo(_x11) {
     return _ref14.apply(this, arguments);
   };
 }();
 
-exports.addShoppingCart = addShoppingCart;
+exports.updateUserInfo = updateUserInfo;
 
-var deleteShoppingCart =
+var updatePassword =
 /*#__PURE__*/
 function () {
   var _ref15 = (0, _asyncToGenerator2.default)(
@@ -3021,7 +3267,7 @@ function () {
         switch (_context15.prev = _context15.next) {
           case 0:
             _context15.next = 2;
-            return apiRequire('deleteShoppingCart', '/api/order/DeleteShoppingCart', 'post', data, false);
+            return apiRequire('updatePassword', '/api/account/UpdatePassword', 'post', data);
 
           case 2:
             return _context15.abrupt("return", _context15.sent);
@@ -3034,14 +3280,15 @@ function () {
     }, _callee15, this);
   }));
 
-  return function deleteShoppingCart(_x12) {
+  return function updatePassword(_x12) {
     return _ref15.apply(this, arguments);
   };
-}();
+}(); //order
 
-exports.deleteShoppingCart = deleteShoppingCart;
 
-var getOrder =
+exports.updatePassword = updatePassword;
+
+var getShoppingCarInfo =
 /*#__PURE__*/
 function () {
   var _ref16 = (0, _asyncToGenerator2.default)(
@@ -3052,7 +3299,7 @@ function () {
         switch (_context16.prev = _context16.next) {
           case 0:
             _context16.next = 2;
-            return apiRequire('getOrder', '/api/order/GetOrder', null, data, false);
+            return apiRequire('getShoppingCarInfo', '/api/order/GetShoppingCart', null, data);
 
           case 2:
             return _context16.abrupt("return", _context16.sent);
@@ -3065,14 +3312,14 @@ function () {
     }, _callee16, this);
   }));
 
-  return function getOrder(_x13) {
+  return function getShoppingCarInfo(_x13) {
     return _ref16.apply(this, arguments);
   };
 }();
 
-exports.getOrder = getOrder;
+exports.getShoppingCarInfo = getShoppingCarInfo;
 
-var addOrder =
+var addShoppingCart =
 /*#__PURE__*/
 function () {
   var _ref17 = (0, _asyncToGenerator2.default)(
@@ -3083,7 +3330,7 @@ function () {
         switch (_context17.prev = _context17.next) {
           case 0:
             _context17.next = 2;
-            return apiRequire('addOrder', '/api/order/AddOrder', 'post', data, false);
+            return apiRequire('addShoppingCart', '/api/order/AddShoppingCart', 'post', data);
 
           case 2:
             return _context17.abrupt("return", _context17.sent);
@@ -3096,14 +3343,14 @@ function () {
     }, _callee17, this);
   }));
 
-  return function addOrder(_x14) {
+  return function addShoppingCart(_x14) {
     return _ref17.apply(this, arguments);
   };
 }();
 
-exports.addOrder = addOrder;
+exports.addShoppingCart = addShoppingCart;
 
-var getOrderStatus =
+var deleteShoppingCart =
 /*#__PURE__*/
 function () {
   var _ref18 = (0, _asyncToGenerator2.default)(
@@ -3114,7 +3361,7 @@ function () {
         switch (_context18.prev = _context18.next) {
           case 0:
             _context18.next = 2;
-            return apiRequire('getOrderStatus', '/api/order/GetOrderStatus', null, data, false);
+            return apiRequire('deleteShoppingCart', '/api/order/DeleteShoppingCart', 'post', data);
 
           case 2:
             return _context18.abrupt("return", _context18.sent);
@@ -3127,14 +3374,14 @@ function () {
     }, _callee18, this);
   }));
 
-  return function getOrderStatus(_x15) {
+  return function deleteShoppingCart(_x15) {
     return _ref18.apply(this, arguments);
   };
 }();
 
-exports.getOrderStatus = getOrderStatus;
+exports.deleteShoppingCart = deleteShoppingCart;
 
-var submitOrder =
+var getOrder =
 /*#__PURE__*/
 function () {
   var _ref19 = (0, _asyncToGenerator2.default)(
@@ -3145,7 +3392,7 @@ function () {
         switch (_context19.prev = _context19.next) {
           case 0:
             _context19.next = 2;
-            return apiRequire('submitOrder', '/api/order/SubmitOrder', 'post', data, false);
+            return apiRequire('getOrder', '/api/order/GetOrder', null, data);
 
           case 2:
             return _context19.abrupt("return", _context19.sent);
@@ -3158,14 +3405,14 @@ function () {
     }, _callee19, this);
   }));
 
-  return function submitOrder(_x16) {
+  return function getOrder(_x16) {
     return _ref19.apply(this, arguments);
   };
 }();
 
-exports.submitOrder = submitOrder;
+exports.getOrder = getOrder;
 
-var checkOrder =
+var addOrder =
 /*#__PURE__*/
 function () {
   var _ref20 = (0, _asyncToGenerator2.default)(
@@ -3176,7 +3423,7 @@ function () {
         switch (_context20.prev = _context20.next) {
           case 0:
             _context20.next = 2;
-            return apiRequire('checkOrder', '/api/order/CheckOrderPaid', null, data, false);
+            return apiRequire('addOrder', '/api/order/AddOrder', 'post', data);
 
           case 2:
             return _context20.abrupt("return", _context20.sent);
@@ -3189,15 +3436,14 @@ function () {
     }, _callee20, this);
   }));
 
-  return function checkOrder(_x17) {
+  return function addOrder(_x17) {
     return _ref20.apply(this, arguments);
   };
-}(); //pay
+}();
 
+exports.addOrder = addOrder;
 
-exports.checkOrder = checkOrder;
-
-var payOrder =
+var getOrderStatus =
 /*#__PURE__*/
 function () {
   var _ref21 = (0, _asyncToGenerator2.default)(
@@ -3208,7 +3454,7 @@ function () {
         switch (_context21.prev = _context21.next) {
           case 0:
             _context21.next = 2;
-            return apiRequire('payOrder', '/api/pay/PayOrder', null, data, false);
+            return apiRequire('getOrderStatus', '/api/order/GetOrderStatus', null, data);
 
           case 2:
             return _context21.abrupt("return", _context21.sent);
@@ -3221,15 +3467,295 @@ function () {
     }, _callee21, this);
   }));
 
-  return function payOrder(_x18) {
+  return function getOrderStatus(_x18) {
     return _ref21.apply(this, arguments);
+  };
+}();
+
+exports.getOrderStatus = getOrderStatus;
+
+var submitOrder =
+/*#__PURE__*/
+function () {
+  var _ref22 = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee22(data) {
+    return _regenerator.default.wrap(function _callee22$(_context22) {
+      while (1) {
+        switch (_context22.prev = _context22.next) {
+          case 0:
+            _context22.next = 2;
+            return apiRequire('submitOrder', '/api/order/SubmitOrder', 'post', data);
+
+          case 2:
+            return _context22.abrupt("return", _context22.sent);
+
+          case 3:
+          case "end":
+            return _context22.stop();
+        }
+      }
+    }, _callee22, this);
+  }));
+
+  return function submitOrder(_x19) {
+    return _ref22.apply(this, arguments);
+  };
+}();
+
+exports.submitOrder = submitOrder;
+
+var checkOrder =
+/*#__PURE__*/
+function () {
+  var _ref23 = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee23(data) {
+    return _regenerator.default.wrap(function _callee23$(_context23) {
+      while (1) {
+        switch (_context23.prev = _context23.next) {
+          case 0:
+            _context23.next = 2;
+            return apiRequire('checkOrder', '/api/order/CheckOrderPaid', null, data);
+
+          case 2:
+            return _context23.abrupt("return", _context23.sent);
+
+          case 3:
+          case "end":
+            return _context23.stop();
+        }
+      }
+    }, _callee23, this);
+  }));
+
+  return function checkOrder(_x20) {
+    return _ref23.apply(this, arguments);
+  };
+}(); //pay
+
+
+exports.checkOrder = checkOrder;
+
+var payOrder =
+/*#__PURE__*/
+function () {
+  var _ref24 = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee24(data) {
+    return _regenerator.default.wrap(function _callee24$(_context24) {
+      while (1) {
+        switch (_context24.prev = _context24.next) {
+          case 0:
+            _context24.next = 2;
+            return apiRequire('payOrder', '/api/pay/PayOrder', null, data);
+
+          case 2:
+            return _context24.abrupt("return", _context24.sent);
+
+          case 3:
+          case "end":
+            return _context24.stop();
+        }
+      }
+    }, _callee24, this);
+  }));
+
+  return function payOrder(_x21) {
+    return _ref24.apply(this, arguments);
+  };
+}(); //config
+
+
+exports.payOrder = payOrder;
+
+var addressConfig =
+/*#__PURE__*/
+function () {
+  var _ref25 = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee25() {
+    return _regenerator.default.wrap(function _callee25$(_context25) {
+      while (1) {
+        switch (_context25.prev = _context25.next) {
+          case 0:
+            _context25.next = 2;
+            return apiRequire('addressConfig', '/api/config/GetAddressConfig', null, null, 600000);
+
+          case 2:
+            return _context25.abrupt("return", _context25.sent);
+
+          case 3:
+          case "end":
+            return _context25.stop();
+        }
+      }
+    }, _callee25, this);
+  }));
+
+  return function addressConfig() {
+    return _ref25.apply(this, arguments);
   };
 }(); ///api/order/AddShoppingCart
 //getProductClassify,api/Product/GetProductDetail?id=
 
 
-exports.payOrder = payOrder;
+exports.addressConfig = addressConfig;
 },{"@babel/runtime/helpers/asyncToGenerator":1,"@babel/runtime/helpers/interopRequireDefault":2,"@babel/runtime/regenerator":4,"axios":5}],36:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+/**
+*
+* Secure Hash Algorithm (SHA256)
+* http://www.webtoolkit.info/
+*
+* Original code by Angel Marin, Paul Johnston.
+*
+**/
+var SHA256 = function SHA256(s) {
+  var chrsz = 8;
+  var hexcase = 0;
+
+  function safe_add(x, y) {
+    var lsw = (x & 0xFFFF) + (y & 0xFFFF);
+    var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
+    return msw << 16 | lsw & 0xFFFF;
+  }
+
+  function S(X, n) {
+    return X >>> n | X << 32 - n;
+  }
+
+  function R(X, n) {
+    return X >>> n;
+  }
+
+  function Ch(x, y, z) {
+    return x & y ^ ~x & z;
+  }
+
+  function Maj(x, y, z) {
+    return x & y ^ x & z ^ y & z;
+  }
+
+  function Sigma0256(x) {
+    return S(x, 2) ^ S(x, 13) ^ S(x, 22);
+  }
+
+  function Sigma1256(x) {
+    return S(x, 6) ^ S(x, 11) ^ S(x, 25);
+  }
+
+  function Gamma0256(x) {
+    return S(x, 7) ^ S(x, 18) ^ R(x, 3);
+  }
+
+  function Gamma1256(x) {
+    return S(x, 17) ^ S(x, 19) ^ R(x, 10);
+  }
+
+  function core_sha256(m, l) {
+    var K = new Array(0x428A2F98, 0x71374491, 0xB5C0FBCF, 0xE9B5DBA5, 0x3956C25B, 0x59F111F1, 0x923F82A4, 0xAB1C5ED5, 0xD807AA98, 0x12835B01, 0x243185BE, 0x550C7DC3, 0x72BE5D74, 0x80DEB1FE, 0x9BDC06A7, 0xC19BF174, 0xE49B69C1, 0xEFBE4786, 0xFC19DC6, 0x240CA1CC, 0x2DE92C6F, 0x4A7484AA, 0x5CB0A9DC, 0x76F988DA, 0x983E5152, 0xA831C66D, 0xB00327C8, 0xBF597FC7, 0xC6E00BF3, 0xD5A79147, 0x6CA6351, 0x14292967, 0x27B70A85, 0x2E1B2138, 0x4D2C6DFC, 0x53380D13, 0x650A7354, 0x766A0ABB, 0x81C2C92E, 0x92722C85, 0xA2BFE8A1, 0xA81A664B, 0xC24B8B70, 0xC76C51A3, 0xD192E819, 0xD6990624, 0xF40E3585, 0x106AA070, 0x19A4C116, 0x1E376C08, 0x2748774C, 0x34B0BCB5, 0x391C0CB3, 0x4ED8AA4A, 0x5B9CCA4F, 0x682E6FF3, 0x748F82EE, 0x78A5636F, 0x84C87814, 0x8CC70208, 0x90BEFFFA, 0xA4506CEB, 0xBEF9A3F7, 0xC67178F2);
+    var HASH = new Array(0x6A09E667, 0xBB67AE85, 0x3C6EF372, 0xA54FF53A, 0x510E527F, 0x9B05688C, 0x1F83D9AB, 0x5BE0CD19);
+    var W = new Array(64);
+    var a, b, c, d, e, f, g, h, i, j;
+    var T1, T2;
+    m[l >> 5] |= 0x80 << 24 - l % 32;
+    m[(l + 64 >> 9 << 4) + 15] = l;
+
+    for (var i = 0; i < m.length; i += 16) {
+      a = HASH[0];
+      b = HASH[1];
+      c = HASH[2];
+      d = HASH[3];
+      e = HASH[4];
+      f = HASH[5];
+      g = HASH[6];
+      h = HASH[7];
+
+      for (var j = 0; j < 64; j++) {
+        if (j < 16) W[j] = m[j + i];else W[j] = safe_add(safe_add(safe_add(Gamma1256(W[j - 2]), W[j - 7]), Gamma0256(W[j - 15])), W[j - 16]);
+        T1 = safe_add(safe_add(safe_add(safe_add(h, Sigma1256(e)), Ch(e, f, g)), K[j]), W[j]);
+        T2 = safe_add(Sigma0256(a), Maj(a, b, c));
+        h = g;
+        g = f;
+        f = e;
+        e = safe_add(d, T1);
+        d = c;
+        c = b;
+        b = a;
+        a = safe_add(T1, T2);
+      }
+
+      HASH[0] = safe_add(a, HASH[0]);
+      HASH[1] = safe_add(b, HASH[1]);
+      HASH[2] = safe_add(c, HASH[2]);
+      HASH[3] = safe_add(d, HASH[3]);
+      HASH[4] = safe_add(e, HASH[4]);
+      HASH[5] = safe_add(f, HASH[5]);
+      HASH[6] = safe_add(g, HASH[6]);
+      HASH[7] = safe_add(h, HASH[7]);
+    }
+
+    return HASH;
+  }
+
+  function str2binb(str) {
+    var bin = Array();
+    var mask = (1 << chrsz) - 1;
+
+    for (var i = 0; i < str.length * chrsz; i += chrsz) {
+      bin[i >> 5] |= (str.charCodeAt(i / chrsz) & mask) << 24 - i % 32;
+    }
+
+    return bin;
+  }
+
+  function Utf8Encode(string) {
+    string = string.replace(/\r\n/g, "\n");
+    var utftext = "";
+
+    for (var n = 0; n < string.length; n++) {
+      var c = string.charCodeAt(n);
+
+      if (c < 128) {
+        utftext += String.fromCharCode(c);
+      } else if (c > 127 && c < 2048) {
+        utftext += String.fromCharCode(c >> 6 | 192);
+        utftext += String.fromCharCode(c & 63 | 128);
+      } else {
+        utftext += String.fromCharCode(c >> 12 | 224);
+        utftext += String.fromCharCode(c >> 6 & 63 | 128);
+        utftext += String.fromCharCode(c & 63 | 128);
+      }
+    }
+
+    return utftext;
+  }
+
+  function binb2hex(binarray) {
+    var hex_tab = hexcase ? "0123456789ABCDEF" : "0123456789abcdef";
+    var str = "";
+
+    for (var i = 0; i < binarray.length * 4; i++) {
+      str += hex_tab.charAt(binarray[i >> 2] >> (3 - i % 4) * 8 + 4 & 0xF) + hex_tab.charAt(binarray[i >> 2] >> (3 - i % 4) * 8 & 0xF);
+    }
+
+    return str;
+  }
+
+  s = Utf8Encode(s);
+  return binb2hex(core_sha256(str2binb(s), s.length * chrsz));
+};
+
+var _default = SHA256;
+exports.default = _default;
+},{}],37:[function(require,module,exports){
 (function (process){
 "use strict";
 
@@ -4186,4 +4712,66 @@ var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
   }]);
 });
 }).call(this,require('_process'))
-},{"@babel/runtime/helpers/interopRequireDefault":2,"@babel/runtime/helpers/typeof":3,"_process":31}]},{},[34]);
+},{"@babel/runtime/helpers/interopRequireDefault":2,"@babel/runtime/helpers/typeof":3,"_process":31}],38:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.format = exports.getParameter = exports.imageLazyLoad = void 0;
+
+var imageLazyLoad = function imageLazyLoad(ele) {
+  var clientHeight = document.documentElement.clientHeight,
+      scrollTop = document.documentElement.scrollTop,
+      l = ele.length;
+
+  for (var i = 0; i < l; i++) {
+    if (ele[i].offsetTop < clientHeight + scrollTop && ele[i].getAttribute('data-is-load') !== 'true') {
+      ele[i].setAttribute('data-is-load', 'true');
+      ele[i].src = ele[i].getAttribute('data-origin-src'); //console.log(ele[i].getAttribute('data-origin-src'))
+    }
+  }
+};
+
+exports.imageLazyLoad = imageLazyLoad;
+
+var getParameter = function getParameter(sProp) {
+  var re = new RegExp(sProp + "=([^\&]*)", "i");
+  var a = re.exec(document.location.search);
+  if (a == null) return null;
+  return a[1];
+};
+
+exports.getParameter = getParameter;
+
+var format = function format(date, fmt) {
+  var o = {
+    "M+": date.getMonth() + 1,
+    //月份
+    "d+": date.getDate(),
+    //日
+    "h+": date.getHours(),
+    //小时
+    "m+": date.getMinutes(),
+    //分
+    "s+": date.getSeconds(),
+    //秒
+    "q+": Math.floor((date.getMonth() + 3) / 3),
+    //季度
+    "S": date.getMilliseconds() //毫秒
+
+  };
+
+  if (/(y+)/.test(fmt)) {
+    fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+  }
+
+  for (var k in o) {
+    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
+  }
+
+  return fmt;
+};
+
+exports.format = format;
+},{}]},{},[34]);

@@ -38,6 +38,17 @@ p {
   padding: 60px 0 0 0;
   box-sizing: border-box;
 }
+/*
+view-image
+*/
+.view-image {
+  width: 100%;
+  height: 180px;
+}
+.view-image img {
+  height: 180px;
+  width: 100%;
+}
 /*head*/
 .nav-bar {
   width: 100%;
@@ -101,6 +112,16 @@ p {
 }
 .nav-bar .func-item .shopping-car {
   font-size: 20px;
+}
+.nav-bar .account {
+  display: none;
+}
+.nav-bar .account img {
+  width: 26px;
+  height: 26px;
+  border-radius: 50px;
+  padding: 0;
+  margin: 0 10px;
 }
 .nav-bar .hover-blue:hover {
   color: #00A6DE;

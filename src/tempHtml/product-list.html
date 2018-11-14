@@ -30,7 +30,14 @@
                 </a>
             </div>
             <div class="product-content">
-                <p class="product-name">{{ value.name }}</p>
+                <p class="product-name">
+                    <span>{{ value.name }}</span>
+                    <span>￥{{ value.basePrice }}</span>
+                </p>
+                <p class="create-user">
+                    <span>{{ value.createUserName }}</span>
+                    <span><i class="iconfont icon-like"></i>{{ value.enjoyNum }}</span>
+                </p>
             </div>
         </div>
         {{/each}}

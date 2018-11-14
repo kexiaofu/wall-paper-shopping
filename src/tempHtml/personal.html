@@ -10,47 +10,44 @@
 </head>
 <body>
 @@include('./common/head.html')
-    <div id="personal" class="personal container">
-        <div class="personal-left-side">
-
-        </div>
-        <div class="personal-right-side">
-            <div class="personal-info">
-                <div class="base-info">
-                    <div class="pic">
-                        <img src="../images/1.jpg" alt="">
-                    </div>
-                    <div class="name">name</div>
-                    <div class="addr">
-                        <a href="./my-addr.html">我的收货地址</a>
-                    </div>
-                </div>
-                <div class="order-type">
-                    <div class="order-item">
-                        <a href="./my-order.html#wait2pay">待付款</a>
-                    </div>
-                    <div class="order-item">
-                        <a href="./my-order.html#wait2send">待发货</a>
-                    </div>
-                    <div class="order-item">
-                        <a href="./my-order.html#wait2take">待收货</a>
-                    </div>
-                </div>
-            </div>
-            <div class="info-box express-info">
-                <div class="title">
-                    <i class="iconfont icon-express"></i>
-                    我的快递</div>
-                <div class="content">
-                    暂无
-                </div>
-            </div>
-            <div class="info-box addr-info"></div>
+<div id="personal" class="personal container">
+    <div class="view-image">
+        <img src="../images/1.jpg" alt="">
+    </div>
+    <div class="account-name-container">
+        <div class="account-name">
+            <img src="../images/1.jpg" alt="" class="account-personal-icon">
+            <span class="account-nick-name"></span>
         </div>
     </div>
+    <div class="account-op-container">
+        <div class="op-title">
+            <ul>
+                <li class="personal-info op-active" onclick="showContent('personal-info')">
+                    <a href="./personal.html#personal-info">个人信息</a>
+                </li>
+                <li>
+                    <a href="./my-order.html">我的订单</a>
+                </li>
+                <li class="update-password" onclick="showContent('update-password')">
+                    <a href="./personal.html#update-password">修改密码</a>
+                </li>
+                <li class="address" onclick="showContent('address')">
+                    <a href="./personal.html#address">我的地址</a>
+                </li>
+                <li class="personal-icon"  onclick="showContent('personal-icon')">
+                    <a href="./personal.html#personal-icon">更换头像</a>
+                </li>
+            </ul>
+        </div>
+        <div class="op-content"></div>
+    </div>
+    <!--<div class="info-box addr-info"></div>-->
+</div>
+</div>
 
 
-<div class="my-modal">
+<!--<div class="my-modal">
     <div class="my-modal-title">
         新增/编辑地址
         <i class="iconfont icon-close"></i>
@@ -88,52 +85,192 @@
         </div>
     </div>
 
-</div>
+</div>-->
 
 @@include('./common/footer.html')
-<script id="addr-info" type="text/html">
-    <div class="title">
-        <i class="iconfont icon-address"></i>
-        我的地址簿
-        <span class="operate-btn">新增地址</span>
+
+<script id="personal-info" type="text/html">
+    <div class="op-box">
+        <div class="op-head">个人信息</div>
+        <div class="op-info">
+            <div class="op-item">
+                <span>登录账号</span>
+                <input type="text" placeholder="登录账号" disabled value={{ data.account }}>
+            </div>
+            <div class="op-item">
+                <span>昵称</span>
+                <input type="text" placeholder="昵称" value={{ data.nickName }} class="nick-name">
+            </div>
+            <div class="op-item">
+                <span>性别</span>
+                {{ if data.sex === 0 }}
+                <label for="sex-0">
+                    <input type="radio" class="sex-radio" name="sex" value="0" id="sex-0" checked>女
+                </label>
+                <label for="sex-1">
+                    <input type="radio" class="sex-radio" name="sex" value="1" id="sex-1">男
+                </label>
+                {{ else }}
+                <label for="sex-0">
+                    <input type="radio" class="sex-radio" name="sex" value="0" id="sex-0">女
+                </label>
+                <label for="sex-1">
+                    <input type="radio" class="sex-radio" name="sex" value="1" id="sex-1" checked>男
+                </label>
+                {{ /if }}
+            </div>
+            <div class="op-item">
+                <span>生日</span>
+                <input type="date" placeholder="生日" value={{ data.birthday | formDate }} class="birthday">
+            </div>
+            <div class="op-item">
+                <span>居住地</span>
+                <div class="addr-select-container"></div>
+            </div>
+            <div class="op-item">
+                <span>手机</span>
+                {{ if data.phone !== null && data.phone !== ""  }}
+                <span>{{ data.phone }}</span>
+                {{ else }}
+                <a href="./personal.html#bindingInfo">绑定手机</a>
+                {{ /if }}
+            </div>
+            <div class="op-item">
+                <span>邮箱</span>
+                {{ if data.email !== null && data.email !== "" }}
+                <span>{{ data.email }}</span>
+                {{ else }}
+                <span>
+                    <a href="./personal.html#bindingInfo">绑定邮箱</a>
+                </span>
+                {{ /if }}
+            </div>
+            <div class="op-item">
+                <span>简介</span>
+                <textarea name="introduction" id="introduction">{{ data.introduction }}</textarea>
+            </div>
+        </div>
     </div>
-    <div class="content">
-        {{ if data.length > 0 }}
-        {{ each data addr i }}
-        <div class="content-item">
-            <div class="base-info">
+    <div class="submit-btn" onclick="toSavePersonalInfo()">保存</div>
+</script>
+
+<script id="update-password-container" type="text/html">
+  <div class="op-box">
+    <div class="op-head">修改密码</div>
+    <div class="op-info">
+        <div class="op-item">
+            <span>旧密码</span>
+            <span>
+                <input type="password" class="old-password" value="" placeholder="请输入旧密码">
+            </span>
+        </div>
+        <div class="op-item">
+            <span>新密码</span>
+            <span>
+                <input type="password" class="new-password" value="" placeholder="请输入新密码">
+            </span>
+        </div>
+        <div class="op-item">
+            <span>确认新密码</span>
+            <span>
+                <input type="password" class="new-password-again" value="" placeholder="请重复新密码">
+            </span>
+        </div>
+    </div>
+  </div>
+    <div class="submit-btn" onclick="toSaveNewPasswork()">保存</div>
+</script>
+
+<script id="update-personal-icon" type="text/html">
+    <div class="op-box">
+        <div class="op-head">更换头像</div>
+        <div class="op-info"></div>
+    </div>
+</script>
+
+<script id="addr-select-container" type="text/html">
+
+    <div class="addr-select province">
+        <input type="text" value={{ data.province }} readonly onfocus="toShowContainer(0)"
+               onblur="toHideContainer(0)">
+        <div class="addr-container addr-province">
+           <ul>
+            {{ each data.provinceList p _p }}
+                <li onmousedown="selectThisArea(0,this)">{{ p }}</li>
+            {{ /each }}
+           </ul>
+        </div>
+    </div>
+    <div class="addr-select city">
+        <input type="text" value={{ data.city }} readonly onfocus="toShowContainer(1)" onblur="toHideContainer(1)">
+        <div class="addr-container addr-city">
+           <ul>
+            {{ each data.cities p _p }}
+                <li onmousedown="selectThisArea(1,this)">{{ p.name }}</li>
+            {{ /each }}
+           </ul>
+        </div>
+    </div>
+    <div class="addr-select district">
+        <input type="text" value={{ data.district }} readonly onfocus="toShowContainer(2)" onblur="toHideContainer(2)">
+        <div class="addr-container addr-district">
+           <ul>
+            {{ each data.districts p _p }}
+                <li onmousedown="selectThisArea(2,this)">{{ p.name }}</li>
+            {{ /each }}
+           </ul>
+        </div>
+    </div>
+</script>
+
+<script id="addr-info" type="text/html">
+
+    <div class="op-box">
+        <div class="op-head">我的地址</div>
+        <div class="op-info">
+
+            <div class="content">
+                {{ if data.length > 0 }}
+                {{ each data addr i }}
+                <div class="content-item">
+                    <div class="base-info">
                 <span class="base-info-item">
                     {{ addr.linkMan }}
                 </span>
-                <span class="base-info-item">
+                        <span class="base-info-item">
                    {{ addr.telephone }}
                 </span>
-                <span class="base-info-item">
+                        <span class="base-info-item">
                 {{ addr.zipCode }}
                 </span>
-                <span class="operate">
+                        <span class="operate">
                     <i class="iconfont icon-edit"></i>
-                    <i class="iconfont icon-delete" onclick="toDeleteAddress(this)" data-op-id={{ addr.id }} data-op-index={{ i }}></i>
+                    <i class="iconfont icon-delete" onclick="toDeleteAddress(this)" data-op-id={{ addr.id }}
+                       data-op-index={{ i }}></i>
                 </span>
 
-                {{ if i === 0 }}
-                <span class="default fr">[默认]</span>
-                {{ else if i > 0}}
-                <span class="fr" onclick="toSetDefaultAddress(this)" data-op-id={{ addr.id }} data-op-index={{ i }}>[设为默认]</span>
-                {{ /if }}
+                        {{ if i === 0 }}
+                        <span class="default fr">[默认]</span>
+                        {{ else if i > 0}}
+                        <span class="fr" onclick="toSetDefaultAddress(this)" data-op-id={{ addr.id }} data-op-index={{ i }}>[设为默认]</span>
+                        {{ /if }}
 
+                    </div>
+                    <div class="base-content">
+                        <i class="iconfont icon-address"></i>
+                        {{ addr.address }}
+                    </div>
+                </div>
+                {{ /each }}
+                {{ else if data.length === 0}}
+                <p class="empty-tips">暂无地址，请新增地址</p>
+                {{ /if }}
             </div>
-            <div class="base-content">
-                <i class="iconfont icon-address"></i>
-                {{ addr.address }}
-            </div>
+
         </div>
-        {{ /each }}
-        {{ else if data.length === 0}}
-        <p class="empty-tips">暂无地址，请新增地址</p>
-        {{ /if }}
     </div>
+
 </script>
-    <script src="../js/app/personal.js"></script>
+<script src="../js/app/personal.js"></script>
 </body>
 </html>

@@ -1,116 +1,186 @@
 .personal {
-  width: 1000px;
-  margin: 0px auto;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
+  width: 100%;
 }
-.personal-left-side {
-  width: 180px;
-  height: 600px;
-  margin-right: 10px;
+.personal .view-image {
+  height: 120px;
+}
+.personal .view-image img {
+  height: 120px;
+}
+.account-name-container {
+  width: 100%;
   background: #fff;
-  margin-top: 10px;
-  display: none;
-  visibility: hidden;
 }
-.personal-right-side {
-  margin: 0px auto;
-}
-.personal-info {
-  width: 800px;
-  margin: 10px auto;
-  background: #fff;
-  border: 1px solid #ececec;
-}
-.personal-info .base-info {
-  background: #eee;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center;
-  padding: 10px 20px;
-  box-sizing: border-box;
-}
-.personal-info .base-info .pic {
-  margin: 0 30px 0 0;
-}
-.personal-info .base-info .pic img {
-  width: 40px;
-  height: 40px;
-  border-radius: 100%;
-}
-.personal-info .base-info .name {
-  margin: 0 30px;
-}
-.personal-info .base-info .addr {
-  font-size: 14px;
-}
-.personal-info .order-type {
-  height: 50px;
-  line-height: 50px;
-  font-size: 14px;
+.account-name-container .account-name {
+  margin: 0 auto;
   text-align: center;
 }
-.personal-info .order-type .order-item {
-  width: 33%;
-  float: left;
-  cursor: pointer;
+.account-name-container .account-name img {
+  margin: -30px auto;
+  border: 1px solid #ffffff;
+  width: 60px;
+  height: 60px;
+  border-radius: 200px;
+  display: block;
   position: relative;
 }
-.personal-info .order-type .order-item::after {
-  content: '';
-  position: absolute;
-  right: 0;
-  height: 70%;
-  top: 15%;
-  width: 1px;
-  background: #ececec;
+.account-name-container .account-name span {
+  color: #666;
+  font-size: 22px;
+  display: inline-block;
+  margin: 30px 0;
 }
-.personal-info .order-type .order-item:last-child::after {
-  content: '';
-  width: 0;
+.account-op-container {
+  width: 900px;
+  margin: 20px auto 10px auto;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
-.info-box {
-  width: 800px;
-  margin: 10px auto;
-  border: 1px solid #ececec;
+.account-op-container .op-title {
+  width: 150px;
 }
-.info-box .title {
-  background: #eee;
-  height: 50px;
-  line-height: 50px;
-  padding: 0 20px;
-}
-.info-box .title i {
+.account-op-container .op-title li {
+  font-size: 16px;
+  padding: 10px 0;
+  text-align: center;
   color: #999;
-  font-size: 18px;
-}
-.info-box .title .operate-btn {
-  float: right;
-  border: 1px solid #ccc;
-  line-height: 1;
-  padding: 5px 10px;
-  color: #aaa;
-  margin: 10px 0;
   cursor: pointer;
-  transition: border-color 0.3s ease, color 0.3s ease;
 }
-.info-box .title .operate-btn:hover {
-  border-color: #666;
+.account-op-container .op-title li a {
+  color: #999;
+}
+.account-op-container .op-title li:hover {
   color: #666;
 }
-.info-box .content {
-  min-height: 80px;
-  background: #fff;
-  padding: 10px 20px;
+.account-op-container .op-title li:hover > a {
+  color: #666;
 }
-.info-box .content .empty-tips {
-  padding: 30px 0;
+.account-op-container .op-title .op-active > a {
+  color: #333;
+}
+.account-op-container .op-title .op-active:hover > a {
+  color: #333;
+}
+.account-op-container .op-content {
+  background: #fff;
+  width: 750px;
+  border: 1px solid #ddd;
+  color: #666;
+}
+.account-op-container .op-content .op-head {
+  background: #ececec;
+  font-size: 14px;
+  padding: 10px;
+}
+.account-op-container .op-content .op-info {
+  padding: 5px 5px 20px 5px;
+}
+.account-op-container .op-content .op-info .op-item {
+  margin: 10px 0;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+.account-op-container .op-content .op-info .op-item span {
+  height: 30px;
+  line-height: 30px;
+}
+.account-op-container .op-content .op-info .op-item span:first-child {
+  display: block;
+  width: 100px;
+  text-align: right;
+  padding: 0 10px 0 0;
+  height: 30px;
+  line-height: 30px;
   color: #999;
+  font-size: 14px;
+}
+.account-op-container .op-content .op-info .op-item input[type=text] {
+  width: 300px;
+  height: 30px;
+}
+.account-op-container .op-content .op-info .op-item input {
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  padding: 5px;
+  outline: none;
+}
+.account-op-container .op-content .op-info .op-item label {
+  margin: 0 50px 0 0;
+  cursor: pointer;
+}
+.account-op-container .op-content .op-info .op-item textarea {
+  border: 1px solid #ddd;
+  width: 300px;
+  height: 50px;
+  outline: none;
+}
+.account-op-container .op-content .op-info .op-item .addr-select-container {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+.account-op-container .op-content .op-info .op-item .addr-select-container .addr-select {
+  border: 1px solid #ddd;
+  padding: 0 20px 0 0;
+  font-size: 14px;
+  margin: 0 20px 0 0;
+  position: relative;
+  cursor: pointer;
+}
+.account-op-container .op-content .op-info .op-item .addr-select-container .addr-select input {
   text-align: center;
+  max-width: 130px;
+  border: none;
+}
+.account-op-container .op-content .op-info .op-item .addr-select-container .addr-select::after {
+  content: '';
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  border: 5px solid transparent;
+  border-top: 5px solid #333;
+  -webkit-transform: translate(0, -25%);
+      -ms-transform: translate(0, -25%);
+          transform: translate(0, -25%);
+}
+.account-op-container .op-content .op-info .op-item .addr-select-container .addr-container {
+  background: #fff;
+  border: 1px solid #ddd;
+  position: absolute;
+  z-index: 100;
+  text-align: center;
+  max-height: 300px;
+  width: calc(100% - 10px);
+  overflow-y: scroll;
+  padding: 0 5px;
+  margin: 5px 0 0 0;
+  display: none;
+}
+.account-op-container .op-content .op-info .op-item .addr-select-container .addr-container li {
+  padding: 3px 0;
+}
+.account-op-container .op-content .op-info .op-item .addr-select-container .addr-container li:hover {
+  background: #00a1de;
+  color: #fff;
+}
+.account-op-container .op-content .op-info .op-item a {
+  color: #00a6de;
+  font-size: 15px;
+  text-decoration: underline;
+}
+.account-op-container .submit-btn {
+  width: 120px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  background: #00a6de;
+  color: #fff;
+  position: absolute;
+  margin: 20px 0 0 0;
+  border-radius: 3px;
+  cursor: pointer;
 }
 .content-item {
   height: 80px;
