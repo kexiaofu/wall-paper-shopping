@@ -91,6 +91,33 @@ view-image
       font-size: 20px;
     }
   }
+  .logout{
+    background: rgba(255,255,255,.9);
+    position: absolute;
+    width: 100%;
+    top:25px;
+    //border:1px solid #ccc;
+    box-sizing: border-box;
+    text-align: center;
+    font-size: 14px;
+    cursor: pointer;
+    display: none;
+    padding:20px 0 0 0;
+    z-index: 100;
+    li{
+      margin: 1px 0;
+      height: 30px;
+      line-height: 30px;
+      transition:color .3s ease, background .3s ease;
+    }
+    li:hover{
+      background: #00a6de;
+      color: #fff;
+    }
+    li:hover a{
+      color:#fff;
+    }
+  }
   .account{
     display: none;
     img{
@@ -100,6 +127,9 @@ view-image
       padding: 0;
       margin:0 10px;
     }
+  }
+  .account-container:hover>.logout{
+    display: block;
   }
   .hover-blue:hover{
     color:#00A6DE;
@@ -567,7 +597,7 @@ view-image
 /*my-modal*/
 .my-modal{
   position: fixed;
-  width: 500px;
+  min-width: 500px;
   border:1px solid #ececec;
   top:50%;
   left:50%;
@@ -577,12 +607,13 @@ view-image
   z-index: 100;
   box-sizing: border-box;
   color:#666;
+  display: none;
   .my-modal-title{
     height: 40px;
     line-height: 40px;
-    text-align: center;
     background: #ececec;
     color:#999;
+    padding:0 0 0 10px;
     i{
       float:right;
       font-size: 20px;
@@ -598,18 +629,71 @@ view-image
   .modal-item{
     display: flex;
     align-items: center;
-    justify-content: center;
+    //justify-content: center;
     margin:10px 0;
     .item-title{
       width: 100px;
       text-align: right;
+      margin-right: 10px;
+    }
+    .item-content{
+      position: relative;
+      background: #f00;
     }
     input{
-      width: 250px;
+      width: 280px;
       height: 32px;
       line-height: 32px;
       border:1px solid #ececec;
-      margin:0 10px;
+      padding: 0 0 0 5px;
+      outline: none;
+      box-sizing: border-box;
+    }
+    .addr-select-container{
+      display: flex;
+      .addr-select{
+        border:1px solid #ddd;
+        padding:0 20px 0 0;
+        font-size: 14px;
+        margin:0 10px 0 0;
+        position: relative;
+        cursor: pointer;
+        input{
+          text-align: center;
+          cursor: pointer;
+          max-width: 130px;
+          border:none;
+        }
+      }
+      .addr-select::after{
+        content:'';
+        position: absolute;
+        right: 5px;
+        top:50%;
+        border:5px solid transparent;
+        border-top:5px solid #333;
+        transform:translate(0,-25%);
+      }
+      .addr-container{
+        background: #fff;
+        border:1px solid #ddd;
+        position: absolute;
+        z-index: 100;
+        text-align: center;
+        max-height: 300px;
+        width: calc(100% - 10px);
+        overflow-y: scroll;
+        padding:0 5px;
+        margin:5px 0 0 0;
+        display: none;
+        li{
+          padding:3px 0;
+        }
+        li:hover{
+          background: rgba(0,161,222,1);
+          color:#fff;
+        }
+      }
     }
   }
 }

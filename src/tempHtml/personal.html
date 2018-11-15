@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>个人中心</title>
     <link rel="stylesheet" href="../css/common/base.css">
+    <link rel="stylesheet" href="../css/common/toast.css">
     <link href="../css/common/iconfont.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/pages/personal.css">
 
@@ -38,6 +39,9 @@
                 <li class="personal-icon"  onclick="showContent('personal-icon')">
                     <a href="./personal.html#personal-icon">更换头像</a>
                 </li>
+                <li class="binding-info"  onclick="showContent('binding-info')">
+                    <a href="./personal.html#binding-info">绑定信息</a>
+                </li>
             </ul>
         </div>
         <div class="op-content"></div>
@@ -47,47 +51,51 @@
 </div>
 
 
-<!--<div class="my-modal">
-    <div class="my-modal-title">
-        新增/编辑地址
-        <i class="iconfont icon-close"></i>
-    </div>
-    <div class="my-modal-content">
-        <div class="modal-item">
-            <div class="item-title">*联系人</div>
-            <div class="item-content">
-                <input type="text">
-            </div>
-        </div>
-        <div class="modal-item">
-            <div class="item-title">*联系号码</div>
-            <div class="item-content">
-                <input type="text">
-            </div>
-        </div>
-        <div class="modal-item">
-            <div class="item-title">邮编</div>
-            <div class="item-content">
-                <input type="text">
-            </div>
-        </div>
-        <div class="modal-item">
-            <div class="item-title">选择地址</div>
-            <div class="item-content">
-                <input type="text">
-            </div>
-        </div>
-        <div class="modal-item">
-            <div class="item-title">详细地址</div>
-            <div class="item-content">
-                <input type="text">
-            </div>
-        </div>
-    </div>
-
-</div>-->
+<div class="my-modal"></div>
 
 @@include('./common/footer.html')
+
+<script id="binding-info" type="text/html">
+  <div class="op-box">
+      <div class="op-head">绑定信息</div>
+      <div class="op-info">
+          <div class="op-item">
+              <span>邮箱</span>
+
+              {{ if data.email === "" || data.email === null }}
+                <input type="text" class="email" value="" >
+                <span class="send-code-btn send-code-btn-email" data-op-type="email" onclick="sendCode('email')">发送验证码</span>
+              {{ else }}
+                <input type="text" disabled value={{ data.email }} >
+              {{ /if }}
+          </div>
+          {{ if data.email === "" || data.email === null }}
+          <div class="op-item">
+              <span>验证码</span>
+              <input type="text" placeholder="输入验证码" class="email-code" value="">
+              <span class="send-code-btn" onclick="bindingInfo('email')">绑定邮箱</span>
+          </div>
+          {{ /if }}
+          <div class="op-item">
+              <span>手机</span>
+              {{ if data.phone === "" || data.phone === null }}
+              <input type="text" class="phone" value={{ data.phone }}>
+              <span class="send-code-btn send-code-btn-phone" data-op-type="email" onclick="sendCode('phone')">发送验证码</span>
+              {{ else }}
+              <input type="text" disabled value={{ data.phone }} >
+              {{ /if }}
+          </div>
+
+          {{ if data.phone === "" || data.phone === null }}
+          <div class="op-item">
+              <span>验证码</span>
+              <input type="text" placeholder="输入验证码" class="phone-code">
+              <span class="send-code-btn" onclick="bindingInfo('phone')">绑定手机</span>
+          </div>
+          {{ /if }}
+      </div>
+  </div>
+</script>
 
 <script id="personal-info" type="text/html">
     <div class="op-box">
@@ -132,7 +140,7 @@
                 {{ if data.phone !== null && data.phone !== ""  }}
                 <span>{{ data.phone }}</span>
                 {{ else }}
-                <a href="./personal.html#bindingInfo">绑定手机</a>
+                <a href="./personal.html#binding-info">绑定手机</a>
                 {{ /if }}
             </div>
             <div class="op-item">
@@ -141,7 +149,7 @@
                 <span>{{ data.email }}</span>
                 {{ else }}
                 <span>
-                    <a href="./personal.html#bindingInfo">绑定邮箱</a>
+                    <a href="./personal.html#binding-info">绑定邮箱</a>
                 </span>
                 {{ /if }}
             </div>
@@ -184,39 +192,44 @@
 <script id="update-personal-icon" type="text/html">
     <div class="op-box">
         <div class="op-head">更换头像</div>
-        <div class="op-info"></div>
+        <div class="op-info">
+            <div class="op-item">
+                <img src={{ data.icon }} alt="" class="avatar" onclick="toUploadAvatar()">
+            </div>
+            <p style="text-align: center;font-size: 14px;color:#999;">点击头像，进行更换</p>
+        </div>
     </div>
 </script>
 
 <script id="addr-select-container" type="text/html">
 
     <div class="addr-select province">
-        <input type="text" value={{ data.province }} readonly onfocus="toShowContainer(0)"
-               onblur="toHideContainer(0)">
+        <input type="text"  readonly onfocus="toShowContainer(0)"
+               onblur="toHideContainer(0)" value={{ data.province }}>
         <div class="addr-container addr-province">
            <ul>
             {{ each data.provinceList p _p }}
-                <li onmousedown="selectThisArea(0,this)">{{ p }}</li>
+                <li onmousedown="selectThisArea(0,this)" data-op-source={{ source }}>{{ p }}</li>
             {{ /each }}
            </ul>
         </div>
     </div>
     <div class="addr-select city">
-        <input type="text" value={{ data.city }} readonly onfocus="toShowContainer(1)" onblur="toHideContainer(1)">
+        <input type="text" readonly onfocus="toShowContainer(1)" onblur="toHideContainer(1)" value={{ data.city }}>
         <div class="addr-container addr-city">
            <ul>
             {{ each data.cities p _p }}
-                <li onmousedown="selectThisArea(1,this)">{{ p.name }}</li>
+                <li onmousedown="selectThisArea(1,this)" data-op-source={{ source }}>{{ p.name }}</li>
             {{ /each }}
            </ul>
         </div>
     </div>
     <div class="addr-select district">
-        <input type="text" value={{ data.district }} readonly onfocus="toShowContainer(2)" onblur="toHideContainer(2)">
+        <input type="text" readonly onfocus="toShowContainer(2)" onblur="toHideContainer(2)" value={{ data.district }}>
         <div class="addr-container addr-district">
            <ul>
             {{ each data.districts p _p }}
-                <li onmousedown="selectThisArea(2,this)">{{ p.name }}</li>
+                <li onmousedown="selectThisArea(2,this)" data-op-source={{ source }}>{{ p.name }}</li>
             {{ /each }}
            </ul>
         </div>
@@ -244,7 +257,7 @@
                 {{ addr.zipCode }}
                 </span>
                         <span class="operate">
-                    <i class="iconfont icon-edit"></i>
+                    <i class="iconfont icon-edit" onclick="updateAddress(this)" data-op-index={{ i }}></i>
                     <i class="iconfont icon-delete" onclick="toDeleteAddress(this)" data-op-id={{ addr.id }}
                        data-op-index={{ i }}></i>
                 </span>
@@ -269,8 +282,48 @@
 
         </div>
     </div>
+    <div class="submit-btn" onclick="updateAddress(this)">新增地址</div>
 
 </script>
+
+<script id="update-address" type="text/html">
+    <div class="my-modal-title">
+        {{ title }}
+        <i class="iconfont icon-close" onclick="toCloseUpdateAddrBox()"></i>
+    </div>
+    <div class="my-modal-content">
+        <div class="modal-item">
+            <div class="item-title">*联系人</div>
+            <div class="item-content">
+                <input type="text"  class="link-man" value={{ data.linkMan }}>
+            </div>
+        </div>
+        <div class="modal-item">
+            <div class="item-title">*联系号码</div>
+            <div class="item-content">
+                <input type="text"  class="phone" value={{ data.telephone }}>
+            </div>
+        </div>
+        <div class="modal-item">
+            <div class="item-title">邮编</div>
+            <div class="item-content">
+                <input type="text"  class="zip-code" value={{ data.zipCode }}>
+            </div>
+        </div>
+        <div class="modal-item">
+            <div class="item-title">选择地址</div>
+            <div class="addr-select-container"></div>
+        </div>
+        <div class="modal-item">
+            <div class="item-title">详细地址</div>
+            <div class="item-content">
+                <input type="text" class="address-detail" value={{ data.address }}>
+            </div>
+        </div>
+    </div>
+    <div class="submit-btn" onclick="toSaveAddress(this)" style="right: 20px;" data-op-id={{ data.id }}>保存</div>
+</script>
+
 <script src="../js/app/personal.js"></script>
 </body>
 </html>

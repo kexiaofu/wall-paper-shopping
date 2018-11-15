@@ -113,6 +113,32 @@ view-image
 .nav-bar .func-item .shopping-car {
   font-size: 20px;
 }
+.nav-bar .logout {
+  background: rgba(255, 255, 255, 0.9);
+  position: absolute;
+  width: 100%;
+  top: 25px;
+  box-sizing: border-box;
+  text-align: center;
+  font-size: 14px;
+  cursor: pointer;
+  display: none;
+  padding: 20px 0 0 0;
+  z-index: 100;
+}
+.nav-bar .logout li {
+  margin: 1px 0;
+  height: 30px;
+  line-height: 30px;
+  transition: color 0.3s ease, background 0.3s ease;
+}
+.nav-bar .logout li:hover {
+  background: #00a6de;
+  color: #fff;
+}
+.nav-bar .logout li:hover a {
+  color: #fff;
+}
 .nav-bar .account {
   display: none;
 }
@@ -122,6 +148,9 @@ view-image
   border-radius: 50px;
   padding: 0;
   margin: 0 10px;
+}
+.nav-bar .account-container:hover > .logout {
+  display: block;
 }
 .nav-bar .hover-blue:hover {
   color: #00A6DE;
@@ -627,7 +656,7 @@ view-image
 /*my-modal*/
 .my-modal {
   position: fixed;
-  width: 500px;
+  min-width: 500px;
   border: 1px solid #ececec;
   top: 50%;
   left: 50%;
@@ -639,13 +668,14 @@ view-image
   z-index: 100;
   box-sizing: border-box;
   color: #666;
+  display: none;
 }
 .my-modal .my-modal-title {
   height: 40px;
   line-height: 40px;
-  text-align: center;
   background: #ececec;
   color: #999;
+  padding: 0 0 0 10px;
 }
 .my-modal .my-modal-title i {
   float: right;
@@ -665,21 +695,75 @@ view-image
   -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
-  -webkit-justify-content: center;
-      -ms-flex-pack: center;
-          justify-content: center;
   margin: 10px 0;
 }
 .my-modal .modal-item .item-title {
   width: 100px;
   text-align: right;
+  margin-right: 10px;
+}
+.my-modal .modal-item .item-content {
+  position: relative;
+  background: #f00;
 }
 .my-modal .modal-item input {
-  width: 250px;
+  width: 280px;
   height: 32px;
   line-height: 32px;
   border: 1px solid #ececec;
-  margin: 0 10px;
+  padding: 0 0 0 5px;
+  outline: none;
+  box-sizing: border-box;
+}
+.my-modal .modal-item .addr-select-container {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+.my-modal .modal-item .addr-select-container .addr-select {
+  border: 1px solid #ddd;
+  padding: 0 20px 0 0;
+  font-size: 14px;
+  margin: 0 10px 0 0;
+  position: relative;
+  cursor: pointer;
+}
+.my-modal .modal-item .addr-select-container .addr-select input {
+  text-align: center;
+  cursor: pointer;
+  max-width: 130px;
+  border: none;
+}
+.my-modal .modal-item .addr-select-container .addr-select::after {
+  content: '';
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  border: 5px solid transparent;
+  border-top: 5px solid #333;
+  -webkit-transform: translate(0, -25%);
+      -ms-transform: translate(0, -25%);
+          transform: translate(0, -25%);
+}
+.my-modal .modal-item .addr-select-container .addr-container {
+  background: #fff;
+  border: 1px solid #ddd;
+  position: absolute;
+  z-index: 100;
+  text-align: center;
+  max-height: 300px;
+  width: calc(100% - 10px);
+  overflow-y: scroll;
+  padding: 0 5px;
+  margin: 5px 0 0 0;
+  display: none;
+}
+.my-modal .modal-item .addr-select-container .addr-container li {
+  padding: 3px 0;
+}
+.my-modal .modal-item .addr-select-container .addr-container li:hover {
+  background: #00a1de;
+  color: #fff;
 }
 .my-checkbox {
   display: -webkit-flex;

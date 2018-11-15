@@ -2,6 +2,8 @@ import axios from 'axios';
 
 const period = 60000;
 
+let requestTimeout = new Date().getTime();
+
 let apiRequire = async (name,url,method,data,duration=0) => {
   let storageTime = new Date().getTime();
   if(duration > 0 && window.sessionStorage.getItem(name) !== null && storageTime - window.sessionStorage.getItem(name+'-time') < duration) {
@@ -14,15 +16,43 @@ let apiRequire = async (name,url,method,data,duration=0) => {
       })
         .then(res=>{
           if(res.data.code === 2000) {
+            //name === 'toLogin' && ( requestTimeout = new Date(res.data.result.timeOut).getTime());
+            //console.log(name,requestTimeout);
             duration > 0 && window.sessionStorage.setItem(name,JSON.stringify(res.data.result));
             duration > 0 && window.sessionStorage.setItem(name+'-time',storageTime);
             return res.data.result;
           } else {
-            return alert(res.data.msg);
+            console.log(res,'res');
+            alert(res.data.msg);
+            return
           }
         })
-        .catch(err=>{
-          return alert(err);
+        .catch(error=>{
+          if (error.response) {
+            // 请求已发出，但服务器响应的状态码不在 2xx 范围内
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+
+            if(error.response.status === 401) {
+
+              if(window.sessionStorage.getItem('account')) {
+                window.sessionStorage.clear();
+              }
+
+              window.dispatchEvent(new CustomEvent('showLoginBox'))
+            } else {
+              alert(error);
+              return
+            }
+
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error', error.message);
+            alert(error.message)
+            return
+          }
+          //console.log(error.config);
         })
     } else {
       return await axios.post(url,data)
@@ -32,11 +62,35 @@ let apiRequire = async (name,url,method,data,duration=0) => {
             duration > 0 && window.sessionStorage.setItem(name+'-time',storageTime);
             return res.data.result;
           } else {
-            return alert(res.data.msg);
+            alert(res.data.msg);
+            return
           }
         })
-        .catch(err=>{
-          return alert(err);
+        .catch(error=>{
+          if (error.response) {
+            // 请求已发出，但服务器响应的状态码不在 2xx 范围内
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+
+            if(error.response.status === 401) {
+
+              if(window.sessionStorage.getItem('account')) {
+                window.sessionStorage.clear();
+              }
+
+              window.dispatchEvent(new CustomEvent('showLoginBox'))
+            } else {
+              alert(error);
+              return
+            }
+
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error', error.message);
+            alert(error.message)
+            return
+          }
         })
     }
 
@@ -60,7 +114,9 @@ export const getProductionList = async ()=> await apiRequire('getProductionList'
 export const getHomeGroup =async () => await apiRequire('getHomeGroup','/api/Home/GetHomeGroup',null,null,period);
 
 //account
-export const toLogin = async (account) => await apiRequire('account','/api/account/login',null,account,period);
+export const toLogin = async (account) => await apiRequire('account','/api/account/login','post',account,period);
+
+export const logout = async () => await apiRequire('logout','/api/account/Logout','post',null);
 
 export const getAddress = async () => await apiRequire('getAddress','/api/account/GetAddressList',null,null);
 
@@ -74,7 +130,11 @@ export const updateUserInfo = async (data) => await apiRequire('updateUserInfo',
 
 export const updatePassword = async (data) => await apiRequire('updatePassword','/api/account/UpdatePassword','post',data);
 
+export const updateIcon = async (data) => await apiRequire('updateIcon','/api/account/UpdateIcon','post',data);
 
+export const sendMessage = async (data) => await apiRequire('sendMessage','/api/account/SendMessage','post',data);
+
+export const bindingInfo = async (data) => await apiRequire('bindingInfo','/api/account/BindingInfo','post',data);
 
 //order
 export const getShoppingCarInfo = async (data) => await apiRequire('getShoppingCarInfo','/api/order/GetShoppingCart',null,data);
@@ -98,7 +158,6 @@ export const payOrder = async (data) => await apiRequire('payOrder','/api/pay/Pa
 
 //config
 export const addressConfig = async () => await apiRequire('addressConfig','/api/config/GetAddressConfig',null,null,600000);
-
 
 
 ///api/order/AddShoppingCart

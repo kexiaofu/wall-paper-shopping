@@ -23,6 +23,7 @@
   border-radius: 200px;
   display: block;
   position: relative;
+  background: #fff;
 }
 .account-name-container .account-name span {
   color: #666;
@@ -67,6 +68,7 @@
   width: 750px;
   border: 1px solid #ddd;
   color: #666;
+  margin: 0 0 70px 0;
 }
 .account-op-container .op-content .op-head {
   background: #ececec;
@@ -170,7 +172,28 @@
   font-size: 15px;
   text-decoration: underline;
 }
-.account-op-container .submit-btn {
+.account-op-container .op-content .op-info .op-item .avatar {
+  margin: 10px auto;
+  border-radius: 100%;
+  box-shadow: 0 0 10px #00a6de;
+  width: 70px;
+  height: 70px;
+  cursor: pointer;
+}
+.account-op-container .op-content .op-info .op-item .send-code-btn {
+  font-size: 12px;
+  border: 1px solid #ccc;
+  margin: 0 10px;
+  padding: 2px 5px;
+  height: 24px;
+  line-height: 24px;
+  border-radius: 3px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+.submit-btn {
   width: 120px;
   height: 40px;
   line-height: 40px;

@@ -37,6 +37,32 @@ function _asyncToGenerator(fn) {
 
 module.exports = _asyncToGenerator;
 },{}],2:[function(require,module,exports){
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+
+module.exports = _classCallCheck;
+},{}],3:[function(require,module,exports){
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, descriptor.key, descriptor);
+  }
+}
+
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
+  return Constructor;
+}
+
+module.exports = _createClass;
+},{}],4:[function(require,module,exports){
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : {
     default: obj
@@ -44,7 +70,7 @@ function _interopRequireDefault(obj) {
 }
 
 module.exports = _interopRequireDefault;
-},{}],3:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
 
 function _typeof(obj) {
@@ -62,12 +88,12 @@ function _typeof(obj) {
 }
 
 module.exports = _typeof;
-},{}],4:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 module.exports = require("regenerator-runtime");
 
-},{"regenerator-runtime":32}],5:[function(require,module,exports){
+},{"regenerator-runtime":34}],7:[function(require,module,exports){
 module.exports = require('./lib/axios');
-},{"./lib/axios":7}],6:[function(require,module,exports){
+},{"./lib/axios":9}],8:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -251,7 +277,7 @@ module.exports = function xhrAdapter(config) {
 };
 
 }).call(this,require('_process'))
-},{"../core/createError":13,"./../core/settle":16,"./../helpers/btoa":20,"./../helpers/buildURL":21,"./../helpers/cookies":23,"./../helpers/isURLSameOrigin":25,"./../helpers/parseHeaders":27,"./../utils":29,"_process":31}],7:[function(require,module,exports){
+},{"../core/createError":15,"./../core/settle":18,"./../helpers/btoa":22,"./../helpers/buildURL":23,"./../helpers/cookies":25,"./../helpers/isURLSameOrigin":27,"./../helpers/parseHeaders":29,"./../utils":31,"_process":33}],9:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -305,7 +331,7 @@ module.exports = axios;
 // Allow use of default import syntax in TypeScript
 module.exports.default = axios;
 
-},{"./cancel/Cancel":8,"./cancel/CancelToken":9,"./cancel/isCancel":10,"./core/Axios":11,"./defaults":18,"./helpers/bind":19,"./helpers/spread":28,"./utils":29}],8:[function(require,module,exports){
+},{"./cancel/Cancel":10,"./cancel/CancelToken":11,"./cancel/isCancel":12,"./core/Axios":13,"./defaults":20,"./helpers/bind":21,"./helpers/spread":30,"./utils":31}],10:[function(require,module,exports){
 'use strict';
 
 /**
@@ -326,7 +352,7 @@ Cancel.prototype.__CANCEL__ = true;
 
 module.exports = Cancel;
 
-},{}],9:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 'use strict';
 
 var Cancel = require('./Cancel');
@@ -385,14 +411,14 @@ CancelToken.source = function source() {
 
 module.exports = CancelToken;
 
-},{"./Cancel":8}],10:[function(require,module,exports){
+},{"./Cancel":10}],12:[function(require,module,exports){
 'use strict';
 
 module.exports = function isCancel(value) {
   return !!(value && value.__CANCEL__);
 };
 
-},{}],11:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
 var defaults = require('./../defaults');
@@ -473,7 +499,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = Axios;
 
-},{"./../defaults":18,"./../utils":29,"./InterceptorManager":12,"./dispatchRequest":14}],12:[function(require,module,exports){
+},{"./../defaults":20,"./../utils":31,"./InterceptorManager":14,"./dispatchRequest":16}],14:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -527,7 +553,7 @@ InterceptorManager.prototype.forEach = function forEach(fn) {
 
 module.exports = InterceptorManager;
 
-},{"./../utils":29}],13:[function(require,module,exports){
+},{"./../utils":31}],15:[function(require,module,exports){
 'use strict';
 
 var enhanceError = require('./enhanceError');
@@ -547,7 +573,7 @@ module.exports = function createError(message, config, code, request, response) 
   return enhanceError(error, config, code, request, response);
 };
 
-},{"./enhanceError":15}],14:[function(require,module,exports){
+},{"./enhanceError":17}],16:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -635,7 +661,7 @@ module.exports = function dispatchRequest(config) {
   });
 };
 
-},{"../cancel/isCancel":10,"../defaults":18,"./../helpers/combineURLs":22,"./../helpers/isAbsoluteURL":24,"./../utils":29,"./transformData":17}],15:[function(require,module,exports){
+},{"../cancel/isCancel":12,"../defaults":20,"./../helpers/combineURLs":24,"./../helpers/isAbsoluteURL":26,"./../utils":31,"./transformData":19}],17:[function(require,module,exports){
 'use strict';
 
 /**
@@ -658,7 +684,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
   return error;
 };
 
-},{}],16:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 'use strict';
 
 var createError = require('./createError');
@@ -686,7 +712,7 @@ module.exports = function settle(resolve, reject, response) {
   }
 };
 
-},{"./createError":13}],17:[function(require,module,exports){
+},{"./createError":15}],19:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -708,7 +734,7 @@ module.exports = function transformData(data, headers, fns) {
   return data;
 };
 
-},{"./../utils":29}],18:[function(require,module,exports){
+},{"./../utils":31}],20:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -804,7 +830,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 module.exports = defaults;
 
 }).call(this,require('_process'))
-},{"./adapters/http":6,"./adapters/xhr":6,"./helpers/normalizeHeaderName":26,"./utils":29,"_process":31}],19:[function(require,module,exports){
+},{"./adapters/http":8,"./adapters/xhr":8,"./helpers/normalizeHeaderName":28,"./utils":31,"_process":33}],21:[function(require,module,exports){
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -817,7 +843,7 @@ module.exports = function bind(fn, thisArg) {
   };
 };
 
-},{}],20:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 'use strict';
 
 // btoa polyfill for IE<10 courtesy https://github.com/davidchambers/Base64.js
@@ -855,7 +881,7 @@ function btoa(input) {
 
 module.exports = btoa;
 
-},{}],21:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -925,7 +951,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
   return url;
 };
 
-},{"./../utils":29}],22:[function(require,module,exports){
+},{"./../utils":31}],24:[function(require,module,exports){
 'use strict';
 
 /**
@@ -941,7 +967,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
     : baseURL;
 };
 
-},{}],23:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -996,7 +1022,7 @@ module.exports = (
   })()
 );
 
-},{"./../utils":29}],24:[function(require,module,exports){
+},{"./../utils":31}],26:[function(require,module,exports){
 'use strict';
 
 /**
@@ -1012,7 +1038,7 @@ module.exports = function isAbsoluteURL(url) {
   return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
 };
 
-},{}],25:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -1082,7 +1108,7 @@ module.exports = (
   })()
 );
 
-},{"./../utils":29}],26:[function(require,module,exports){
+},{"./../utils":31}],28:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -1096,7 +1122,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
   });
 };
 
-},{"../utils":29}],27:[function(require,module,exports){
+},{"../utils":31}],29:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -1151,7 +1177,7 @@ module.exports = function parseHeaders(headers) {
   return parsed;
 };
 
-},{"./../utils":29}],28:[function(require,module,exports){
+},{"./../utils":31}],30:[function(require,module,exports){
 'use strict';
 
 /**
@@ -1180,7 +1206,7 @@ module.exports = function spread(callback) {
   };
 };
 
-},{}],29:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 'use strict';
 
 var bind = require('./helpers/bind');
@@ -1485,7 +1511,7 @@ module.exports = {
   trim: trim
 };
 
-},{"./helpers/bind":19,"is-buffer":30}],30:[function(require,module,exports){
+},{"./helpers/bind":21,"is-buffer":32}],32:[function(require,module,exports){
 /*!
  * Determine if an object is a Buffer
  *
@@ -1508,7 +1534,7 @@ function isSlowBuffer (obj) {
   return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
 }
 
-},{}],31:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -1694,7 +1720,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],32:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
  *
@@ -1733,7 +1759,7 @@ if (hadRuntime) {
   }
 }
 
-},{"./runtime":33}],33:[function(require,module,exports){
+},{"./runtime":35}],35:[function(require,module,exports){
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
  *
@@ -2456,10 +2482,12 @@ if (hadRuntime) {
   })() || Function("return this")()
 );
 
-},{}],34:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
 
 var _api = require("../common/api");
 
@@ -2469,10 +2497,17 @@ var _template = _interopRequireDefault(require("../common/template"));
 
 var _tools = require("../common/tools");
 
+var _mask = _interopRequireDefault(require("../common/mask"));
+
+var _toast = _interopRequireDefault(require("../common/toast"));
+
 var address = [],
+    updateAddressInfo = [],
     _provcince = '',
     _city = '',
     _district = '';
+var mask = new _mask.default();
+var toast = new _toast.default();
 
 _template.default.defaults.imports.formDate = function (val) {
   return (0, _tools.format)(new Date(val), 'yyyy-MM-dd');
@@ -2482,11 +2517,6 @@ var addressList = [],
     personalInfo = {};
 
 window.onload = function () {
-  /*getAddress().then(res=>{
-    address = res.slice(0);
-    let html = template('addr-info',{data:res});
-    document.querySelector('.addr-info').innerHTML = html;
-  })*/
   getPersonalInfo();
 };
 
@@ -2498,7 +2528,6 @@ var getPersonalInfo = function getPersonalInfo() {
       console.log(info);
       document.querySelector('.account-personal-icon').setAttribute('src', info.icon);
       document.querySelector('.account-nick-name').innerHTML = info.nickName;
-      console.log(document.querySelector('.account-personal-icon'), 1234);
       info.provinceList = res.map(function (item) {
         return item.name;
       });
@@ -2548,7 +2577,7 @@ window.onhashchange = function () {
 };
 
 var changeTab = function changeTab(type) {
-  console.log(type);
+  console.log((0, _typeof2.default)(type));
   var html = '';
   var opActive = document.querySelector('.op-active');
 
@@ -2558,13 +2587,28 @@ var changeTab = function changeTab(type) {
 
   switch (type) {
     case 'address':
-      (0, _api.getAddress)().then(function (res) {
-        address = res;
-        html = (0, _template.default)('addr-info', {
-          data: res
+      if (addressList.length > 0) {
+        (0, _api.getAddress)().then(function (res) {
+          address = res;
+          html = (0, _template.default)('addr-info', {
+            data: res
+          });
+          document.querySelector('.op-content').innerHTML = html;
         });
-        document.querySelector('.op-content').innerHTML = html;
-      });
+      } else {
+        (0, _api.addressConfig)().then(function (res) {
+          console.log(res);
+          addressList = res;
+          (0, _api.getAddress)().then(function (res) {
+            address = res;
+            html = (0, _template.default)('addr-info', {
+              data: res
+            });
+            document.querySelector('.op-content').innerHTML = html;
+          });
+        });
+      }
+
       document.querySelector('.address').className += ' op-active';
       break;
 
@@ -2577,9 +2621,16 @@ var changeTab = function changeTab(type) {
 
     case 'personal-icon':
       html = (0, _template.default)('update-personal-icon', {
-        data: []
+        data: personalInfo
       });
       document.querySelector('.personal-icon').className += ' op-active';
+      break;
+
+    case 'binding-info':
+      html = (0, _template.default)('binding-info', {
+        data: personalInfo
+      });
+      document.querySelector('.binding-info').className += ' op-active';
       break;
 
     case 'personal-info':
@@ -2595,17 +2646,20 @@ var changeTab = function changeTab(type) {
     document.querySelector('.op-content').innerHTML = html;
   }
 
-  if (type === 'personal-info' || type === undefined) {
+  if (type === 'personal-info' || type === '' || type === undefined) {
     var addrSelectContainer = (0, _template.default)('addr-select-container', {
-      data: info
+      data: personalInfo,
+      source: 0
     });
     document.querySelector('.addr-select-container').innerHTML = addrSelectContainer;
   }
-};
+}; //右侧显示内容
+
 
 window.showContent = function (type) {
   return changeTab(type);
-};
+}; //设置默认地址
+
 
 window.toSetDefaultAddress = function (ele) {
   (0, _api.setDefaultAddress)({
@@ -2620,7 +2674,8 @@ window.toSetDefaultAddress = function (ele) {
     });
     document.querySelector('.op-content').innerHTML = html;
   });
-};
+}; //删除地址
+
 
 window.toDeleteAddress = function (ele) {
   (0, _api.addressOperate)({
@@ -2634,7 +2689,8 @@ window.toDeleteAddress = function (ele) {
     });
     document.querySelector('.addr-info').innerHTML = html;
   });
-};
+}; //显示地址候选栏
+
 
 window.toShowContainer = function (code) {
   switch (code) {
@@ -2650,11 +2706,19 @@ window.toShowContainer = function (code) {
       document.querySelector('.addr-district').style.display = 'block';
       break;
   }
+}; //选中地址
 
-  console.log(123);
-};
 
 window.selectThisArea = function (code, ele) {
+  var info = null,
+      source = +ele.getAttribute('data-op-source');
+
+  if (source === 0) {
+    info = personalInfo;
+  } else {
+    info = updateAddressInfo;
+  }
+
   switch (code) {
     case 0:
       _provcince = ele.innerHTML;
@@ -2662,11 +2726,11 @@ window.selectThisArea = function (code, ele) {
       for (var i = addressList.length - 1; i >= 0; i--) {
         if (addressList[i].name === _provcince) {
           var province = addressList[i];
-          personalInfo.province = _provcince;
-          personalInfo.city = province.cities[0].name;
-          personalInfo.cities = province.cities;
-          personalInfo.district = province.cities[0].districts[0].name;
-          personalInfo.districts = province.cities[0].districts;
+          info.province = _provcince;
+          info.city = province.cities[0].name;
+          info.cities = province.cities;
+          info.district = province.cities[0].districts[0].name;
+          info.districts = province.cities[0].districts;
         }
       }
 
@@ -2674,14 +2738,14 @@ window.selectThisArea = function (code, ele) {
 
     case 1:
       _city = ele.innerHTML;
-      var cities = personalInfo.cities;
+      var cities = info.cities;
 
       for (var _i = cities.length - 1; _i >= 0; _i--) {
         if (cities[_i].name === _city) {
           var city = cities[_i];
-          personalInfo.city = city.name;
-          personalInfo.district = city.districts[0].name;
-          personalInfo.districts = city.districts;
+          info.city = city.name;
+          info.district = city.districts[0].name;
+          info.districts = city.districts;
         }
       }
 
@@ -2689,16 +2753,22 @@ window.selectThisArea = function (code, ele) {
 
     case 2:
       _district = ele.innerHTML;
-      personalInfo.district = _district;
+      info.district = _district;
       break;
   }
 
   var html = (0, _template.default)('addr-select-container', {
-    data: personalInfo
+    data: info,
+    source: source
   });
-  document.querySelector('.addr-select-container').innerHTML = html;
-  console.log(ele.innerHTML);
-};
+
+  if (source === 0) {
+    document.querySelector('.addr-select-container').innerHTML = html;
+  } else {
+    document.querySelector('.my-modal .addr-select-container').innerHTML = html;
+  }
+}; //隐藏地址候选栏
+
 
 window.toHideContainer = function (code) {
   console.log(code);
@@ -2716,7 +2786,8 @@ window.toHideContainer = function (code) {
       document.querySelector('.addr-district').style.display = 'none';
       break;
   }
-};
+}; //保存个人信息
+
 
 window.toSavePersonalInfo = function () {
   var sex = null;
@@ -2752,8 +2823,300 @@ window.toSaveNewPasswork = function () {
   }).then(function (res) {
     console.log(res);
   });
+}; //更换地址
+
+
+window.updateAddress = function (ele) {
+  console.log(ele.getAttribute('data-op-index'));
+  var index = ele.getAttribute('data-op-index'),
+      addr = null;
+
+  if (index !== null) {
+    addr = address[index];
+  } else {
+    addr = {
+      linkMan: '',
+      telephone: '',
+      zipCode: '',
+      id: '',
+      addressDetail: '',
+      province: addressList[0].name,
+      city: addressList[0].cities[0].name,
+      district: addressList[0].cities[0].districts[0].name
+    };
+  }
+
+  var modal = document.querySelector('.my-modal');
+  mask.show();
+  modal.style.display = 'block';
+  var html = (0, _template.default)('update-address', {
+    data: addr,
+    title: index !== null ? '编辑地址' : '新增地址'
+  });
+  modal.innerHTML = html;
+  var provinceList = [],
+      cities = [],
+      districts = [];
+  provinceList = addressList.map(function (item) {
+    if (item.name === addr.province) {
+      cities = item.cities;
+      cities.map(function (item) {
+        console.log(item);
+
+        if (item.name === addr.city) {
+          districts = item.districts;
+        }
+      });
+    }
+
+    return item.name;
+  });
+  updateAddressInfo = Object.assign({}, addr, {
+    provinceList: provinceList,
+    province: addr.province,
+    cities: cities,
+    city: addr.city,
+    districts: districts,
+    district: addr.district
+  });
+  var addrSelectContainer = (0, _template.default)('addr-select-container', {
+    data: updateAddressInfo,
+    source: 1
+  });
+  document.querySelector('.my-modal .addr-select-container').innerHTML = addrSelectContainer;
+}; //关闭更新地址面板
+
+
+var toCloseAddrBox = function toCloseAddrBox() {
+  mask.hide();
+  document.querySelector('.my-modal').style.display = 'none';
 };
-},{"../common/api":35,"../common/encrypt":36,"../common/template":37,"../common/tools":38,"@babel/runtime/helpers/interopRequireDefault":2}],35:[function(require,module,exports){
+
+window.toCloseUpdateAddrBox = function () {
+  return toCloseAddrBox();
+}; //保存地址
+
+
+window.toSaveAddress = function (ele) {
+  var id = +ele.getAttribute('data-op-id'),
+      linkMan = document.querySelector('.link-man').value,
+      telephone = document.querySelector('.phone').value,
+      zipCode = document.querySelector('.zip-code').value,
+      addressDetail = document.querySelector('.address-detail').value;
+
+  if (linkMan !== '' && telephone !== '' && addressDetail !== '') {
+    (0, _api.addressOperate)({
+      province: updateAddressInfo.province,
+      city: updateAddressInfo.city,
+      district: updateAddressInfo.district,
+      id: id,
+      linkMan: linkMan,
+      telephone: telephone,
+      zipCode: zipCode,
+      address: addressDetail,
+      cmd: id !== 0 ? 1 : 0
+    }).then(function (res) {
+      console.log(res);
+
+      if (res !== undefined) {
+        toCloseAddrBox();
+        toast.show({
+          content: id !== 0 ? '更新地址成功' : '新增地址成功'
+        });
+        changeTab(window.location.hash.substring(1));
+      }
+    });
+  } else {
+    alert('请完成必要信息，再进行保存！');
+    return;
+  }
+
+  console.log(linkMan, telephone, zipCode, addressDetail);
+};
+
+window.toAddAddress = function () {
+  console.log(addressList);
+  var addr = {
+    linkMan: '',
+    telephone: '',
+    zipCode: '',
+    id: '',
+    addressDetail: '',
+    province: addressList[0].name,
+    city: addressList[0].cities[0].name,
+    district: addressList[0].cities[0].districts[0].name
+  };
+  var modal = document.querySelector('.my-modal');
+  mask.show();
+  modal.style.display = 'block';
+  var html = (0, _template.default)('update-address', {
+    data: addr,
+    title: '编辑地址'
+  });
+  modal.innerHTML = html;
+  var provinceList = [],
+      cities = [],
+      districts = [];
+  provinceList = addressList.map(function (item) {
+    if (item.name === addr.province) {
+      cities = item.cities;
+      cities.map(function (item) {
+        console.log(item);
+
+        if (item.name === addr.city) {
+          districts = item.districts;
+        }
+      });
+    }
+
+    return item.name;
+  });
+  updateAddressInfo = Object.assign({}, addr, {
+    provinceList: provinceList,
+    province: addr.province,
+    cities: cities,
+    city: addr.city,
+    districts: districts,
+    district: addr.district
+  });
+  var addrSelectContainer = (0, _template.default)('addr-select-container', {
+    data: updateAddressInfo,
+    source: 1
+  });
+  document.querySelector('.my-modal .addr-select-container').innerHTML = addrSelectContainer;
+}; //上传头像
+
+
+window.toUploadAvatar = function () {
+  var form = document.createElement('form'),
+      input = document.querySelector('input');
+  input.type = "file";
+  input.name = "file";
+  form.className = 'upload-form';
+  input.className = 'upload-avatar';
+  form.appendChild(input);
+  document.querySelector('body').appendChild(form);
+  input.click();
+  input.addEventListener('change', function () {
+    console.log(input.files);
+    var formData = new FormData(form);
+    (0, _api.updateIcon)(formData).then(function (res) {
+      console.log(res);
+      document.querySelector('.account-name img').setAttribute('src', res);
+      document.querySelector('.avatar').setAttribute('src', res);
+    });
+  });
+};
+
+var duration = 60;
+var sendCodeTime = null,
+    sendCodeStop = null,
+    countDown = 0;
+
+window.sendCode = function (type) {
+  var sendCodeBox = null;
+
+  if (sendCodeTime === null) {
+    if (type === 'email') {
+      var email = document.querySelector('.email').value;
+
+      if (email !== '') {
+        sendCodeTime = new Date().getTime();
+        sendCodeBox = document.querySelector('.send-code-btn-email');
+        sendCodeBox.innerHTML = "".concat(duration, "s\u91CD\u53D1");
+        (0, _api.sendMessage)({
+          email: '864927512@qq.com',
+          sendMessageType: 1
+        }).then(function (res) {
+          if (res !== undefined) {
+            console.log(res);
+          }
+        });
+      } else {
+        alert('请填写正确的邮箱地址');
+        return;
+      }
+    } else {
+      var phone = document.querySelector('.phone').value;
+
+      if (phone !== '') {
+        sendCodeTime = new Date().getTime();
+        sendCodeBox = document.querySelector('.send-code-btn-phone');
+        sendCodeBox.innerHTML = "".concat(duration, "s\u91CD\u53D1");
+        (0, _api.sendMessage)({
+          phone: '15622316910',
+          sendMessageType: 1
+        }).then(function (res) {
+          if (res !== undefined) {
+            console.log(res);
+          }
+        });
+      } else {
+        alert('请填写正确的手机号码');
+        return;
+      }
+    }
+
+    sendCodeStop = setInterval(function () {
+      countDown = duration - Math.floor((new Date().getTime() - sendCodeTime) / 1000);
+      console.log(countDown <= 0);
+
+      if (countDown > 0) {
+        sendCodeBox.innerHTML = "".concat(countDown, "s\u91CD\u53D1");
+      } else {
+        clearInterval(sendCodeStop);
+        sendCodeBox.innerHTML = '发送验证码';
+        sendCodeTime = null;
+      }
+    }, 1000);
+  }
+}; //绑定信息
+
+
+window.bindingInfo = function (type) {
+  if (type === 'email') {
+    var email = document.querySelector('.email').value,
+        code = document.querySelector('.email-code').value;
+
+    if (email !== '' && code !== '') {
+      (0, _api.bindingInfo)({
+        email: email,
+        sendMessageType: 1,
+        code: code
+      }).then(function (res) {
+        if (res !== undefined) {
+          toast.show({
+            content: '绑定邮箱成功'
+          });
+          getPersonalInfo();
+        }
+      });
+    } else {
+      alert('请填写完整信息');
+    }
+  } else if (type === 'phone') {
+    var phone = document.querySelector('.phone').value,
+        _code = document.querySelector('.phone-code').value;
+
+    if (phone !== '' && _code !== '') {
+      (0, _api.bindingInfo)({
+        phone: phone,
+        sendMessageType: 1,
+        code: _code
+      }).then(function (res) {
+        if (res !== undefined) {
+          toast.show({
+            content: '绑定手机成功'
+          });
+          getPersonalInfo();
+        }
+      });
+    } else {
+      alert('请填写完整信息');
+    }
+  }
+};
+},{"../common/api":37,"../common/encrypt":38,"../common/mask":39,"../common/template":40,"../common/toast":41,"../common/tools":42,"@babel/runtime/helpers/interopRequireDefault":4,"@babel/runtime/helpers/typeof":5}],37:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -2761,7 +3124,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.addressConfig = exports.payOrder = exports.checkOrder = exports.submitOrder = exports.getOrderStatus = exports.addOrder = exports.getOrder = exports.deleteShoppingCart = exports.addShoppingCart = exports.getShoppingCarInfo = exports.updatePassword = exports.updateUserInfo = exports.getUserInfo = exports.addressOperate = exports.setDefaultAddress = exports.getAddress = exports.toLogin = exports.getHomeGroup = exports.getProductionList = exports.getCarousel = exports.getTags = exports.getProductDetail = exports.getProductClassify = exports.getAllProductList = void 0;
+exports.addressConfig = exports.payOrder = exports.checkOrder = exports.submitOrder = exports.getOrderStatus = exports.addOrder = exports.getOrder = exports.deleteShoppingCart = exports.addShoppingCart = exports.getShoppingCarInfo = exports.bindingInfo = exports.sendMessage = exports.updateIcon = exports.updatePassword = exports.updateUserInfo = exports.getUserInfo = exports.addressOperate = exports.setDefaultAddress = exports.getAddress = exports.logout = exports.toLogin = exports.getHomeGroup = exports.getProductionList = exports.getCarousel = exports.getTags = exports.getProductDetail = exports.getProductClassify = exports.getAllProductList = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -2770,6 +3133,7 @@ var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/
 var _axios = _interopRequireDefault(require("axios"));
 
 var period = 60000;
+var requestTimeout = new Date().getTime();
 
 var apiRequire =
 /*#__PURE__*/
@@ -2807,14 +3171,40 @@ function () {
               params: data
             }).then(function (res) {
               if (res.data.code === 2000) {
+                //name === 'toLogin' && ( requestTimeout = new Date(res.data.result.timeOut).getTime());
+                //console.log(name,requestTimeout);
                 duration > 0 && window.sessionStorage.setItem(name, JSON.stringify(res.data.result));
                 duration > 0 && window.sessionStorage.setItem(name + '-time', storageTime);
                 return res.data.result;
               } else {
-                return alert(res.data.msg);
+                console.log(res, 'res');
+                alert(res.data.msg);
+                return;
               }
-            }).catch(function (err) {
-              return alert(err);
+            }).catch(function (error) {
+              if (error.response) {
+                // 请求已发出，但服务器响应的状态码不在 2xx 范围内
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+
+                if (error.response.status === 401) {
+                  if (window.sessionStorage.getItem('account')) {
+                    window.sessionStorage.clear();
+                  }
+
+                  window.dispatchEvent(new CustomEvent('showLoginBox'));
+                } else {
+                  alert(error);
+                  return;
+                }
+              } else {
+                // Something happened in setting up the request that triggered an Error
+                console.log('Error', error.message);
+                alert(error.message);
+                return;
+              } //console.log(error.config);
+
             });
 
           case 10:
@@ -2828,10 +3218,32 @@ function () {
                 duration > 0 && window.sessionStorage.setItem(name + '-time', storageTime);
                 return res.data.result;
               } else {
-                return alert(res.data.msg);
+                alert(res.data.msg);
+                return;
               }
-            }).catch(function (err) {
-              return alert(err);
+            }).catch(function (error) {
+              if (error.response) {
+                // 请求已发出，但服务器响应的状态码不在 2xx 范围内
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+
+                if (error.response.status === 401) {
+                  if (window.sessionStorage.getItem('account')) {
+                    window.sessionStorage.clear();
+                  }
+
+                  window.dispatchEvent(new CustomEvent('showLoginBox'));
+                } else {
+                  alert(error);
+                  return;
+                }
+              } else {
+                // Something happened in setting up the request that triggered an Error
+                console.log('Error', error.message);
+                alert(error.message);
+                return;
+              }
             });
 
           case 15:
@@ -3081,7 +3493,7 @@ function () {
         switch (_context9.prev = _context9.next) {
           case 0:
             _context9.next = 2;
-            return apiRequire('account', '/api/account/login', null, account, period);
+            return apiRequire('account', '/api/account/login', 'post', account, period);
 
           case 2:
             return _context9.abrupt("return", _context9.sent);
@@ -3101,7 +3513,7 @@ function () {
 
 exports.toLogin = toLogin;
 
-var getAddress =
+var logout =
 /*#__PURE__*/
 function () {
   var _ref10 = (0, _asyncToGenerator2.default)(
@@ -3112,7 +3524,7 @@ function () {
         switch (_context10.prev = _context10.next) {
           case 0:
             _context10.next = 2;
-            return apiRequire('getAddress', '/api/account/GetAddressList', null, null);
+            return apiRequire('logout', '/api/account/Logout', 'post', null);
 
           case 2:
             return _context10.abrupt("return", _context10.sent);
@@ -3125,25 +3537,25 @@ function () {
     }, _callee10, this);
   }));
 
-  return function getAddress() {
+  return function logout() {
     return _ref10.apply(this, arguments);
   };
 }();
 
-exports.getAddress = getAddress;
+exports.logout = logout;
 
-var setDefaultAddress =
+var getAddress =
 /*#__PURE__*/
 function () {
   var _ref11 = (0, _asyncToGenerator2.default)(
   /*#__PURE__*/
-  _regenerator.default.mark(function _callee11(data) {
+  _regenerator.default.mark(function _callee11() {
     return _regenerator.default.wrap(function _callee11$(_context11) {
       while (1) {
         switch (_context11.prev = _context11.next) {
           case 0:
             _context11.next = 2;
-            return apiRequire('setDefaultAddress', '/api/account/SetDefaultAddress', 'post', data);
+            return apiRequire('getAddress', '/api/account/GetAddressList', null, null);
 
           case 2:
             return _context11.abrupt("return", _context11.sent);
@@ -3156,14 +3568,14 @@ function () {
     }, _callee11, this);
   }));
 
-  return function setDefaultAddress(_x8) {
+  return function getAddress() {
     return _ref11.apply(this, arguments);
   };
 }();
 
-exports.setDefaultAddress = setDefaultAddress;
+exports.getAddress = getAddress;
 
-var addressOperate =
+var setDefaultAddress =
 /*#__PURE__*/
 function () {
   var _ref12 = (0, _asyncToGenerator2.default)(
@@ -3174,7 +3586,7 @@ function () {
         switch (_context12.prev = _context12.next) {
           case 0:
             _context12.next = 2;
-            return apiRequire('addressOperate', '/api/account/AddressOperate', 'post', data);
+            return apiRequire('setDefaultAddress', '/api/account/SetDefaultAddress', 'post', data);
 
           case 2:
             return _context12.abrupt("return", _context12.sent);
@@ -3187,14 +3599,14 @@ function () {
     }, _callee12, this);
   }));
 
-  return function addressOperate(_x9) {
+  return function setDefaultAddress(_x8) {
     return _ref12.apply(this, arguments);
   };
 }();
 
-exports.addressOperate = addressOperate;
+exports.setDefaultAddress = setDefaultAddress;
 
-var getUserInfo =
+var addressOperate =
 /*#__PURE__*/
 function () {
   var _ref13 = (0, _asyncToGenerator2.default)(
@@ -3205,7 +3617,7 @@ function () {
         switch (_context13.prev = _context13.next) {
           case 0:
             _context13.next = 2;
-            return apiRequire('addressOperate', '/api/account/GetUserInfo', null, data);
+            return apiRequire('addressOperate', '/api/account/AddressOperate', 'post', data);
 
           case 2:
             return _context13.abrupt("return", _context13.sent);
@@ -3218,14 +3630,14 @@ function () {
     }, _callee13, this);
   }));
 
-  return function getUserInfo(_x10) {
+  return function addressOperate(_x9) {
     return _ref13.apply(this, arguments);
   };
 }();
 
-exports.getUserInfo = getUserInfo;
+exports.addressOperate = addressOperate;
 
-var updateUserInfo =
+var getUserInfo =
 /*#__PURE__*/
 function () {
   var _ref14 = (0, _asyncToGenerator2.default)(
@@ -3236,7 +3648,7 @@ function () {
         switch (_context14.prev = _context14.next) {
           case 0:
             _context14.next = 2;
-            return apiRequire('updateUserInfo', '/api/account/UpdateUserInfo', 'post', data);
+            return apiRequire('addressOperate', '/api/account/GetUserInfo', null, data);
 
           case 2:
             return _context14.abrupt("return", _context14.sent);
@@ -3249,14 +3661,14 @@ function () {
     }, _callee14, this);
   }));
 
-  return function updateUserInfo(_x11) {
+  return function getUserInfo(_x10) {
     return _ref14.apply(this, arguments);
   };
 }();
 
-exports.updateUserInfo = updateUserInfo;
+exports.getUserInfo = getUserInfo;
 
-var updatePassword =
+var updateUserInfo =
 /*#__PURE__*/
 function () {
   var _ref15 = (0, _asyncToGenerator2.default)(
@@ -3267,7 +3679,7 @@ function () {
         switch (_context15.prev = _context15.next) {
           case 0:
             _context15.next = 2;
-            return apiRequire('updatePassword', '/api/account/UpdatePassword', 'post', data);
+            return apiRequire('updateUserInfo', '/api/account/UpdateUserInfo', 'post', data);
 
           case 2:
             return _context15.abrupt("return", _context15.sent);
@@ -3280,15 +3692,14 @@ function () {
     }, _callee15, this);
   }));
 
-  return function updatePassword(_x12) {
+  return function updateUserInfo(_x11) {
     return _ref15.apply(this, arguments);
   };
-}(); //order
+}();
 
+exports.updateUserInfo = updateUserInfo;
 
-exports.updatePassword = updatePassword;
-
-var getShoppingCarInfo =
+var updatePassword =
 /*#__PURE__*/
 function () {
   var _ref16 = (0, _asyncToGenerator2.default)(
@@ -3299,7 +3710,7 @@ function () {
         switch (_context16.prev = _context16.next) {
           case 0:
             _context16.next = 2;
-            return apiRequire('getShoppingCarInfo', '/api/order/GetShoppingCart', null, data);
+            return apiRequire('updatePassword', '/api/account/UpdatePassword', 'post', data);
 
           case 2:
             return _context16.abrupt("return", _context16.sent);
@@ -3312,14 +3723,14 @@ function () {
     }, _callee16, this);
   }));
 
-  return function getShoppingCarInfo(_x13) {
+  return function updatePassword(_x12) {
     return _ref16.apply(this, arguments);
   };
 }();
 
-exports.getShoppingCarInfo = getShoppingCarInfo;
+exports.updatePassword = updatePassword;
 
-var addShoppingCart =
+var updateIcon =
 /*#__PURE__*/
 function () {
   var _ref17 = (0, _asyncToGenerator2.default)(
@@ -3330,7 +3741,7 @@ function () {
         switch (_context17.prev = _context17.next) {
           case 0:
             _context17.next = 2;
-            return apiRequire('addShoppingCart', '/api/order/AddShoppingCart', 'post', data);
+            return apiRequire('updateIcon', '/api/account/UpdateIcon', 'post', data);
 
           case 2:
             return _context17.abrupt("return", _context17.sent);
@@ -3343,14 +3754,14 @@ function () {
     }, _callee17, this);
   }));
 
-  return function addShoppingCart(_x14) {
+  return function updateIcon(_x13) {
     return _ref17.apply(this, arguments);
   };
 }();
 
-exports.addShoppingCart = addShoppingCart;
+exports.updateIcon = updateIcon;
 
-var deleteShoppingCart =
+var sendMessage =
 /*#__PURE__*/
 function () {
   var _ref18 = (0, _asyncToGenerator2.default)(
@@ -3361,7 +3772,7 @@ function () {
         switch (_context18.prev = _context18.next) {
           case 0:
             _context18.next = 2;
-            return apiRequire('deleteShoppingCart', '/api/order/DeleteShoppingCart', 'post', data);
+            return apiRequire('sendMessage', '/api/account/SendMessage', 'post', data);
 
           case 2:
             return _context18.abrupt("return", _context18.sent);
@@ -3374,14 +3785,14 @@ function () {
     }, _callee18, this);
   }));
 
-  return function deleteShoppingCart(_x15) {
+  return function sendMessage(_x14) {
     return _ref18.apply(this, arguments);
   };
 }();
 
-exports.deleteShoppingCart = deleteShoppingCart;
+exports.sendMessage = sendMessage;
 
-var getOrder =
+var bindingInfo =
 /*#__PURE__*/
 function () {
   var _ref19 = (0, _asyncToGenerator2.default)(
@@ -3392,7 +3803,7 @@ function () {
         switch (_context19.prev = _context19.next) {
           case 0:
             _context19.next = 2;
-            return apiRequire('getOrder', '/api/order/GetOrder', null, data);
+            return apiRequire('bindingInfo', '/api/account/BindingInfo', 'post', data);
 
           case 2:
             return _context19.abrupt("return", _context19.sent);
@@ -3405,14 +3816,15 @@ function () {
     }, _callee19, this);
   }));
 
-  return function getOrder(_x16) {
+  return function bindingInfo(_x15) {
     return _ref19.apply(this, arguments);
   };
-}();
+}(); //order
 
-exports.getOrder = getOrder;
 
-var addOrder =
+exports.bindingInfo = bindingInfo;
+
+var getShoppingCarInfo =
 /*#__PURE__*/
 function () {
   var _ref20 = (0, _asyncToGenerator2.default)(
@@ -3423,7 +3835,7 @@ function () {
         switch (_context20.prev = _context20.next) {
           case 0:
             _context20.next = 2;
-            return apiRequire('addOrder', '/api/order/AddOrder', 'post', data);
+            return apiRequire('getShoppingCarInfo', '/api/order/GetShoppingCart', null, data);
 
           case 2:
             return _context20.abrupt("return", _context20.sent);
@@ -3436,14 +3848,14 @@ function () {
     }, _callee20, this);
   }));
 
-  return function addOrder(_x17) {
+  return function getShoppingCarInfo(_x16) {
     return _ref20.apply(this, arguments);
   };
 }();
 
-exports.addOrder = addOrder;
+exports.getShoppingCarInfo = getShoppingCarInfo;
 
-var getOrderStatus =
+var addShoppingCart =
 /*#__PURE__*/
 function () {
   var _ref21 = (0, _asyncToGenerator2.default)(
@@ -3454,7 +3866,7 @@ function () {
         switch (_context21.prev = _context21.next) {
           case 0:
             _context21.next = 2;
-            return apiRequire('getOrderStatus', '/api/order/GetOrderStatus', null, data);
+            return apiRequire('addShoppingCart', '/api/order/AddShoppingCart', 'post', data);
 
           case 2:
             return _context21.abrupt("return", _context21.sent);
@@ -3467,14 +3879,14 @@ function () {
     }, _callee21, this);
   }));
 
-  return function getOrderStatus(_x18) {
+  return function addShoppingCart(_x17) {
     return _ref21.apply(this, arguments);
   };
 }();
 
-exports.getOrderStatus = getOrderStatus;
+exports.addShoppingCart = addShoppingCart;
 
-var submitOrder =
+var deleteShoppingCart =
 /*#__PURE__*/
 function () {
   var _ref22 = (0, _asyncToGenerator2.default)(
@@ -3485,7 +3897,7 @@ function () {
         switch (_context22.prev = _context22.next) {
           case 0:
             _context22.next = 2;
-            return apiRequire('submitOrder', '/api/order/SubmitOrder', 'post', data);
+            return apiRequire('deleteShoppingCart', '/api/order/DeleteShoppingCart', 'post', data);
 
           case 2:
             return _context22.abrupt("return", _context22.sent);
@@ -3498,14 +3910,14 @@ function () {
     }, _callee22, this);
   }));
 
-  return function submitOrder(_x19) {
+  return function deleteShoppingCart(_x18) {
     return _ref22.apply(this, arguments);
   };
 }();
 
-exports.submitOrder = submitOrder;
+exports.deleteShoppingCart = deleteShoppingCart;
 
-var checkOrder =
+var getOrder =
 /*#__PURE__*/
 function () {
   var _ref23 = (0, _asyncToGenerator2.default)(
@@ -3516,7 +3928,7 @@ function () {
         switch (_context23.prev = _context23.next) {
           case 0:
             _context23.next = 2;
-            return apiRequire('checkOrder', '/api/order/CheckOrderPaid', null, data);
+            return apiRequire('getOrder', '/api/order/GetOrder', null, data);
 
           case 2:
             return _context23.abrupt("return", _context23.sent);
@@ -3529,15 +3941,14 @@ function () {
     }, _callee23, this);
   }));
 
-  return function checkOrder(_x20) {
+  return function getOrder(_x19) {
     return _ref23.apply(this, arguments);
   };
-}(); //pay
+}();
 
+exports.getOrder = getOrder;
 
-exports.checkOrder = checkOrder;
-
-var payOrder =
+var addOrder =
 /*#__PURE__*/
 function () {
   var _ref24 = (0, _asyncToGenerator2.default)(
@@ -3548,7 +3959,7 @@ function () {
         switch (_context24.prev = _context24.next) {
           case 0:
             _context24.next = 2;
-            return apiRequire('payOrder', '/api/pay/PayOrder', null, data);
+            return apiRequire('addOrder', '/api/order/AddOrder', 'post', data);
 
           case 2:
             return _context24.abrupt("return", _context24.sent);
@@ -3561,26 +3972,25 @@ function () {
     }, _callee24, this);
   }));
 
-  return function payOrder(_x21) {
+  return function addOrder(_x20) {
     return _ref24.apply(this, arguments);
   };
-}(); //config
+}();
 
+exports.addOrder = addOrder;
 
-exports.payOrder = payOrder;
-
-var addressConfig =
+var getOrderStatus =
 /*#__PURE__*/
 function () {
   var _ref25 = (0, _asyncToGenerator2.default)(
   /*#__PURE__*/
-  _regenerator.default.mark(function _callee25() {
+  _regenerator.default.mark(function _callee25(data) {
     return _regenerator.default.wrap(function _callee25$(_context25) {
       while (1) {
         switch (_context25.prev = _context25.next) {
           case 0:
             _context25.next = 2;
-            return apiRequire('addressConfig', '/api/config/GetAddressConfig', null, null, 600000);
+            return apiRequire('getOrderStatus', '/api/order/GetOrderStatus', null, data);
 
           case 2:
             return _context25.abrupt("return", _context25.sent);
@@ -3593,15 +4003,141 @@ function () {
     }, _callee25, this);
   }));
 
-  return function addressConfig() {
+  return function getOrderStatus(_x21) {
     return _ref25.apply(this, arguments);
+  };
+}();
+
+exports.getOrderStatus = getOrderStatus;
+
+var submitOrder =
+/*#__PURE__*/
+function () {
+  var _ref26 = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee26(data) {
+    return _regenerator.default.wrap(function _callee26$(_context26) {
+      while (1) {
+        switch (_context26.prev = _context26.next) {
+          case 0:
+            _context26.next = 2;
+            return apiRequire('submitOrder', '/api/order/SubmitOrder', 'post', data);
+
+          case 2:
+            return _context26.abrupt("return", _context26.sent);
+
+          case 3:
+          case "end":
+            return _context26.stop();
+        }
+      }
+    }, _callee26, this);
+  }));
+
+  return function submitOrder(_x22) {
+    return _ref26.apply(this, arguments);
+  };
+}();
+
+exports.submitOrder = submitOrder;
+
+var checkOrder =
+/*#__PURE__*/
+function () {
+  var _ref27 = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee27(data) {
+    return _regenerator.default.wrap(function _callee27$(_context27) {
+      while (1) {
+        switch (_context27.prev = _context27.next) {
+          case 0:
+            _context27.next = 2;
+            return apiRequire('checkOrder', '/api/order/CheckOrderPaid', null, data);
+
+          case 2:
+            return _context27.abrupt("return", _context27.sent);
+
+          case 3:
+          case "end":
+            return _context27.stop();
+        }
+      }
+    }, _callee27, this);
+  }));
+
+  return function checkOrder(_x23) {
+    return _ref27.apply(this, arguments);
+  };
+}(); //pay
+
+
+exports.checkOrder = checkOrder;
+
+var payOrder =
+/*#__PURE__*/
+function () {
+  var _ref28 = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee28(data) {
+    return _regenerator.default.wrap(function _callee28$(_context28) {
+      while (1) {
+        switch (_context28.prev = _context28.next) {
+          case 0:
+            _context28.next = 2;
+            return apiRequire('payOrder', '/api/pay/PayOrder', null, data);
+
+          case 2:
+            return _context28.abrupt("return", _context28.sent);
+
+          case 3:
+          case "end":
+            return _context28.stop();
+        }
+      }
+    }, _callee28, this);
+  }));
+
+  return function payOrder(_x24) {
+    return _ref28.apply(this, arguments);
+  };
+}(); //config
+
+
+exports.payOrder = payOrder;
+
+var addressConfig =
+/*#__PURE__*/
+function () {
+  var _ref29 = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee29() {
+    return _regenerator.default.wrap(function _callee29$(_context29) {
+      while (1) {
+        switch (_context29.prev = _context29.next) {
+          case 0:
+            _context29.next = 2;
+            return apiRequire('addressConfig', '/api/config/GetAddressConfig', null, null, 600000);
+
+          case 2:
+            return _context29.abrupt("return", _context29.sent);
+
+          case 3:
+          case "end":
+            return _context29.stop();
+        }
+      }
+    }, _callee29, this);
+  }));
+
+  return function addressConfig() {
+    return _ref29.apply(this, arguments);
   };
 }(); ///api/order/AddShoppingCart
 //getProductClassify,api/Product/GetProductDetail?id=
 
 
 exports.addressConfig = addressConfig;
-},{"@babel/runtime/helpers/asyncToGenerator":1,"@babel/runtime/helpers/interopRequireDefault":2,"@babel/runtime/regenerator":4,"axios":5}],36:[function(require,module,exports){
+},{"@babel/runtime/helpers/asyncToGenerator":1,"@babel/runtime/helpers/interopRequireDefault":4,"@babel/runtime/regenerator":6,"axios":7}],38:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3755,7 +4291,81 @@ var SHA256 = function SHA256(s) {
 
 var _default = SHA256;
 exports.default = _default;
-},{}],37:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
+var Mask =
+/*#__PURE__*/
+function () {
+  function Mask() {
+    (0, _classCallCheck2.default)(this, Mask);
+    this.mask = null;
+  }
+
+  (0, _createClass2.default)(Mask, [{
+    key: "init",
+    value: function init() {
+      var mask = document.createElement('div');
+      mask.className = 'mask';
+      document.querySelector('body').appendChild(mask);
+      this.mask = mask;
+    }
+  }, {
+    key: "show",
+    value: function show() {
+      var _this = this;
+
+      if (this.mask !== null) {
+        if (this.mask.style.display !== 'block') {
+          this.mask.style.display = 'block';
+          setTimeout(function () {
+            _this.mask.style.opacity = 1;
+          }, 0);
+        }
+      } else {
+        this.init();
+        setTimeout(function () {
+          _this.mask.style.display = 'block';
+          setTimeout(function () {
+            _this.mask.style.opacity = 1;
+          }, 0);
+        }, 0);
+      }
+    }
+  }, {
+    key: "hide",
+    value: function hide() {
+      var _this2 = this;
+
+      if (this.mask !== null) {
+        if (this.mask.style.display !== 'none') {
+          this.mask.style.opacity = 0;
+          setTimeout(function () {
+            _this2.mask.style.display = 'none';
+          }, 550);
+        }
+      } else {
+        this.init();
+      }
+    }
+  }]);
+  return Mask;
+}();
+
+exports.default = Mask;
+;
+},{"@babel/runtime/helpers/classCallCheck":2,"@babel/runtime/helpers/createClass":3,"@babel/runtime/helpers/interopRequireDefault":4}],40:[function(require,module,exports){
 (function (process){
 "use strict";
 
@@ -4712,7 +5322,122 @@ var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
   }]);
 });
 }).call(this,require('_process'))
-},{"@babel/runtime/helpers/interopRequireDefault":2,"@babel/runtime/helpers/typeof":3,"_process":31}],38:[function(require,module,exports){
+},{"@babel/runtime/helpers/interopRequireDefault":4,"@babel/runtime/helpers/typeof":5,"_process":33}],41:[function(require,module,exports){
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
+var Toast =
+/*#__PURE__*/
+function () {
+  function Toast() {
+    (0, _classCallCheck2.default)(this, Toast);
+    this.toast = null;
+    this.icon = null;
+    this.content = null;
+  }
+
+  (0, _createClass2.default)(Toast, [{
+    key: "init",
+    value: function init(options) {
+      var toast = document.createElement('div'),
+          imgContain = document.createElement('div'),
+          img = document.createElement('img'),
+          content = document.createElement('div');
+      toast.className = 'my-toast';
+      imgContain.className = 'my-toast-icon-container';
+      img.className = 'my-toast-icon';
+      content.className = 'my-toast-content';
+      img.src = options.icon;
+      content.innerHTML = options.content;
+      imgContain.appendChild(img);
+      toast.appendChild(imgContain);
+      toast.appendChild(content);
+      document.querySelector('body').appendChild(toast);
+      this.toast = toast;
+      this.icon = img;
+      this.content = content;
+    }
+  }, {
+    key: "show",
+    value: function show(options) {
+      var _this = this;
+
+      /*
+      * type success/error/normal
+      * */
+      var option = Object.assign({
+        type: 'success',
+        icon: '../images/toast-succ.png',
+        content: null,
+        hideTime: 3000
+      }, options);
+
+      switch (option.type) {
+        case 'success':
+          option.icon = '../images/toast-succ.png';
+          option.content === null && (option.content = '成功');
+          break;
+
+        case 'error':
+          option.icon = '../images/toast-err.png';
+          option.content === null && (option.content = '错误');
+          break;
+
+        default:
+          option.icon = '../images/toast-normal.png';
+          option.content === null && (option.content = '其他');
+      }
+
+      if (this.toast) {
+        this.toast.style.display = 'block';
+        setTimeout(function () {
+          _this.toast.style.opacity = 1;
+          setTimeout(function () {
+            _this.hide();
+          }, option.hideTime);
+        }, 0);
+      } else {
+        this.init(option);
+        setTimeout(function () {
+          _this.toast.style.display = 'block';
+          setTimeout(function () {
+            _this.toast.style.opacity = 1;
+            setTimeout(function () {
+              _this.hide();
+            }, option.hideTime);
+          }, 0);
+        }, 100);
+      }
+    }
+  }, {
+    key: "hide",
+    value: function hide() {
+      var _this2 = this;
+
+      if (this.toast) {
+        this.toast.style.opacity = 0;
+        setTimeout(function () {
+          _this2.toast.style.display = 'none';
+        }, 500);
+      }
+    }
+  }]);
+  return Toast;
+}();
+
+exports.default = Toast;
+;
+},{"@babel/runtime/helpers/classCallCheck":2,"@babel/runtime/helpers/createClass":3,"@babel/runtime/helpers/interopRequireDefault":4}],42:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4774,4 +5499,4 @@ var format = function format(date, fmt) {
 };
 
 exports.format = format;
-},{}]},{},[34]);
+},{}]},{},[36]);

@@ -81,6 +81,9 @@ var toCloseLoginBox = function toCloseLoginBox() {
   dispatchSomrthing(false);
 };
 
+window.addEventListener('showLoginBox', toShowLoginBox);
+window.addEventListener('hideLoginBox', toCloseLoginBox);
+
 var toSumbitLoginData = function toSumbitLoginData() {
   var name = document.querySelector('#account'),
       psw = document.querySelector('#password');
@@ -92,12 +95,15 @@ var toSumbitLoginData = function toSumbitLoginData() {
     }).then(function (res) {
       console.log(res);
       toCloseLoginBox();
+      toGetShoppingCarInfo();
       var account = document.querySelector('.account');
       account.querySelector('img').setAttribute('src', res.icon);
       account.querySelector('span').innerHTML = res.nickName;
       account.style.display = '-webkit-flex';
       document.querySelector('.to-login').style.display = 'none';
       document.querySelector('.to-sign-up').style.display = 'none'; //window.sessionStorage.setItem('account',JSON.stringify(res));
+
+      window.location.reload();
     });
   }
 
@@ -123,9 +129,18 @@ var toGetShoppingCarInfo = function toGetShoppingCarInfo() {
       quantityEle[i].innerHTML = len < 1000 ? len : '···';
     }
   });
+}; //toGetShoppingCarInfo();
+
+
+window.logout = function () {
+  (0, _api.logout)().then(function (res) {
+    if (res !== undefined) {
+      window.sessionStorage.clear();
+      window.location.reload();
+    }
+  });
 };
 
-toGetShoppingCarInfo();
 window.addEventListener('updateShoppingCart', function () {
   console.log('---更新购物车信息---');
   toGetShoppingCarInfo();

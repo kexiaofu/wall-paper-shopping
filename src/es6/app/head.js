@@ -1,6 +1,6 @@
 import Mask from '../common/mask';
 import SHA256 from '../common/encrypt';
-import { toLogin, getShoppingCarInfo } from '../common/api';
+import { toLogin, getShoppingCarInfo, logout } from '../common/api';
 import template from '../common/template';
 
 let mask = new Mask();
@@ -76,6 +76,10 @@ let toCloseLoginBox = () =>{
 
 };
 
+window.addEventListener('showLoginBox',toShowLoginBox);
+window.addEventListener('hideLoginBox',toCloseLoginBox);
+
+
 let toSumbitLoginData = () =>{
   let name = document.querySelector('#account'),
       psw = document.querySelector('#password');
@@ -85,6 +89,7 @@ let toSumbitLoginData = () =>{
       .then(res=>{
         console.log(res);
         toCloseLoginBox();
+        toGetShoppingCarInfo();
         let account = document.querySelector('.account');
         account.querySelector('img').setAttribute('src',res.icon);
         account.querySelector('span').innerHTML = res.nickName;
@@ -92,6 +97,7 @@ let toSumbitLoginData = () =>{
         document.querySelector('.to-login').style.display = 'none';
         document.querySelector('.to-sign-up').style.display = 'none';
         //window.sessionStorage.setItem('account',JSON.stringify(res));
+        window.location.reload();
       })
   }
 
@@ -120,7 +126,16 @@ let toGetShoppingCarInfo = () =>{
     })
 };
 
-toGetShoppingCarInfo();
+//toGetShoppingCarInfo();
+
+window.logout = () =>{
+  logout().then(res=>{
+    if(res !== undefined) {
+      window.sessionStorage.clear();
+      window.location.reload();
+    }
+  })
+};
 
 window.addEventListener('updateShoppingCart',()=>{
   console.log('---更新购物车信息---');
@@ -137,4 +152,6 @@ document.querySelector('.icon-close').addEventListener('click',toClose);
 document.querySelector('.to-login').addEventListener('click',toShowLoginBox);
 document.querySelector('.close-login-box').addEventListener('click',toCloseLoginBox);
 document.querySelector('.submit').addEventListener('click',toSumbitLoginData);
+
+
 
