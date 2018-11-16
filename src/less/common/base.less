@@ -1,4 +1,5 @@
 @import "./mask.less";
+@import "./toast.less";
 html,body{
   margin:0;
   padding:0;
@@ -128,6 +129,9 @@ view-image
       margin:0 10px;
     }
   }
+  .account-container{
+    display: none;
+  }
   .account-container:hover>.logout{
     display: block;
   }
@@ -148,18 +152,18 @@ view-image
 
 .login{
   width: 420px;
-  height: 450px;
+  height: 480px;
   background: #fff;
   position: fixed;
   top:50%;
   left:50%;
-  transform: translate(-50%,-50%) scale(.5);
+  transform: translate(-50%,-50%) scale(1);
   box-shadow: 0 0 20px #666;
   z-index: 110;
   padding:40px 30px;
   box-sizing: border-box;
   display: none;
-  opacity:0;
+  opacity:1;
   transition:transform .5s ease,opacity .5s ease;
   .close-login-box{
     color:#ccc;
@@ -177,13 +181,13 @@ view-image
     padding:0 0 30px 0;
   }
   p{
-    padding:0 0 20px 0;
+    padding:0 0 15px 0;
     font-size: 18px;
   }
   .login-input{
     margin-bottom:20px;
     border:1px solid #ececec;
-    padding:0 20px;
+    padding:0 0 0 20px;
     position: relative;
     height: 40px;
     i{
@@ -196,8 +200,21 @@ view-image
       width: 270px;
       padding-left:10px;
       margin:5px 0;
-      font-size: 18px;
+      font-size: 14px;
     }
+  }
+  .send-code-btn{
+    text-align: center;
+    display: block;
+    height: 40px;
+    line-height: 40px;
+    font-size: 12px;
+    float: right;
+    border-left:1px solid #ececec;
+    width:80px;
+    cursor: pointer;
+    color: #00a6de;
+    user-select: none;
   }
   .login-input::before{
     content:'';
@@ -209,6 +226,7 @@ view-image
     margin:5px 0;
   }
   .submit,.sign-up{
+    display: inline-block;
     width: 120px;
     height: 40px;
     line-height: 40px;
@@ -223,6 +241,45 @@ view-image
   .sign-up{
     background: #209E85;
   }
+  a{
+    color: #00a6de;
+    font-size: 14px;
+    margin:0 10px;
+  }
+  .login-tab{
+    width: 100%;
+    height: 36px;
+    line-height: 36px;
+    margin:0 0 15px 0;
+    border-bottom:1px solid #00a6de;
+    //background: #ececec;
+    span{
+      width: 80px;
+      float: left;
+      display: block;
+      font-size: 12px;
+      text-align: center;
+      cursor: pointer;
+      transition:color .3s ease;
+    }
+    span:hover{
+      color: #00a6de;
+    }
+    .login-tab-active,.sign-up-tab-active{
+      background: #00a6de;
+      color: #fff;
+    }
+    .login-tab-active:hover,.sign-up-tab-active:hover{
+      color: #fff;
+    }
+  }
+  .login-container{
+    display: none;
+  }
+}
+
+.sign-up-box{
+  display: none;
 }
 
 .show-shopping-car{

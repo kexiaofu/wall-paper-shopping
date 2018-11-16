@@ -62,18 +62,110 @@
     <div class="title">
        Baicheng Digital
     </div>
-    <p>登录到您的账户</p>
-    <div class="login-input">
-        <i class="iconfont icon-wode"></i>
-        <input type="text" placeholder="请输入您的账号" id="account" value="aaa">
+    <div class="login-content">
+        <div class="login-tab">
+            <span class="login-account login-tab-active" onclick="changeLoginType('account')" data-op-type="account">密码登陆</span>
+            <span class="login-phone" onclick="changeLoginType('phone')" data-op-type="phone">手机登陆</span>
+            <span class="login-email" onclick="changeLoginType('email')" data-op-type="email">邮箱登陆</span>
+        </div>
+        <div class="login-container login-phone-container">
+            <div class="login-input">
+                <i class="iconfont icon-phone"></i>
+                <input type="text" placeholder="请输入您的手机号码" id="phone" value="15622316910" style="width: 200px;">
+                <span class="send-code-btn send-code-phone" onclick="sendCode('phone',this)" data-send-code="false">发送验证码</span>
+            </div>
+            <div class="login-input">
+                <i class="iconfont icon-id-code"></i>
+                <input type="text" placeholder="请输入验证码" id="phone-code" value="">
+                <!-- <i class="iconfont icon-suo"></i>
+                 <input type="password" placeholder="请输入您的密码" id="password" value="">-->
+            </div>
+        </div>
+        <div class="login-container login-email-container">
+            <div class="login-input">
+                <i class="iconfont icon-email"></i>
+                <input type="text" placeholder="请输入您的邮箱地址" id="email" value="864927512@qq.com" style="width: 200px;">
+                <span class="send-code-btn send-code-email" onclick="sendCode('email',this)" data-send-code="false">发送验证码</span>
+            </div>
+            <div class="login-input">
+                <i class="iconfont icon-id-code"></i>
+                <input type="text" placeholder="请输入验证码" id="email-code" value="">
+                <!--<input type="password" placeholder="请输入您的密码" id="password" value="">-->
+            </div>
+        </div>
+        <div class="login-container login-account-container" style="display: block;">
+            <div class="login-input">
+                <i class="iconfont icon-wode"></i>
+                <input type="text" placeholder="请输入您的手机号/邮箱/账号" id="account" value="aaa">
+            </div>
+            <div class="login-input">
+                <i class="iconfont icon-suo"></i>
+                <input type="password" placeholder="请输入您的密码" id="password" value="1qaz2wsx">
+            </div>
+        </div>
+
+        <div class="submit">登录</div>
+        <a href="#">找回密码</a>
+        <p>我没有账户</p>
+        <div class="sign-up">注册</div>
     </div>
-    <div class="login-input">
-        <i class="iconfont icon-suo"></i>
-        <input type="password" placeholder="请输入您的密码" id="password" value="1qaz2wsx">
+
+    <div class="sign-up-content">
+
     </div>
-    <div class="submit">登录</div>
-    <p>我没有账户</p>
-    <div class="sign-up">注册</div>
+
+</div>
+
+<div class="login sign-up-box">
+    <div class="close-login-box close-sign-up-box">
+        <i class="iconfont icon-close "></i>
+    </div>
+    <div class="title">
+        Baicheng Digital
+    </div>
+    <div class="login-content">
+        <div class="login-tab">
+            <span class="sign-up-phone sign-up-tab-active" onclick="changeSignUpTab('phone')" data-op-type="phone">手机注册</span>
+            <span class="sign-up-email" onclick="changeSignUpTab('email')" data-op-type="email">邮箱注册</span>
+        </div>
+        <div class="login-container sign-up-phone-container" style="display: block;">
+            <div class="login-input">
+                <i class="iconfont icon-phone"></i>
+                <input type="text" placeholder="请输入您的手机号码" id="sign-up-phone" value="15622316910" style="width: 200px;">
+                <span class="send-code-btn send-code-phone" onclick="sendCode('phone',this,'signUp')" data-send-code="false">发送验证码</span>
+            </div>
+            <div class="login-input">
+                <i class="iconfont icon-id-code"></i>
+                <input type="text" placeholder="请输入验证码" id="sign-up-phone-code" value="">
+            </div>
+            <div class="login-input">
+                <i class="iconfont icon-suo"></i>
+                <input type="password" placeholder="请输入您的密码" id="phone-password" value="1qaz2wsx">
+            </div>
+        </div>
+        <div class="login-container sign-up-email-container">
+            <div class="login-input">
+                <i class="iconfont icon-email"></i>
+                <input type="text" placeholder="请输入您的邮箱地址" id="sign-up-email" value="864927512@qq.com" style="width: 200px;">
+                <span class="send-code-btn send-code-email" onclick="sendCode('email',this,'signUp')" data-send-code="false">发送验证码</span>
+            </div>
+            <div class="login-input">
+                <i class="iconfont icon-id-code"></i>
+                <input type="text" placeholder="请输入验证码" id="sign-up-email-code" value="">
+            </div>
+            <div class="login-input">
+                <i class="iconfont icon-suo"></i>
+                <input type="password" placeholder="请输入您的密码" id="email-password" value="">
+            </div>
+        </div>
+
+        <div class="sign-up" onclick="register()">注册</div>
+    </div>
+
+    <div class="sign-up-content">
+
+    </div>
+
 </div>
 
 <script id="shopping-car-container" type="text/html">

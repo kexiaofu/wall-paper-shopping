@@ -136,6 +136,8 @@ export const sendMessage = async (data) => await apiRequire('sendMessage','/api/
 
 export const bindingInfo = async (data) => await apiRequire('bindingInfo','/api/account/BindingInfo','post',data);
 
+export const register = async (data) => await apiRequire('register','/api/account/Register','post',data);
+
 //order
 export const getShoppingCarInfo = async (data) => await apiRequire('getShoppingCarInfo','/api/order/GetShoppingCart',null,data);
 

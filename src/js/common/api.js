@@ -2815,7 +2815,7 @@ function () {
         switch (_context9.prev = _context9.next) {
           case 0:
             _context9.next = 2;
-            return apiRequire('account', '/api/account/login', null, account, period);
+            return apiRequire('account', '/api/account/login', 'post', account, period);
 
           case 2:
             return _context9.abrupt("return", _context9.sent);
@@ -2846,7 +2846,7 @@ function () {
         switch (_context10.prev = _context10.next) {
           case 0:
             _context10.next = 2;
-            return apiRequire('logout', '/api/account/Logout', null, null);
+            return apiRequire('logout', '/api/account/Logout', 'post', null);
 
           case 2:
             return _context10.abrupt("return", _context10.sent);
