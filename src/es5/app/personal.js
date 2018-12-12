@@ -47,34 +47,37 @@ var getPersonalInfo = function getPersonalInfo() {
         return item.name;
       });
 
-      for (var i = res.length - 1; i >= 0; i--) {
-        if (info.address.indexOf(res[i].name) > -1) {
-          info.province = res[i].name;
-          var cities = res[i].cities;
-          info.cities = cities;
+      if (info.address !== null) {
+        for (var i = res.length - 1; i >= 0; i--) {
+          if (info.address.indexOf(res[i].name) > -1) {
+            info.province = res[i].name;
+            var cities = res[i].cities;
+            info.cities = cities;
 
-          for (var c = cities.length - 1; c >= 0; c--) {
-            if (info.address.indexOf(cities[c].name) > -1) {
-              info.city = cities[c].name;
-              var districts = cities[c].districts;
-              info.districts = districts;
+            for (var c = cities.length - 1; c >= 0; c--) {
+              if (info.address.indexOf(cities[c].name) > -1) {
+                info.city = cities[c].name;
+                var districts = cities[c].districts;
+                info.districts = districts;
 
-              for (var d = districts.length - 1; d >= 0; d--) {
-                if (info.address.indexOf(districts[d].name) > -1) {
-                  info.district = districts[d].name;
-                  break;
+                for (var d = districts.length - 1; d >= 0; d--) {
+                  if (info.address.indexOf(districts[d].name) > -1) {
+                    info.district = districts[d].name;
+                    break;
+                  }
                 }
+
+                break;
               }
-
-              break;
             }
-          }
 
-          break;
+            break;
+          }
         }
       }
 
       personalInfo = JSON.parse(JSON.stringify(info));
+      console.log(personalInfo);
       var hash = window.location.hash;
 
       if (hash !== null) {

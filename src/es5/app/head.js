@@ -109,6 +109,17 @@ var toShowSignUpBox = function toShowSignUpBox() {
   dispatchSomrthing(true);
 };
 
+var toShowForgetBox = function toShowForgetBox() {
+  var forgetBox = document.querySelector('.forget-password-box');
+  forgetBox.style.display = 'block';
+  toCloseLoginBox();
+  setTimeout(function () {
+    forgetBox.style.transform = 'translate(-50%,-50%) scale(1)';
+    forgetBox.style.opacity = 1;
+  }, 0);
+  dispatchSomrthing(true);
+};
+
 var toCloseLoginBox = function toCloseLoginBox() {
   var login = document.querySelector('.login');
   login.style.transform = 'translate(-50%,-50%) scale(.5)';
@@ -117,7 +128,9 @@ var toCloseLoginBox = function toCloseLoginBox() {
     login.style.display = 'none';
   }, 500);
   setTimeout(function () {
-    if (document.querySelector('.sign-up-box').style.display !== 'block') {
+    console.log(document.querySelector('.forget-password-box'));
+
+    if (document.querySelector('.sign-up-box').style.display !== 'block' && document.querySelector('.forget-password-box').style.display !== 'block') {
       dispatchSomrthing(false);
     }
   }, 0);
@@ -129,6 +142,20 @@ var toCloseSignUpBox = function toCloseSignUpBox() {
   signUpBox.style.opacity = 0;
   setTimeout(function () {
     signUpBox.style.display = 'none';
+  }, 500);
+  setTimeout(function () {
+    if (document.querySelector('.login').style.display !== 'block') {
+      dispatchSomrthing(false);
+    }
+  }, 0);
+};
+
+var toCloseForgetBox = function toCloseForgetBox() {
+  var forgetBox = document.querySelector('.forget-password-box');
+  forgetBox.style.transform = 'translate(-50%,-50%) scale(.5)';
+  forgetBox.style.opacity = 0;
+  setTimeout(function () {
+    forgetBox.style.display = 'none';
   }, 500);
   setTimeout(function () {
     if (document.querySelector('.login').style.display !== 'block') {
@@ -227,8 +254,11 @@ document.querySelector('.to-search').addEventListener('click', toSearch);
 document.querySelector('.icon-close').addEventListener('click', toClose);
 document.querySelector('.to-login').addEventListener('click', toShowLoginBox);
 document.querySelector('.to-sign-up').addEventListener('click', toShowSignUpBox);
+document.querySelector('.sign-up').addEventListener('click', toShowSignUpBox);
+document.querySelector('.show-forget-box').addEventListener('click', toShowForgetBox);
 document.querySelector('.close-login-box').addEventListener('click', toCloseLoginBox);
 document.querySelector('.close-sign-up-box').addEventListener('click', toCloseSignUpBox);
+document.querySelector('.close-forget-password-box').addEventListener('click', toCloseForgetBox);
 document.querySelector('.submit').addEventListener('click', toSumbitLoginData);
 
 window.changeLoginType = function (type) {
@@ -285,16 +315,56 @@ window.changeSignUpTab = function (type) {
   }
 };
 
+window.changeForgetPasswordTab = function (type) {
+  var activeTab = document.querySelector('.forget-password-tab-active'),
+      oldType = activeTab.getAttribute('data-op-type');
+  console.log(activeTab, oldType, type);
+
+  if (oldType !== type) {
+    activeTab.className = activeTab.className.replace('forget-password-tab-active', '');
+
+    switch (type) {
+      case 'phone':
+        document.querySelector('.forget-password-phone').className += ' forget-password-tab-active';
+        document.querySelector(".forget-password-".concat(oldType, "-container")).style.display = 'none';
+        document.querySelector('.forget-password-phone-container').style.display = 'block';
+        break;
+
+      case 'email':
+        document.querySelector('.forget-password-email').className += ' forget-password-tab-active';
+        document.querySelector(".forget-password-".concat(oldType, "-container")).style.display = 'none';
+        document.querySelector('.forget-password-email-container').style.display = 'block';
+        break;
+    }
+  }
+};
+
 var duration = 60;
 
-window.sendCode = function (type, ele) {
+window.sendCodeForLogin = function (type, ele) {
   var next = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'login';
 
   if (ele.getAttribute('data-send-code') === 'false') {
     if (type === 'phone') {
       var sendCodeTime = new Date().getTime(),
           count = 0,
-          inputValue = next === 'login' ? +document.querySelector('#phone').value : +document.querySelector('#sign-up-phone').value;
+          inputValue = '';
+
+      switch (next) {
+        case 'login':
+          inputValue = +document.querySelector('#phone').value;
+          break;
+
+        case 'signUp':
+          inputValue = +document.querySelector('#sign-up-phone').value;
+          break;
+
+        case 'forgetPassword':
+          inputValue = +document.querySelector('#forget-password-phone').value;
+          break;
+      }
+
+      console.log(next, inputValue);
 
       if (inputValue === '' || !/^[1][3,4,5,7,8][0-9]{9}$/.test(inputValue)) {
         alert('请填写正确的手机号码');
@@ -304,7 +374,7 @@ window.sendCode = function (type, ele) {
       ele.setAttribute('data-send-code', 'true');
       (0, _api.sendMessage)({
         phone: inputValue,
-        sendMessageType: next === 'login' ? 2 : 1
+        sendMessageType: next === 'signUp' ? 1 : 2
       }).then(function (res) {
         if (res !== undefined) {
           console.log(res);
@@ -328,7 +398,21 @@ window.sendCode = function (type, ele) {
     } else {
       var _sendCodeTime = new Date().getTime(),
           _count = 0,
-          _inputValue = next === 'login' ? document.querySelector('#email').value : document.querySelector('#sign-up-email').value;
+          _inputValue = '';
+
+      switch (next) {
+        case 'login':
+          _inputValue = document.querySelector('#email').value;
+          break;
+
+        case 'signUp':
+          _inputValue = document.querySelector('#sign-up-email').value;
+          break;
+
+        case 'forgetPassword':
+          _inputValue = document.querySelector('#forget-password-email').value;
+          break;
+      }
 
       if (_inputValue === '' || !/^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/.test(_inputValue)) {
         alert('请填写邮箱地址');
@@ -338,7 +422,7 @@ window.sendCode = function (type, ele) {
       ele.setAttribute('data-send-code', 'true');
       (0, _api.sendMessage)({
         email: _inputValue,
-        sendMessageType: next === 'login' ? 2 : 1
+        sendMessageType: next === 'signUp' ? 1 : 2
       }).then(function (res) {
         if (res !== undefined) {
           console.log(res);
@@ -365,10 +449,6 @@ window.sendCode = function (type, ele) {
 
 window.register = function () {
   var type = document.querySelector('.sign-up-tab-active').getAttribute('data-op-type');
-  toast.show({
-    content: '注册成功'
-  });
-  return;
 
   if (type === 'phone') {
     var phone = document.querySelector('#sign-up-phone').value,
@@ -385,6 +465,7 @@ window.register = function () {
           toast.show({
             content: '注册成功'
           });
+          toShowLoginBox();
         }
       });
     }
@@ -403,6 +484,51 @@ window.register = function () {
           toast.show({
             content: '注册成功'
           });
+          toShowLoginBox();
+        }
+      });
+    }
+  }
+};
+
+window.toResetPassword = function () {
+  var type = document.querySelector('.forget-password-tab-active').getAttribute('data-op-type');
+
+  if (type === 'phone') {
+    var phone = document.querySelector('#forget-password-phone').value,
+        code = document.querySelector('#forget-password-phone-code').value,
+        psw = document.querySelector('#f-phone-password').value;
+
+    if (phone !== '' && code !== '' && psw !== '') {
+      (0, _api.resetPassword)({
+        phone: phone,
+        code: code,
+        password: (0, _encrypt.default)(psw)
+      }).then(function (res) {
+        if (res !== undefined) {
+          toast.show({
+            content: '重置密码成功'
+          });
+          toShowLoginBox();
+        }
+      });
+    }
+  } else {
+    var email = document.querySelector('#forget-password-email').value,
+        _code2 = document.querySelector('#forget-password-email-code').value,
+        _psw2 = document.querySelector('#f-email-password').value;
+
+    if (email !== '' && _code2 !== '' && _psw2 !== '') {
+      (0, _api.resetPassword)({
+        email: email,
+        code: _code2,
+        password: (0, _encrypt.default)(_psw2)
+      }).then(function (res) {
+        if (res !== undefined) {
+          toast.show({
+            content: '重置密码成功'
+          });
+          toShowLoginBox();
         }
       });
     }

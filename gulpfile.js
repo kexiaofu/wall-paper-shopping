@@ -335,7 +335,7 @@ gulp.task('moveFont',()=>{
 });
 
 gulp.task('zip',()=>{
-  let D = new Date();
+  let D = new  Date();
   return gulp.src('./dist/target/**/**/**/*.*')
     .pipe(zip(`dist-${version}-${''+D.getFullYear()+(D.getMonth() + 1)+D.getDate()+D.getHours()+D.getMinutes()}.zip`))
     .pipe(gulp.dest('./dist'))

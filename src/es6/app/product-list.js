@@ -13,14 +13,14 @@ let pages = null,
     tagList = [];
 
 let toPage = (index) =>{
-  getData({pageIndex:index,groupId:groupId,tags:tagId,name:searchWord});
+  getData({pageIndex:index,groupId:groupId,tagId:tagId,name:searchWord});
 
 };
 
 
 let getData = (obj) =>{
   getAllProductList(obj).then(res=>{
-    let html = template('production-list', {data:res.products});
+    let html = template('production-list', {data:res.data});
     document.querySelector('.production-list').innerHTML = html;
 
     let images = document.querySelectorAll('.lazy-load-img'),
@@ -88,11 +88,11 @@ window.pickThisTag = (ele) =>{
 
   if(ele.getAttribute('data-op-id') !== 'all') {
     tagId = ele.getAttribute('data-op-id');
-    getData({groupId:groupId,tags:tagId,name:searchWord})
+    getData({groupId:groupId,tagId:tagId,name:searchWord})
 
   } else {
     tagId = null;
-    getData({groupId:groupId,tags:tagId,name:searchWord});
+    getData({groupId:groupId,tagId:tagId,name:searchWord});
   }
 };
 

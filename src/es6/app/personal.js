@@ -55,36 +55,42 @@ let getPersonalInfo = () => {
           return item.name;
         });
 
-        for (let i = res.length - 1; i >= 0; i--) {
-          if (info.address.indexOf(res[i].name) > -1) {
-            info.province = res[i].name;
-            let cities = res[i].cities;
+        if(info.address !== null) {
+          for (let i = res.length - 1; i >= 0; i--) {
+            if (info.address.indexOf(res[i].name) > -1) {
+              info.province = res[i].name;
+              let cities = res[i].cities;
 
-            info.cities = cities;
+              info.cities = cities;
 
-            for (let c = cities.length - 1; c >= 0; c--) {
-              if (info.address.indexOf(cities[c].name) > -1) {
-                info.city = cities[c].name;
-                let districts = cities[c].districts;
+              for (let c = cities.length - 1; c >= 0; c--) {
+                if (info.address.indexOf(cities[c].name) > -1) {
+                  info.city = cities[c].name;
+                  let districts = cities[c].districts;
 
-                info.districts = districts;
+                  info.districts = districts;
 
-                for (let d = districts.length - 1; d >= 0; d--) {
-                  if (info.address.indexOf(districts[d].name) > -1) {
-                    info.district = districts[d].name;
-                    break;
+                  for (let d = districts.length - 1; d >= 0; d--) {
+                    if (info.address.indexOf(districts[d].name) > -1) {
+                      info.district = districts[d].name;
+                      break;
+                    }
                   }
+
+                  break;
                 }
-
-                break;
               }
+              break;
             }
-            break;
-          }
 
+          }
         }
 
+
+
         personalInfo = JSON.parse(JSON.stringify(info));
+
+        console.log(personalInfo);
 
         let hash = window.location.hash;
 

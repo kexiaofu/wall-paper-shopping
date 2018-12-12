@@ -72,7 +72,7 @@
             <div class="login-input">
                 <i class="iconfont icon-phone"></i>
                 <input type="text" placeholder="请输入您的手机号码" id="phone" value="15622316910" style="width: 200px;">
-                <span class="send-code-btn send-code-phone" onclick="sendCode('phone',this)" data-send-code="false">发送验证码</span>
+                <span class="send-code-btn send-code-phone" onclick="sendCodeForLogin('phone',this,'login')" data-send-code="false">发送验证码</span>
             </div>
             <div class="login-input">
                 <i class="iconfont icon-id-code"></i>
@@ -85,7 +85,7 @@
             <div class="login-input">
                 <i class="iconfont icon-email"></i>
                 <input type="text" placeholder="请输入您的邮箱地址" id="email" value="864927512@qq.com" style="width: 200px;">
-                <span class="send-code-btn send-code-email" onclick="sendCode('email',this)" data-send-code="false">发送验证码</span>
+                <span class="send-code-btn send-code-email" onclick="sendCodeForLogin('email',this,'login')" data-send-code="false">发送验证码</span>
             </div>
             <div class="login-input">
                 <i class="iconfont icon-id-code"></i>
@@ -96,22 +96,18 @@
         <div class="login-container login-account-container" style="display: block;">
             <div class="login-input">
                 <i class="iconfont icon-wode"></i>
-                <input type="text" placeholder="请输入您的手机号/邮箱/账号" id="account" value="aaa">
+                <input type="text" placeholder="请输入您的手机号/邮箱/账号" id="account" value="">
             </div>
             <div class="login-input">
                 <i class="iconfont icon-suo"></i>
-                <input type="password" placeholder="请输入您的密码" id="password" value="1qaz2wsx">
+                <input type="password" placeholder="请输入您的密码" id="password" value="">
             </div>
         </div>
 
         <div class="submit">登录</div>
-        <a href="#">找回密码</a>
+        <a href="#" class="show-forget-box">忘记密码</a>
         <p>我没有账户</p>
         <div class="sign-up">注册</div>
-    </div>
-
-    <div class="sign-up-content">
-
     </div>
 
 </div>
@@ -131,8 +127,8 @@
         <div class="login-container sign-up-phone-container" style="display: block;">
             <div class="login-input">
                 <i class="iconfont icon-phone"></i>
-                <input type="text" placeholder="请输入您的手机号码" id="sign-up-phone" value="15622316910" style="width: 200px;">
-                <span class="send-code-btn send-code-phone" onclick="sendCode('phone',this,'signUp')" data-send-code="false">发送验证码</span>
+                <input type="text" placeholder="请输入您的手机号码" id="sign-up-phone" value="" style="width: 200px;">
+                <span class="send-code-btn send-code-phone" onclick="sendCodeForLogin('phone',this,'signUp')" data-send-code="false">发送验证码</span>
             </div>
             <div class="login-input">
                 <i class="iconfont icon-id-code"></i>
@@ -140,14 +136,14 @@
             </div>
             <div class="login-input">
                 <i class="iconfont icon-suo"></i>
-                <input type="password" placeholder="请输入您的密码" id="phone-password" value="1qaz2wsx">
+                <input type="password" placeholder="请输入您的密码" id="phone-password" value="">
             </div>
         </div>
         <div class="login-container sign-up-email-container">
             <div class="login-input">
                 <i class="iconfont icon-email"></i>
-                <input type="text" placeholder="请输入您的邮箱地址" id="sign-up-email" value="864927512@qq.com" style="width: 200px;">
-                <span class="send-code-btn send-code-email" onclick="sendCode('email',this,'signUp')" data-send-code="false">发送验证码</span>
+                <input type="text" placeholder="请输入您的邮箱地址" id="sign-up-email" value="" style="width: 200px;">
+                <span class="send-code-btn send-code-email" onclick="sendCodeForLogin('email',this,'signUp')" data-send-code="false">发送验证码</span>
             </div>
             <div class="login-input">
                 <i class="iconfont icon-id-code"></i>
@@ -164,6 +160,54 @@
 
     <div class="sign-up-content">
 
+    </div>
+
+</div>
+
+<div class="login forget-password-box">
+    <div class="close-login-box close-forget-password-box">
+        <i class="iconfont icon-close "></i>
+    </div>
+    <div class="title">
+        Baicheng Digital
+    </div>
+    <div class="login-content">
+        <div class="login-tab">
+            <span class="forget-password-phone forget-password-tab-active" onclick="changeForgetPasswordTab('phone')" data-op-type="phone">手机验证</span>
+            <span class="forget-password-email" onclick="changeForgetPasswordTab('email')" data-op-type="email">邮箱验证</span>
+        </div>
+        <div class="login-container forget-password-phone-container" style="display: block;">
+            <div class="login-input">
+                <i class="iconfont icon-phone"></i>
+                <input type="text" placeholder="请输入您的手机号码" id="forget-password-phone" value="15622316910" style="width: 200px;">
+                <span class="send-code-btn send-code-phone" onclick="sendCodeForLogin('phone',this,'forgetPassword')" data-send-code="false">发送验证码</span>
+            </div>
+            <div class="login-input">
+                <i class="iconfont icon-id-code"></i>
+                <input type="text" placeholder="请输入验证码" id="forget-password-phone-code" value="">
+            </div>
+            <div class="login-input">
+                <i class="iconfont icon-suo"></i>
+                <input type="password" placeholder="请输入您的密码" id="f-phone-password" value="">
+            </div>
+        </div>
+        <div class="login-container forget-password-email-container">
+            <div class="login-input">
+                <i class="iconfont icon-email"></i>
+                <input type="text" placeholder="请输入您的邮箱地址" id="forget-password-email" value="864927512@qq.com" style="width: 200px;">
+                <span class="send-code-btn send-code-email" onclick="sendCodeForLogin('email',this,'forgetPassword')" data-send-code="false">发送验证码</span>
+            </div>
+            <div class="login-input">
+                <i class="iconfont icon-id-code"></i>
+                <input type="text" placeholder="请输入验证码" id="forget-password-email-code" value="">
+            </div>
+            <div class="login-input">
+                <i class="iconfont icon-suo"></i>
+                <input type="password" placeholder="请输入您的密码" id="f-email-password" value="">
+            </div>
+        </div>
+
+        <div class="submit forget-password" onclick="toResetPassword()">重置密码</div>
     </div>
 
 </div>

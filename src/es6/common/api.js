@@ -138,6 +138,8 @@ export const bindingInfo = async (data) => await apiRequire('bindingInfo','/api/
 
 export const register = async (data) => await apiRequire('register','/api/account/Register','post',data);
 
+export const resetPassword = async (data) => await apiRequire('resetPassword','/api/account/ResetPassword','post',data);
+
 //order
 export const getShoppingCarInfo = async (data) => await apiRequire('getShoppingCarInfo','/api/order/GetShoppingCart',null,data);
 

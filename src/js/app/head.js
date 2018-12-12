@@ -2594,6 +2594,17 @@ var toShowSignUpBox = function toShowSignUpBox() {
   dispatchSomrthing(true);
 };
 
+var toShowForgetBox = function toShowForgetBox() {
+  var forgetBox = document.querySelector('.forget-password-box');
+  forgetBox.style.display = 'block';
+  toCloseLoginBox();
+  setTimeout(function () {
+    forgetBox.style.transform = 'translate(-50%,-50%) scale(1)';
+    forgetBox.style.opacity = 1;
+  }, 0);
+  dispatchSomrthing(true);
+};
+
 var toCloseLoginBox = function toCloseLoginBox() {
   var login = document.querySelector('.login');
   login.style.transform = 'translate(-50%,-50%) scale(.5)';
@@ -2602,7 +2613,9 @@ var toCloseLoginBox = function toCloseLoginBox() {
     login.style.display = 'none';
   }, 500);
   setTimeout(function () {
-    if (document.querySelector('.sign-up-box').style.display !== 'block') {
+    console.log(document.querySelector('.forget-password-box'));
+
+    if (document.querySelector('.sign-up-box').style.display !== 'block' && document.querySelector('.forget-password-box').style.display !== 'block') {
       dispatchSomrthing(false);
     }
   }, 0);
@@ -2614,6 +2627,20 @@ var toCloseSignUpBox = function toCloseSignUpBox() {
   signUpBox.style.opacity = 0;
   setTimeout(function () {
     signUpBox.style.display = 'none';
+  }, 500);
+  setTimeout(function () {
+    if (document.querySelector('.login').style.display !== 'block') {
+      dispatchSomrthing(false);
+    }
+  }, 0);
+};
+
+var toCloseForgetBox = function toCloseForgetBox() {
+  var forgetBox = document.querySelector('.forget-password-box');
+  forgetBox.style.transform = 'translate(-50%,-50%) scale(.5)';
+  forgetBox.style.opacity = 0;
+  setTimeout(function () {
+    forgetBox.style.display = 'none';
   }, 500);
   setTimeout(function () {
     if (document.querySelector('.login').style.display !== 'block') {
@@ -2712,8 +2739,11 @@ document.querySelector('.to-search').addEventListener('click', toSearch);
 document.querySelector('.icon-close').addEventListener('click', toClose);
 document.querySelector('.to-login').addEventListener('click', toShowLoginBox);
 document.querySelector('.to-sign-up').addEventListener('click', toShowSignUpBox);
+document.querySelector('.sign-up').addEventListener('click', toShowSignUpBox);
+document.querySelector('.show-forget-box').addEventListener('click', toShowForgetBox);
 document.querySelector('.close-login-box').addEventListener('click', toCloseLoginBox);
 document.querySelector('.close-sign-up-box').addEventListener('click', toCloseSignUpBox);
+document.querySelector('.close-forget-password-box').addEventListener('click', toCloseForgetBox);
 document.querySelector('.submit').addEventListener('click', toSumbitLoginData);
 
 window.changeLoginType = function (type) {
@@ -2770,16 +2800,56 @@ window.changeSignUpTab = function (type) {
   }
 };
 
+window.changeForgetPasswordTab = function (type) {
+  var activeTab = document.querySelector('.forget-password-tab-active'),
+      oldType = activeTab.getAttribute('data-op-type');
+  console.log(activeTab, oldType, type);
+
+  if (oldType !== type) {
+    activeTab.className = activeTab.className.replace('forget-password-tab-active', '');
+
+    switch (type) {
+      case 'phone':
+        document.querySelector('.forget-password-phone').className += ' forget-password-tab-active';
+        document.querySelector(".forget-password-".concat(oldType, "-container")).style.display = 'none';
+        document.querySelector('.forget-password-phone-container').style.display = 'block';
+        break;
+
+      case 'email':
+        document.querySelector('.forget-password-email').className += ' forget-password-tab-active';
+        document.querySelector(".forget-password-".concat(oldType, "-container")).style.display = 'none';
+        document.querySelector('.forget-password-email-container').style.display = 'block';
+        break;
+    }
+  }
+};
+
 var duration = 60;
 
-window.sendCode = function (type, ele) {
+window.sendCodeForLogin = function (type, ele) {
   var next = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'login';
 
   if (ele.getAttribute('data-send-code') === 'false') {
     if (type === 'phone') {
       var sendCodeTime = new Date().getTime(),
           count = 0,
-          inputValue = next === 'login' ? +document.querySelector('#phone').value : +document.querySelector('#sign-up-phone').value;
+          inputValue = '';
+
+      switch (next) {
+        case 'login':
+          inputValue = +document.querySelector('#phone').value;
+          break;
+
+        case 'signUp':
+          inputValue = +document.querySelector('#sign-up-phone').value;
+          break;
+
+        case 'forgetPassword':
+          inputValue = +document.querySelector('#forget-password-phone').value;
+          break;
+      }
+
+      console.log(next, inputValue);
 
       if (inputValue === '' || !/^[1][3,4,5,7,8][0-9]{9}$/.test(inputValue)) {
         alert('请填写正确的手机号码');
@@ -2789,7 +2859,7 @@ window.sendCode = function (type, ele) {
       ele.setAttribute('data-send-code', 'true');
       (0, _api.sendMessage)({
         phone: inputValue,
-        sendMessageType: next === 'login' ? 2 : 1
+        sendMessageType: next === 'signUp' ? 1 : 2
       }).then(function (res) {
         if (res !== undefined) {
           console.log(res);
@@ -2813,7 +2883,21 @@ window.sendCode = function (type, ele) {
     } else {
       var _sendCodeTime = new Date().getTime(),
           _count = 0,
-          _inputValue = next === 'login' ? document.querySelector('#email').value : document.querySelector('#sign-up-email').value;
+          _inputValue = '';
+
+      switch (next) {
+        case 'login':
+          _inputValue = document.querySelector('#email').value;
+          break;
+
+        case 'signUp':
+          _inputValue = document.querySelector('#sign-up-email').value;
+          break;
+
+        case 'forgetPassword':
+          _inputValue = document.querySelector('#forget-password-email').value;
+          break;
+      }
 
       if (_inputValue === '' || !/^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/.test(_inputValue)) {
         alert('请填写邮箱地址');
@@ -2823,7 +2907,7 @@ window.sendCode = function (type, ele) {
       ele.setAttribute('data-send-code', 'true');
       (0, _api.sendMessage)({
         email: _inputValue,
-        sendMessageType: next === 'login' ? 2 : 1
+        sendMessageType: next === 'signUp' ? 1 : 2
       }).then(function (res) {
         if (res !== undefined) {
           console.log(res);
@@ -2850,10 +2934,6 @@ window.sendCode = function (type, ele) {
 
 window.register = function () {
   var type = document.querySelector('.sign-up-tab-active').getAttribute('data-op-type');
-  toast.show({
-    content: '注册成功'
-  });
-  return;
 
   if (type === 'phone') {
     var phone = document.querySelector('#sign-up-phone').value,
@@ -2870,6 +2950,7 @@ window.register = function () {
           toast.show({
             content: '注册成功'
           });
+          toShowLoginBox();
         }
       });
     }
@@ -2888,6 +2969,51 @@ window.register = function () {
           toast.show({
             content: '注册成功'
           });
+          toShowLoginBox();
+        }
+      });
+    }
+  }
+};
+
+window.toResetPassword = function () {
+  var type = document.querySelector('.forget-password-tab-active').getAttribute('data-op-type');
+
+  if (type === 'phone') {
+    var phone = document.querySelector('#forget-password-phone').value,
+        code = document.querySelector('#forget-password-phone-code').value,
+        psw = document.querySelector('#f-phone-password').value;
+
+    if (phone !== '' && code !== '' && psw !== '') {
+      (0, _api.resetPassword)({
+        phone: phone,
+        code: code,
+        password: (0, _encrypt.default)(psw)
+      }).then(function (res) {
+        if (res !== undefined) {
+          toast.show({
+            content: '重置密码成功'
+          });
+          toShowLoginBox();
+        }
+      });
+    }
+  } else {
+    var email = document.querySelector('#forget-password-email').value,
+        _code2 = document.querySelector('#forget-password-email-code').value,
+        _psw2 = document.querySelector('#f-email-password').value;
+
+    if (email !== '' && _code2 !== '' && _psw2 !== '') {
+      (0, _api.resetPassword)({
+        email: email,
+        code: _code2,
+        password: (0, _encrypt.default)(_psw2)
+      }).then(function (res) {
+        if (res !== undefined) {
+          toast.show({
+            content: '重置密码成功'
+          });
+          toShowLoginBox();
         }
       });
     }
@@ -2901,7 +3027,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.addressConfig = exports.payOrder = exports.checkOrder = exports.submitOrder = exports.getOrderStatus = exports.addOrder = exports.getOrder = exports.deleteShoppingCart = exports.addShoppingCart = exports.getShoppingCarInfo = exports.register = exports.bindingInfo = exports.sendMessage = exports.updateIcon = exports.updatePassword = exports.updateUserInfo = exports.getUserInfo = exports.addressOperate = exports.setDefaultAddress = exports.getAddress = exports.logout = exports.toLogin = exports.getHomeGroup = exports.getProductionList = exports.getCarousel = exports.getTags = exports.getProductDetail = exports.getProductClassify = exports.getAllProductList = void 0;
+exports.addressConfig = exports.payOrder = exports.checkOrder = exports.submitOrder = exports.getOrderStatus = exports.addOrder = exports.getOrder = exports.deleteShoppingCart = exports.addShoppingCart = exports.getShoppingCarInfo = exports.resetPassword = exports.register = exports.bindingInfo = exports.sendMessage = exports.updateIcon = exports.updatePassword = exports.updateUserInfo = exports.getUserInfo = exports.addressOperate = exports.setDefaultAddress = exports.getAddress = exports.logout = exports.toLogin = exports.getHomeGroup = exports.getProductionList = exports.getCarousel = exports.getTags = exports.getProductDetail = exports.getProductClassify = exports.getAllProductList = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -3627,12 +3753,11 @@ function () {
   return function register(_x16) {
     return _ref20.apply(this, arguments);
   };
-}(); //order
-
+}();
 
 exports.register = register;
 
-var getShoppingCarInfo =
+var resetPassword =
 /*#__PURE__*/
 function () {
   var _ref21 = (0, _asyncToGenerator2.default)(
@@ -3643,7 +3768,7 @@ function () {
         switch (_context21.prev = _context21.next) {
           case 0:
             _context21.next = 2;
-            return apiRequire('getShoppingCarInfo', '/api/order/GetShoppingCart', null, data);
+            return apiRequire('resetPassword', '/api/account/ResetPassword', 'post', data);
 
           case 2:
             return _context21.abrupt("return", _context21.sent);
@@ -3656,14 +3781,15 @@ function () {
     }, _callee21, this);
   }));
 
-  return function getShoppingCarInfo(_x17) {
+  return function resetPassword(_x17) {
     return _ref21.apply(this, arguments);
   };
-}();
+}(); //order
 
-exports.getShoppingCarInfo = getShoppingCarInfo;
 
-var addShoppingCart =
+exports.resetPassword = resetPassword;
+
+var getShoppingCarInfo =
 /*#__PURE__*/
 function () {
   var _ref22 = (0, _asyncToGenerator2.default)(
@@ -3674,7 +3800,7 @@ function () {
         switch (_context22.prev = _context22.next) {
           case 0:
             _context22.next = 2;
-            return apiRequire('addShoppingCart', '/api/order/AddShoppingCart', 'post', data);
+            return apiRequire('getShoppingCarInfo', '/api/order/GetShoppingCart', null, data);
 
           case 2:
             return _context22.abrupt("return", _context22.sent);
@@ -3687,14 +3813,14 @@ function () {
     }, _callee22, this);
   }));
 
-  return function addShoppingCart(_x18) {
+  return function getShoppingCarInfo(_x18) {
     return _ref22.apply(this, arguments);
   };
 }();
 
-exports.addShoppingCart = addShoppingCart;
+exports.getShoppingCarInfo = getShoppingCarInfo;
 
-var deleteShoppingCart =
+var addShoppingCart =
 /*#__PURE__*/
 function () {
   var _ref23 = (0, _asyncToGenerator2.default)(
@@ -3705,7 +3831,7 @@ function () {
         switch (_context23.prev = _context23.next) {
           case 0:
             _context23.next = 2;
-            return apiRequire('deleteShoppingCart', '/api/order/DeleteShoppingCart', 'post', data);
+            return apiRequire('addShoppingCart', '/api/order/AddShoppingCart', 'post', data);
 
           case 2:
             return _context23.abrupt("return", _context23.sent);
@@ -3718,14 +3844,14 @@ function () {
     }, _callee23, this);
   }));
 
-  return function deleteShoppingCart(_x19) {
+  return function addShoppingCart(_x19) {
     return _ref23.apply(this, arguments);
   };
 }();
 
-exports.deleteShoppingCart = deleteShoppingCart;
+exports.addShoppingCart = addShoppingCart;
 
-var getOrder =
+var deleteShoppingCart =
 /*#__PURE__*/
 function () {
   var _ref24 = (0, _asyncToGenerator2.default)(
@@ -3736,7 +3862,7 @@ function () {
         switch (_context24.prev = _context24.next) {
           case 0:
             _context24.next = 2;
-            return apiRequire('getOrder', '/api/order/GetOrder', null, data);
+            return apiRequire('deleteShoppingCart', '/api/order/DeleteShoppingCart', 'post', data);
 
           case 2:
             return _context24.abrupt("return", _context24.sent);
@@ -3749,14 +3875,14 @@ function () {
     }, _callee24, this);
   }));
 
-  return function getOrder(_x20) {
+  return function deleteShoppingCart(_x20) {
     return _ref24.apply(this, arguments);
   };
 }();
 
-exports.getOrder = getOrder;
+exports.deleteShoppingCart = deleteShoppingCart;
 
-var addOrder =
+var getOrder =
 /*#__PURE__*/
 function () {
   var _ref25 = (0, _asyncToGenerator2.default)(
@@ -3767,7 +3893,7 @@ function () {
         switch (_context25.prev = _context25.next) {
           case 0:
             _context25.next = 2;
-            return apiRequire('addOrder', '/api/order/AddOrder', 'post', data);
+            return apiRequire('getOrder', '/api/order/GetOrder', null, data);
 
           case 2:
             return _context25.abrupt("return", _context25.sent);
@@ -3780,14 +3906,14 @@ function () {
     }, _callee25, this);
   }));
 
-  return function addOrder(_x21) {
+  return function getOrder(_x21) {
     return _ref25.apply(this, arguments);
   };
 }();
 
-exports.addOrder = addOrder;
+exports.getOrder = getOrder;
 
-var getOrderStatus =
+var addOrder =
 /*#__PURE__*/
 function () {
   var _ref26 = (0, _asyncToGenerator2.default)(
@@ -3798,7 +3924,7 @@ function () {
         switch (_context26.prev = _context26.next) {
           case 0:
             _context26.next = 2;
-            return apiRequire('getOrderStatus', '/api/order/GetOrderStatus', null, data);
+            return apiRequire('addOrder', '/api/order/AddOrder', 'post', data);
 
           case 2:
             return _context26.abrupt("return", _context26.sent);
@@ -3811,14 +3937,14 @@ function () {
     }, _callee26, this);
   }));
 
-  return function getOrderStatus(_x22) {
+  return function addOrder(_x22) {
     return _ref26.apply(this, arguments);
   };
 }();
 
-exports.getOrderStatus = getOrderStatus;
+exports.addOrder = addOrder;
 
-var submitOrder =
+var getOrderStatus =
 /*#__PURE__*/
 function () {
   var _ref27 = (0, _asyncToGenerator2.default)(
@@ -3829,7 +3955,7 @@ function () {
         switch (_context27.prev = _context27.next) {
           case 0:
             _context27.next = 2;
-            return apiRequire('submitOrder', '/api/order/SubmitOrder', 'post', data);
+            return apiRequire('getOrderStatus', '/api/order/GetOrderStatus', null, data);
 
           case 2:
             return _context27.abrupt("return", _context27.sent);
@@ -3842,14 +3968,14 @@ function () {
     }, _callee27, this);
   }));
 
-  return function submitOrder(_x23) {
+  return function getOrderStatus(_x23) {
     return _ref27.apply(this, arguments);
   };
 }();
 
-exports.submitOrder = submitOrder;
+exports.getOrderStatus = getOrderStatus;
 
-var checkOrder =
+var submitOrder =
 /*#__PURE__*/
 function () {
   var _ref28 = (0, _asyncToGenerator2.default)(
@@ -3860,7 +3986,7 @@ function () {
         switch (_context28.prev = _context28.next) {
           case 0:
             _context28.next = 2;
-            return apiRequire('checkOrder', '/api/order/CheckOrderPaid', null, data);
+            return apiRequire('submitOrder', '/api/order/SubmitOrder', 'post', data);
 
           case 2:
             return _context28.abrupt("return", _context28.sent);
@@ -3873,15 +3999,14 @@ function () {
     }, _callee28, this);
   }));
 
-  return function checkOrder(_x24) {
+  return function submitOrder(_x24) {
     return _ref28.apply(this, arguments);
   };
-}(); //pay
+}();
 
+exports.submitOrder = submitOrder;
 
-exports.checkOrder = checkOrder;
-
-var payOrder =
+var checkOrder =
 /*#__PURE__*/
 function () {
   var _ref29 = (0, _asyncToGenerator2.default)(
@@ -3892,7 +4017,7 @@ function () {
         switch (_context29.prev = _context29.next) {
           case 0:
             _context29.next = 2;
-            return apiRequire('payOrder', '/api/pay/PayOrder', null, data);
+            return apiRequire('checkOrder', '/api/order/CheckOrderPaid', null, data);
 
           case 2:
             return _context29.abrupt("return", _context29.sent);
@@ -3905,26 +4030,26 @@ function () {
     }, _callee29, this);
   }));
 
-  return function payOrder(_x25) {
+  return function checkOrder(_x25) {
     return _ref29.apply(this, arguments);
   };
-}(); //config
+}(); //pay
 
 
-exports.payOrder = payOrder;
+exports.checkOrder = checkOrder;
 
-var addressConfig =
+var payOrder =
 /*#__PURE__*/
 function () {
   var _ref30 = (0, _asyncToGenerator2.default)(
   /*#__PURE__*/
-  _regenerator.default.mark(function _callee30() {
+  _regenerator.default.mark(function _callee30(data) {
     return _regenerator.default.wrap(function _callee30$(_context30) {
       while (1) {
         switch (_context30.prev = _context30.next) {
           case 0:
             _context30.next = 2;
-            return apiRequire('addressConfig', '/api/config/GetAddressConfig', null, null, 600000);
+            return apiRequire('payOrder', '/api/pay/PayOrder', null, data);
 
           case 2:
             return _context30.abrupt("return", _context30.sent);
@@ -3937,8 +4062,40 @@ function () {
     }, _callee30, this);
   }));
 
-  return function addressConfig() {
+  return function payOrder(_x26) {
     return _ref30.apply(this, arguments);
+  };
+}(); //config
+
+
+exports.payOrder = payOrder;
+
+var addressConfig =
+/*#__PURE__*/
+function () {
+  var _ref31 = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee31() {
+    return _regenerator.default.wrap(function _callee31$(_context31) {
+      while (1) {
+        switch (_context31.prev = _context31.next) {
+          case 0:
+            _context31.next = 2;
+            return apiRequire('addressConfig', '/api/config/GetAddressConfig', null, null, 600000);
+
+          case 2:
+            return _context31.abrupt("return", _context31.sent);
+
+          case 3:
+          case "end":
+            return _context31.stop();
+        }
+      }
+    }, _callee31, this);
+  }));
+
+  return function addressConfig() {
+    return _ref31.apply(this, arguments);
   };
 }(); ///api/order/AddShoppingCart
 //getProductClassify,api/Product/GetProductDetail?id=

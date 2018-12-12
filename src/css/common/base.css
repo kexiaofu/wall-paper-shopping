@@ -334,18 +334,23 @@ view-image
   color: #00a6de;
 }
 .login .login-tab .login-tab-active,
-.login .login-tab .sign-up-tab-active {
+.login .login-tab .sign-up-tab-active,
+.login .login-tab .forget-password-tab-active {
   background: #00a6de;
   color: #fff;
 }
 .login .login-tab .login-tab-active:hover,
-.login .login-tab .sign-up-tab-active:hover {
+.login .login-tab .sign-up-tab-active:hover,
+.login .login-tab .forget-password-tab-active:hover {
   color: #fff;
 }
 .login .login-container {
   display: none;
 }
 .sign-up-box {
+  display: none;
+}
+.forget-password-box {
   display: none;
 }
 .show-shopping-car {

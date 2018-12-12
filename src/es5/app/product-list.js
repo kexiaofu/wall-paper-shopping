@@ -20,7 +20,7 @@ var toPage = function toPage(index) {
   getData({
     pageIndex: index,
     groupId: groupId,
-    tags: tagId,
+    tagId: tagId,
     name: searchWord
   });
 };
@@ -28,7 +28,7 @@ var toPage = function toPage(index) {
 var getData = function getData(obj) {
   (0, _api.getAllProductList)(obj).then(function (res) {
     var html = (0, _template.default)('production-list', {
-      data: res.products
+      data: res.data
     });
     document.querySelector('.production-list').innerHTML = html;
     var images = document.querySelectorAll('.lazy-load-img'),
@@ -106,14 +106,14 @@ window.pickThisTag = function (ele) {
     tagId = ele.getAttribute('data-op-id');
     getData({
       groupId: groupId,
-      tags: tagId,
+      tagId: tagId,
       name: searchWord
     });
   } else {
     tagId = null;
     getData({
       groupId: groupId,
-      tags: tagId,
+      tagId: tagId,
       name: searchWord
     });
   }
