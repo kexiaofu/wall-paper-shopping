@@ -163,6 +163,8 @@ export const payOrder = async (data) => await apiRequire('payOrder','/api/pay/Pa
 //config
 export const addressConfig = async () => await apiRequire('addressConfig','/api/config/GetAddressConfig',null,null,600000);
 
+// editor
+export const getEditorOption = async (data) => await apiRequire('checkOrder','/api/editor/GetEditorOption',null,data);
 
 ///api/order/AddShoppingCart
 //getProductClassify,api/Product/GetProductDetail?id=

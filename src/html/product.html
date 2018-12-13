@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../css/common/toast.css">
     <link href="../css/common/iconfont.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/pages/product.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_891627_jn60q7z8ui.css">
 </head>
 <body>
 <div class="nav-bar">
@@ -246,10 +247,12 @@
 
 <script src="../js/app/head.js"></script>
 
-    <div id="product" class="product container">
-        <div class="product-container"></div>
-        <div class="product-detail"></div>
+<div id="product" class="product container">
+    <div class="product-container">
+
     </div>
+    <div class="product-detail"></div>
+</div>
 <div class="footer">
     <div class="left-part">
         <div class="feedback">
@@ -272,60 +275,20 @@
     </div>
 </div>
 <script id="product-info" type="text/html">
-    <div class="left-part">
-        <div class="show-box">
-            <img src={{ data.productImages.length > 0 ? data.productImages[0].imageUrl : null}} alt="" class="show-pic" />
-        </div>
-        <div class="pic-list">
-            {{ if data.productImages.length > 6}}
-            <div class="left-btn">
-                <i class="iconfont icon-left"></i>
-            </div>
-            {{/if}}
-            {{ if data.productImages.length > 0 }}
-            <div class="pic-container">
-                <ul class="pic-ul">
-                    {{each data.productImages image i}}
-                    <li class="pic-item">
-                        <img src={{ image.imageUrl }} alt="">
-                    </li>
-                    {{/each}}
-                </ul>
-            </div>
-            {{/if}}
-            {{ if data.productImages.length > 6}}
-            <div class="right-btn">
-                <i class="iconfont icon-left"></i>
-            </div>
-            {{/if}}
-        </div>
-    </div>
-    <div class="right-part">
-        <div class="product-name">
-            {{ data.name }}
-        </div>
-        <p class="product-description">
-            {{ data.description }}
-        </p>
+    <div class="product-box"></div>
+    <div class="product-info">
+        <div class="product-name">傻逼动物园</div>
         <div class="price">
-            <p><span>价格：</span><i>￥</i> <i class="product-price">0</i></p>
+            <span>有框画</span>
+            <span>￥333</span>
         </div>
-        <div class="product-props">
-            <p>产品属性</p>
-            {{ each data.productOptions prop i }}
-                <div class="props-item">
-                    <div class="prop-name">{{prop.name}}</div>
-                    <select name={{prop.name}} id={{'props'+prop.id}}>
-                        {{ each prop.optionValue op index}}
-                        <option value={{op.price}} data-op-id={{ op.id }}>{{ op.name }}</option>
-                        {{/each}}
-                    </select>
-                </div>
-            {{/each}}
+        <div class="props"></div>
+        <div class="upload-file">
+            上传图片
         </div>
+
         <div class="buy-product">
             <div class="quantity">
-
                 <input type="number" value="1" class="product-quantity" onchange="checkNumber(this)">
                 <span class="change-quantity add">+</span>
                 <span class="change-quantity reduce">-</span>
@@ -338,14 +301,94 @@
         </div>
     </div>
 </script>
+<!--
+
+-->
+<script id="editor-info" type="text/html">
+    {{ each data props}}
+        {{ if props.type === 0 }}
+            <div class="props-item">
+                <div class="props-name">
+                    {{ props.name }}
+                    {{ each props.values shape }}
+                    <span class="sec-props">{{ shape.name }}</span>
+                    {{ /each }}
+                </div>
+                <div class="props-value">
+                    {{ each props.values value }}
+                    <span class="span-box">{{  }}</span>
+                    {{ /each }}
+                </div>
+            </div>
+        {{ else if props.type === 2 || props.type === 3 }}
+            <div class="props-item">
+                <div class="props-name">
+                    {{ props.name }}
+                </div>
+                <div class="props-value">
+                    {{ each props.values value }}
+                    <span class="span-box">{{ value.name }}</span>
+                    {{ /each }}
+                </div>
+            </div>
+        {{ else if props.type === 4 || props.type === 5}}
+            <div class="props-item">
+                <div class="props-value props-select">
+                    <span class="input-title">{{ props.name }}:</span>
+                    <input class="paper-input" type="text" onfocus="showSelectBox(event,true)"
+                           onblur="showSelectBox(event,false)" readonly data-type={{ props.type === 4 ? 'peper' : 'poli' }}>
+                    <i class="iconfont icon-drop-down"></i>
+                    <div class={{props.type === 4 ? 'select-box peper-box' : 'select-box poli-box'}}>
+                        <ul>
+                            {{ each props.values li }}
+                            <li onclick="selectThisValue('paper', 0)">{{ li.name }} <i class="iconfont icon-ok"></i></li>
+                            {{ /each }}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        {{ /if }}
+    {{ /each }}
+    <!--<div class="props-item">
+        <div class="props-value props-select">
+            <span class="input-title">画纸:</span>
+            <input class="paper-input" type="text" onfocus="showSelectBox('paper', true)"
+                   onblur="showSelectBox('paper', false)" readonly>
+            <i class="iconfont icon-drop-down"></i>
+            <div class="select-box paper-box">
+                <ul>
+                    <li onclick="selectThisValue('paper', 0)">呵呵呵呵 <i class="iconfont icon-ok"></i></li>
+                    <li>哈哈哈</li>
+                    <li>会被黑河</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="props-item ">
+        <div class="props-value props-select">
+            <span class="input-title">玻璃:</span>
+            <input type="text" onfocus="showSelectBox('poli', true)" onblur="showSelectBox('poli', false)" readonly>
+            <i class="iconfont icon-drop-down"></i>
+            <div class="select-box poli-box">
+                <ul>
+                    <li>呵呵呵呵</li>
+                    <li>哈哈哈</li>
+                    <li>会被黑河</li>
+                    <li>会被黑河</li>
+                    <li>会被黑河</li>
+                </ul>
+            </div>
+        </div>
+    </div>-->
+</script>
 <script id="product-detail" type="text/html">
     <div class="product-detail-info">
         {{ each data.detailImages images i}}
-        <img src={{images.imageUrl}} alt="" >
+        <img src={{images.imageUrl}} alt="">
         {{/each}}
     </div>
 </script>
-    <script src="../js/app/product.js"></script>
+<script src="../js/app/product.js"></script>
 </body>
 </html>
 
