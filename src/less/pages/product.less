@@ -40,10 +40,9 @@
       }
     }
     .props-item{
-      margin: 5px 0 0 0;
       .props-name{
-        padding: 5px 5px 0 0;
-        color: #999;
+        padding: 5px 5px 5px 0;
+        color: #666;
         .sec-props{
           float: right;
           display: inline-block;
@@ -52,7 +51,7 @@
         }
       }
       .props-value{
-        padding: 10px 0;
+        padding: 0 0 10px 0;
         .span-box{
           display: inline-block;
           border: 1px solid #ddd;
@@ -70,6 +69,7 @@
         border:1px solid #ddd;
         font-size: 14px;
         position: relative;
+        margin:0 0 15px 0;
         input{
           width: 240px;
           height: 28px;
@@ -104,6 +104,12 @@
             }
           }
         }
+      }
+    }
+    .props-item:first-child{
+      margin: 5px 0 0 0;
+      .props-name{
+        padding: 5px 5px 0 0;
       }
     }
   }

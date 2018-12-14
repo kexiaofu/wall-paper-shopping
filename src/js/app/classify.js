@@ -2568,6 +2568,8 @@ function () {
                 return;
               } //console.log(error.config);
 
+
+              throw Error('fetch api fail');
             });
 
           case 10:
@@ -2607,6 +2609,8 @@ function () {
                 alert(error.message);
                 return;
               }
+
+              throw Error('fetch api fail');
             });
 
           case 15:

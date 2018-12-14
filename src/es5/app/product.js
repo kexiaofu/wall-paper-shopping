@@ -15,7 +15,8 @@ var scrollX = function scrollX(direct, w, parent) {
   parent.style.left = parent.offsetLeft + direct * (w + 5) + 'px';
 };
 
-var editorInfo = [];
+var editorInfo = [],
+    productDetail = [];
 
 window.onload = function () {
   var id = (0, _tools.getParameter)('productId');
@@ -32,26 +33,54 @@ window.onload = function () {
       id: id
     }).then(function (res) {
       console.log(res);
-      var html = (0, _template.default)('product-info', {
-        data: res
-      }),
-          detail = (0, _template.default)('product-detail', {
-        data: res
+      var props = res.productOptions;
+      res = Object.assign({}, res, {
+        price: res.basePrice
       });
-      containerEle.style.visibility = 'visible';
-      detailEle.style.visibility = 'visible';
-      document.querySelector('.product-container').innerHTML = html;
-      document.querySelector('.product-detail').innerHTML = detail;
       (0, _api.getEditorOption)({
         productId: id
-      }).then(function (res) {
-        var html = (0, _template.default)('editor-info', {
+      }).then(function (options) {
+        options = options.map(function (item) {
+          item.values = item.values.map(function (v) {
+            v.selected = false;
+
+            for (var i = props.length - 1; i >= 0; i--) {
+              if (props[i].optionId === item.id && v.id === +props[i].selectValue) {
+                v.selected = true;
+                res.price -= -Number(v.price);
+
+                if (item.type === 4 || item.type === 5) {
+                  item.selectValue = v.name;
+                }
+              }
+            }
+
+            return v;
+          });
+          return item;
+        });
+        console.log(options); // 因为要计算总价
+
+        var html = (0, _template.default)('product-info', {
+          data: res
+        }),
+            detail = (0, _template.default)('product-detail', {
           data: res
         });
-        console.log(res, document.querySelector('.product-info>.props'));
-        document.querySelector('.product-info>.props').innerHTML = html;
-        editorInfo = res;
+        containerEle.style.visibility = 'visible';
+        detailEle.style.visibility = 'visible';
+        document.querySelector('.product-container').innerHTML = html;
+        document.querySelector('.product-detail').innerHTML = detail;
+        setTimeout(function () {
+          var html = (0, _template.default)('editor-info', {
+            data: options
+          });
+          console.log(res, document.querySelector('.product-info>.props'));
+          document.querySelector('.product-info>.props').innerHTML = html;
+          editorInfo = options;
+        }, 100);
       });
+      productDetail = res;
       /*if(res.productImages.length > 6) {
         document.querySelector('.left-btn').addEventListener('click',()=>{
           let ele = document.querySelectorAll('.pic-item'),
@@ -132,14 +161,16 @@ window.toAddShoppingCart = function () {
   var select = document.querySelectorAll('.props-item>select'),
       selectStr = '',
       quantity = document.querySelector('.product-quantity');
-
-  for (var i = 0, l = select.length; i < l; i++) {
-    console.log(select[i][select[i].selectedIndex].getAttribute('data-op-id'));
-    selectStr += select[i][select[i].selectedIndex].getAttribute('data-op-id') + ',';
-  }
-
-  console.log(selectStr.substring(0, selectStr.length - 1), quantity.value);
+  editorInfo.map(function (item) {
+    item.values.map(function (v) {
+      if (v.selected) {
+        selectStr += item.id + ':' + v.id + ';';
+      }
+    });
+  });
+  console.log(selectStr);
   (0, _api.addShoppingCart)({
+    productType: productDetail.productType,
     productId: (0, _tools.getParameter)('productId'),
     number: quantity.value,
     optionValueIds: selectStr.substring(0, selectStr.length - 1)
@@ -167,21 +198,103 @@ window.showSelectBox = function (ev, bool) {
   if (ev.target.getAttribute('data-type') === 'paper') {
     for (var i = editorInfo.length - 1; i >= 0; i--) {
       if (editorInfo[i].type === 4) {
-        document.querySelector('.paper-box').style.height = bool === true ? editorInfo[i].values.length * 32 + 5 + 'px' : 0;
+        document.querySelector('.paper-box').style.height = bool === true ? editorInfo[i].values.length * 32 + 'px' : 0;
+        break;
       }
     }
   } else {
     for (var _i = editorInfo.length - 1; _i >= 0; _i--) {
       if (editorInfo[_i].type === 5) {
         console.log(editorInfo[_i].values.length, editorInfo[_i].values);
-        document.querySelector('.poli-box').style.height = bool === true ? (editorInfo[_i].values.length - 1) * 32 + 5 + 'px' : 0;
+        document.querySelector('.poli-box').style.height = bool === true ? editorInfo[_i].values.length * 32 + 'px' : 0;
+        break;
       }
     }
   }
 };
 
-window.selectThisValue = function (type, index) {
-  if (type === 'paper') {
-    document.querySelector('.paper-input').value = '呵呵呵';
-  } else {}
+window.selectThisProp = function (ev) {
+  console.log(ev.target);
+  var target = ev.target,
+      type = +target.getAttribute('data-type'),
+      id = +target.getAttribute('data-prop-id');
+
+  var _loop = function _loop(i) {
+    if (editorInfo[i].type === type) {
+      editorInfo[i].values = editorInfo[i].values.map(function (item) {
+        item.selected = false;
+
+        if (item.id === id) {
+          item.selected = true;
+          (type === 4 || type === 5) && (editorInfo[i].selectValue = item.name);
+        }
+
+        return item;
+      });
+      return "break";
+    }
+  };
+
+  for (var i = editorInfo.length - 1; i >= 0; i--) {
+    var _ret = _loop(i);
+
+    if (_ret === "break") break;
+  }
+
+  var html = (0, _template.default)('editor-info', {
+    data: editorInfo
+  });
+  console.log(editorInfo, document.querySelector('.product-info>.props'));
+  document.querySelector('.product-info>.props').innerHTML = html;
+  var price = productDetail.hasOwnProperty('basePrice') ? productDetail.basePrice : 0;
+  editorInfo.map(function (item) {
+    item.values.map(function (v) {
+      if (v.selected) {
+        price -= -Number(v.price);
+      }
+    });
+  });
+  productDetail = Object.assign({}, productDetail, {
+    price: price
+  });
+  console.log(price);
+  document.querySelector('.price-count').innerHTML = '￥' + price;
+};
+
+window.selectShape = function (ev) {
+  var target = ev.target,
+      id = +target.getAttribute('data-prop-id'),
+      pos = null,
+      index = null;
+  (0, _api.getEditorOption)({
+    shapeId: id
+  }).then(function (res) {
+    for (var i = editorInfo.length - 1; i >= 0; i--) {
+      if (editorInfo[i].type === 1) {
+        pos = i;
+
+        for (var n = editorInfo[i].values.length - 1; n >= 0; n--) {
+          if (editorInfo[i].values[n].id === id) {
+            index = n;
+          }
+        }
+
+        for (var k = res.length - 1; k >= 0; k--) {
+          if (res[k].type === 1) {
+            editorInfo.splice(i, 1, Object.assign({}, editorInfo[i], res[k]));
+            break;
+          }
+        }
+
+        break;
+      }
+    }
+  });
+  setTimeout(function () {
+    var html = (0, _template.default)('editor-info', {
+      data: editorInfo
+    });
+    console.log(editorInfo, document.querySelector('.product-info>.props'));
+    document.querySelector('.product-info>.props').innerHTML = html;
+  }, 100);
 };

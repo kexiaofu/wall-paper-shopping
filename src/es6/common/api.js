@@ -49,10 +49,11 @@ let apiRequire = async (name,url,method,data,duration=0) => {
           } else {
             // Something happened in setting up the request that triggered an Error
             console.log('Error', error.message);
-            alert(error.message)
+            alert(error.message);
             return
           }
           //console.log(error.config);
+          throw Error('fetch api fail');
         })
     } else {
       return await axios.post(url,data)
@@ -91,6 +92,7 @@ let apiRequire = async (name,url,method,data,duration=0) => {
             alert(error.message)
             return
           }
+          throw Error('fetch api fail');
         })
     }
 

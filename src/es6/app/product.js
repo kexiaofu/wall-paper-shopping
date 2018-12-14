@@ -10,7 +10,7 @@ let scrollX = (direct,w,parent) =>{
     parent.style.left = parent.offsetLeft +  direct * (w + 5) + 'px';
 };
 
-let editorInfo = [];
+let editorInfo = [], productDetail = [];
 
 window.onload = () =>{
 
@@ -29,22 +29,48 @@ window.onload = () =>{
       .then(res=>{
         console.log(res);
 
-        let html = template('product-info',{data:res}),
-          detail = template('product-detail',{data:res});
+        const props = res.productOptions;
 
-        containerEle.style.visibility = 'visible';
-        detailEle.style.visibility = 'visible';
-
-        document.querySelector('.product-container').innerHTML = html;
-        document.querySelector('.product-detail').innerHTML = detail;
+        res = Object.assign({}, res, {price: res.basePrice});
 
         getEditorOption({productId: id})
-          .then(res => {
-            let html = template('editor-info',{data:res});
+          .then( options => {
+            options = options.map(item => {
+              item.values = item.values.map( v =>{
+                v.selected = false;
+                for (let i = props.length - 1; i >=0; i--) {
+                  if (props[i].optionId === item.id && v.id === +props[i].selectValue) {
+                    v.selected = true;
+                    res.price -= -Number(v.price);
+                    if (item.type === 4 || item.type === 5) {
+                      item.selectValue = v.name;
+                    }
+                  }
+                }
+                return v;
+              });
+              return item;
+            });
+            console.log(options);
+            // 因为要计算总价
+            let html = template('product-info',{data:res}),
+              detail = template('product-detail',{data:res});
+
+            containerEle.style.visibility = 'visible';
+            detailEle.style.visibility = 'visible';
+
+            document.querySelector('.product-container').innerHTML = html;
+            document.querySelector('.product-detail').innerHTML = detail;
+
+            setTimeout(() => {
+              let html = template('editor-info',{data:options});
               console.log(res, document.querySelector('.product-info>.props'));
               document.querySelector('.product-info>.props').innerHTML = html;
-              editorInfo = res;
-          })
+              editorInfo = options;
+            }, 100);
+          });
+
+        productDetail = res;
 
         /*if(res.productImages.length > 6) {
           document.querySelector('.left-btn').addEventListener('click',()=>{
@@ -144,14 +170,18 @@ window.toAddShoppingCart = () =>{
   let select = document.querySelectorAll('.props-item>select'),
       selectStr = '',
       quantity = document.querySelector('.product-quantity');
-  for(let i=0,l=select.length;i<l;i++) {
-    console.log(select[i][select[i].selectedIndex].getAttribute('data-op-id'));
-    selectStr += select[i][select[i].selectedIndex].getAttribute('data-op-id') + ',';
-  }
-  console.log(selectStr.substring(0,selectStr.length-1),quantity.value);
+  editorInfo.map(item => {
+    item.values.map( v => {
+      if (v.selected) {
+        selectStr += item.id + ':' + v.id + ';';
+      }
+    });
+  });
 
+  console.log(selectStr);
 
   addShoppingCart({
+    productType: productDetail.productType,
     productId:getParameter('productId'),
     number:quantity.value,
     optionValueIds:selectStr.substring(0,selectStr.length-1)
@@ -182,21 +212,84 @@ window.showSelectBox = (ev, bool) => {
   if (ev.target.getAttribute('data-type') === 'paper') {
       for (let i = editorInfo.length-1;i>=0;i--) {
         if (editorInfo[i].type === 4) {
-          document.querySelector('.paper-box').style.height = bool === true ? editorInfo[i].values.length * 32 + 5 + 'px' : 0;
+          document.querySelector('.paper-box').style.height = bool === true ? editorInfo[i].values.length * 32 + 'px' : 0;
+          break;
         }
       }
   } else {
     for (let i = editorInfo.length-1;i>=0;i--) {
       if (editorInfo[i].type === 5) {
         console.log(editorInfo[i].values.length, editorInfo[i].values);
-        document.querySelector('.poli-box').style.height = bool === true ? (editorInfo[i].values.length -1) * 32 + 5 + 'px' : 0;
+        document.querySelector('.poli-box').style.height = bool === true ? (editorInfo[i].values.length) * 32 + 'px' : 0;
+        break;
       }
     }
   }
 };
 
-window.selectThisValue = (type, index) => {
-  if (type === 'paper') {
-    document.querySelector('.paper-input').value = '呵呵呵';
-  } else {}
+window.selectThisProp = (ev) =>{
+  console.log(ev.target);
+  let target = ev.target, type = +target.getAttribute('data-type'), id = +target.getAttribute('data-prop-id');
+  for (let i = editorInfo.length - 1; i >= 0; i--) {
+    if (editorInfo[i].type === type) {
+      editorInfo[i].values = editorInfo[i].values.map( item =>{
+        item.selected = false;
+        if (item.id === id) {
+          item.selected = true;
+          ((type === 4 || type === 5) && (editorInfo[i].selectValue = item.name));
+        }
+        return item;
+      });
+      break;
+    }
+  }
+  let html = template('editor-info',{data:editorInfo});
+  console.log(editorInfo, document.querySelector('.product-info>.props'));
+  document.querySelector('.product-info>.props').innerHTML = html;
+
+  let price = productDetail.hasOwnProperty('basePrice') ? productDetail.basePrice : 0;
+  editorInfo.map(item => {
+    item.values.map( v => {
+      if (v.selected) {
+        price -= -Number(v.price)
+      }
+    });
+  });
+
+  productDetail = Object.assign({}, productDetail, {price: price});
+
+  console.log(price);
+  document.querySelector('.price-count').innerHTML = '￥' + price;
+
+
+};
+
+window.selectShape = (ev) => {
+  let target = ev.target, id = +target.getAttribute('data-prop-id'), pos = null, index = null;
+  getEditorOption({shapeId: id})
+    .then(res => {
+      for (let i = editorInfo.length - 1; i >= 0; i-- ) {
+        if (editorInfo[i].type === 1) {
+          pos = i;
+          for (let n = editorInfo[i].values.length - 1; n >= 0; n--) {
+            if (editorInfo[i].values[n].id === id) {
+              index = n;
+            }
+          }
+          for (let k = res.length - 1; k >=0; k-- ) {
+            if (res[k].type === 1) {
+              editorInfo.splice(i, 1, Object.assign({}, editorInfo[i], res[k]));
+              break;
+            }
+          }
+          break;
+        }
+      }
+    });
+
+  setTimeout(() => {
+    let html = template('editor-info',{data: editorInfo});
+    console.log(editorInfo, document.querySelector('.product-info>.props'));
+    document.querySelector('.product-info>.props').innerHTML = html;
+  }, 100);
 };

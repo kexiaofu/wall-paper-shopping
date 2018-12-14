@@ -277,10 +277,10 @@
 <script id="product-info" type="text/html">
     <div class="product-box"></div>
     <div class="product-info">
-        <div class="product-name">傻逼动物园</div>
+        <div class="product-name">{{ data.name !== null ? data.name : '定制产品'}}</div>
         <div class="price">
-            <span>有框画</span>
-            <span>￥333</span>
+            <span>{{ data.productGroupName }}</span>
+            <span class="price-count">{{data.basePrice !== null ? '￥' + data.price : '' }}</span>
         </div>
         <div class="props"></div>
         <div class="upload-file">
@@ -301,24 +301,31 @@
         </div>
     </div>
 </script>
-<!--
-
--->
 <script id="editor-info" type="text/html">
     {{ each data props}}
-        {{ if props.type === 0 }}
+        {{ if props.type === 0 || props.type === 1 }}
             <div class="props-item">
+                {{ if props.type === 0 }}
                 <div class="props-name">
                     {{ props.name }}
+                    {{ if props.values.length > 1 }}
                     {{ each props.values shape }}
-                    <span class="sec-props">{{ shape.name }}</span>
+                    <span class="sec-props" onclick="selectShape(event)" data-type={{ props.type }} data-prop-id={{ shape.id }}>{{ shape.name }}</span>
                     {{ /each }}
+                    {{ /if }}
                 </div>
+                {{ /if }}
+                {{ if props.type === 1 }}
                 <div class="props-value">
                     {{ each props.values value }}
-                    <span class="span-box">{{  }}</span>
+                    {{ if !value.selected }}
+                    <span class="span-box" style="border-color: #ddd" onclick="selectThisProp(event)" data-type={{ props.type }} data-prop-value={{ value.name }} data-prop-id={{ value.id }}>{{ value.name }}</span>
+                    {{ else }}
+                    <span class="span-box" style="border-color: #00afab; background: #00afab; color: #fff;" onclick="selectThisProp(event)" data-type={{ props.type }} data-prop-value={{ value.name }} data-prop-id={{ value.id }}>{{ value.name }}</span>
+                    {{ /if }}
                     {{ /each }}
                 </div>
+                {{ /if }}
             </div>
         {{ else if props.type === 2 || props.type === 3 }}
             <div class="props-item">
@@ -327,26 +334,57 @@
                 </div>
                 <div class="props-value">
                     {{ each props.values value }}
-                    <span class="span-box">{{ value.name }}</span>
+                    {{ if !value.selected }}
+                    <span class="span-box" style="border-color: #ddd" onclick="selectThisProp(event)" data-type={{ props.type }} data-prop-value={{ value.name }} data-prop-id={{ value.id }}>{{ value.name }}</span>
+                    {{ else }}
+                    <span class="span-box" style="border-color: #00afab; background: #00afab; color: #fff;" onclick="selectThisProp(event)" data-type={{ props.type }} data-prop-value={{ value.name }} data-prop-id={{ value.id }}>{{ value.name }}</span>
+                    {{ /if }}
                     {{ /each }}
                 </div>
             </div>
-        {{ else if props.type === 4 || props.type === 5}}
+        {{ else if props.type === 4 }}
             <div class="props-item">
                 <div class="props-value props-select">
                     <span class="input-title">{{ props.name }}:</span>
                     <input class="paper-input" type="text" onfocus="showSelectBox(event,true)"
-                           onblur="showSelectBox(event,false)" readonly data-type={{ props.type === 4 ? 'peper' : 'poli' }}>
+                           onblur="showSelectBox(event,false)" readonly data-type="paper" value={{props.selectValue}}>
                     <i class="iconfont icon-drop-down"></i>
-                    <div class={{props.type === 4 ? 'select-box peper-box' : 'select-box poli-box'}}>
+                    <div class="select-box paper-box">
                         <ul>
                             {{ each props.values li }}
-                            <li onclick="selectThisValue('paper', 0)">{{ li.name }} <i class="iconfont icon-ok"></i></li>
+                            <li onmousedown="selectThisProp(event)" data-type={{ props.type }} data-prop-id={{ li.id }}>
+                                {{ li.name }}
+                                {{ if li.selected }}
+                                <i class="iconfont icon-ok"></i>
+                                {{ /if }}
+                            </li>
                             {{ /each }}
                         </ul>
                     </div>
                 </div>
             </div>
+        {{ else if props.type === 5}}
+        <div class="props-item">
+            <div class="props-value props-select">
+                <span class="input-title">{{ props.name }}:</span>
+                <input class="paper-input" type="text" onfocus="showSelectBox(event,true)"
+                       onblur="showSelectBox(event,false)" readonly data-type="poli"  value={{props.selectValue}}>
+                <i class="iconfont icon-drop-down"></i>
+
+                <div class="select-box poli-box">
+                    <ul>
+                        {{ each props.values li }}
+                        <li onmousedown="selectThisProp(event)" data-type={{ props.type }} data-prop-id={{ li.id }}>
+                            {{ li.name }}
+                            {{ if li.selected }}
+                            <i class="iconfont icon-ok"></i>
+                            {{ /if }}
+                        </li>
+                        {{ /each }}
+                    </ul>
+                </div>
+            </div>
+        </div>
         {{ /if }}
     {{ /each }}
     <!--<div class="props-item">
