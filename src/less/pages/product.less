@@ -13,12 +13,34 @@
   visibility: hidden;
   .product-box{
     width: 600px;
-    height: 600px;
-    background: #ddd;
+    height: 550px;
+    // background: #ddd;
+    .material-box{
+      display: none;
+      margin: 0 auto;
+      box-shadow: 5px 5px 5px #999;
+    }
+    .page-box{
+      float:left;
+      box-shadow: 0 0 10px #666 inset;
+    }
+    .trim-box{
+      float:left;
+      .image-box{
+        border:2px solid #bbb;
+        border-right: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        overflow: hidden;
+      }
+      img{
+        background: #eee;
+        display: block;
+      }
+    }
   }
   .product-info{
     width: 380px;
-    height: 600px;
+    height: 550px;
     font-size:15px;
     color: #666;
     .product-name{
@@ -43,11 +65,15 @@
       .props-name{
         padding: 5px 5px 5px 0;
         color: #666;
-        .sec-props{
+        .sec-props,.sec-props-select{
           float: right;
           display: inline-block;
           padding: 1px 3px;
           font-size: 14px;
+          cursor: pointer;
+        }
+        .sec-props-select{
+          background: #ddd;
         }
       }
       .props-value{
@@ -58,6 +84,19 @@
           margin: 5px 5px 0 0;
           padding: 5px 10px;
           font-size:14px;
+          cursor: pointer;
+        }
+        i{
+          cursor: pointer;
+          img{
+            width: 40px;
+            height: 40px;
+            border: 1px solid #ddd;
+            padding: 5px;
+          }
+          .selected{
+            border-color: #00afab;
+          }
         }
       }
       .props-select{
@@ -77,6 +116,7 @@
           box-sizing: border-box;
           padding: 0 5px;
           outline: none;
+          cursor: pointer;
         }
         .select-box{
           overflow: hidden;

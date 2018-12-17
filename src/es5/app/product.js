@@ -16,7 +16,8 @@ var scrollX = function scrollX(direct, w, parent) {
 };
 
 var editorInfo = [],
-    productDetail = [];
+    productDetail = [],
+    box = {};
 
 window.onload = function () {
   var id = (0, _tools.getParameter)('productId');
@@ -28,22 +29,24 @@ window.onload = function () {
   var containerEle = document.querySelector('.product-container'),
       detailEle = document.querySelector('.product-detail'); //取得產品信息
 
-  if (id !== 0) {
-    (0, _api.getProductDetail)({
-      id: id
-    }).then(function (res) {
-      console.log(res);
-      var props = res.productOptions;
-      res = Object.assign({}, res, {
-        price: res.basePrice
-      });
-      (0, _api.getEditorOption)({
-        productId: id
-      }).then(function (options) {
-        options = options.map(function (item) {
-          item.values = item.values.map(function (v) {
-            v.selected = false;
+  (0, _api.getProductDetail)({
+    id: id
+  }).then(function (res) {
+    console.log(res);
+    var props = res.productOptions;
+    res = Object.assign({}, res, {
+      price: res.basePrice || 0
+    });
+    (0, _api.getEditorOption)({
+      productId: id
+    }).then(function (eo) {
+      box = JSON.parse(JSON.stringify(eo));
+      delete box.options;
+      var options = eo.options.map(function (item) {
+        item.values = item.values.map(function (v, index) {
+          v.selected = false;
 
+          if (props.length > 0) {
             for (var i = props.length - 1; i >= 0; i--) {
               if (props[i].optionId === item.id && v.id === +props[i].selectValue) {
                 v.selected = true;
@@ -52,109 +55,141 @@ window.onload = function () {
                 if (item.type === 4 || item.type === 5) {
                   item.selectValue = v.name;
                 }
+
+                if (item.type === 2) {
+                  box.materialBoxBg = v.largeImage;
+                  box.materialWidth = v.width;
+                }
+
+                if (item.type === 3) {
+                  box.pageBoxBg = v.color;
+                  box.pageWidth = v.width;
+                }
               }
             }
+          } else {
+            if (index === 0) {
+              v.selected = true;
+              res.price -= -Number(v.price);
 
-            return v;
-          });
-          return item;
-        });
-        console.log(options); // 因为要计算总价
+              if (item.type === 4 || item.type === 5) {
+                item.selectValue = v.name;
+              }
 
-        var html = (0, _template.default)('product-info', {
-          data: res
-        }),
-            detail = (0, _template.default)('product-detail', {
-          data: res
-        });
-        containerEle.style.visibility = 'visible';
-        detailEle.style.visibility = 'visible';
-        document.querySelector('.product-container').innerHTML = html;
-        document.querySelector('.product-detail').innerHTML = detail;
-        setTimeout(function () {
-          var html = (0, _template.default)('editor-info', {
-            data: options
-          });
-          console.log(res, document.querySelector('.product-info>.props'));
-          document.querySelector('.product-info>.props').innerHTML = html;
-          editorInfo = options;
-        }, 100);
-      });
-      productDetail = res;
-      /*if(res.productImages.length > 6) {
-        document.querySelector('.left-btn').addEventListener('click',()=>{
-          let ele = document.querySelectorAll('.pic-item'),
-            l = ele.length,
-            w = ele[0].offsetWidth,
-            parent = document.querySelector('.pic-ul'),
-            container = document.querySelector('.pic-container');
-          if((l * w - container.offsetWidth) > -parent.offsetLeft ) {
-            scrollX(-1,w,parent)
-          }
-        });
-          document.querySelector('.right-btn').addEventListener('click',()=>{
-          let ele = document.querySelectorAll('.pic-item'),
-            w = ele[0].offsetWidth,
-            parent = document.querySelector('.pic-ul');
-          if(parent.offsetLeft < 0 ) {
-            scrollX(1,w,parent)
-          }
-        });
-      } else {
-        document.querySelector('.pic-container').style.width = '500px';
-      }
-        let productionPrice = document.querySelector('.product-price');
-        if(res.productOptions.length > 0) {
-        let productOptions = res.productOptions,
-          price = 0;
-          for(let i=productOptions.length-1;i>=0;i--) {
-          console.log(-productOptions[i].optionValue[0].price);
-          price -= (-productOptions[i].optionValue[0].price)
-        }
-          productionPrice.innerHTML = price;
-        }
-        let targetPic = document.querySelector('.show-pic');
-        document.querySelector('.pic-container').addEventListener('mousemove',(e)=>{
-        if(e.target.tagName.toLowerCase() === 'img' && targetPic.getAttribute('src') !== e.target.getAttribute('src')) {
-          targetPic.setAttribute('src',e.target.getAttribute('src'));
-        }
-        },false);
-        document.querySelector('.add').addEventListener('click',()=>{
-        let quantity = document.querySelector('.product-quantity');
-        quantity.value -= -1;
-        quantity.setAttribute('value',quantity.value)
-      });
-        document.querySelector('.reduce').addEventListener('click',()=>{
-        let quantity = document.querySelector('.product-quantity');
-        if(quantity.value > 1) {
-          quantity.value -= 1;
-          quantity.setAttribute('value',quantity.value)
-          }
-      });
-        let select = document.querySelectorAll('.props-item>select');
-        console.log(select);
-        for(let i=select.length-1;i>=0;i--) {
-        console.log(select[i].value);
-        ((_i)=>{
-          select[_i].addEventListener('change',(e)=>{
-            console.log(select[_i].value);
-            let price = 0;
-            for(let j=select.length-1;j>=0;j--) {
-              price -= -select[j].value;
+              if (item.type === 2) {
+                box.materialBoxBg = v.largeImage;
+                box.materialWidth = v.width;
+              }
+
+              if (item.type === 3) {
+                box.pageBoxBg = v.color;
+                box.pageWidth = v.width;
+              }
             }
-            productionPrice.innerHTML = price;
-          })
-        })(i)
+          }
+
+          return v;
+        });
+        return item;
+      });
+      console.log(options); // 因为要计算总价
+
+      var html = (0, _template.default)('product-info', {
+        data: res
+      }),
+          detail = (0, _template.default)('product-detail', {
+        data: res
+      });
+      containerEle.style.visibility = 'visible';
+      res.detailImages.length > 0 && (detailEle.style.visibility = 'visible');
+      document.querySelector('.product-container').innerHTML = html;
+      document.querySelector('.product-detail').innerHTML = detail;
+      setTimeout(function () {
+        var html = (0, _template.default)('editor-info', {
+          data: options
+        });
+        console.log(res, document.querySelector('.product-info>.props'));
+        document.querySelector('.product-info>.props').innerHTML = html;
+        editorInfo = eo.options;
+        changeBox(box);
+      }, 100);
+    });
+    productDetail = res;
+    /*if(res.productImages.length > 6) {
+      document.querySelector('.left-btn').addEventListener('click',()=>{
+        let ele = document.querySelectorAll('.pic-item'),
+          l = ele.length,
+          w = ele[0].offsetWidth,
+          parent = document.querySelector('.pic-ul'),
+          container = document.querySelector('.pic-container');
+        if((l * w - container.offsetWidth) > -parent.offsetLeft ) {
+          scrollX(-1,w,parent)
+        }
+      });
+        document.querySelector('.right-btn').addEventListener('click',()=>{
+        let ele = document.querySelectorAll('.pic-item'),
+          w = ele[0].offsetWidth,
+          parent = document.querySelector('.pic-ul');
+        if(parent.offsetLeft < 0 ) {
+          scrollX(1,w,parent)
+        }
+      });
+    } else {
+      document.querySelector('.pic-container').style.width = '500px';
+    }
+      let productionPrice = document.querySelector('.product-price');
+      if(res.productOptions.length > 0) {
+      let productOptions = res.productOptions,
+        price = 0;
+        for(let i=productOptions.length-1;i>=0;i--) {
+        console.log(-productOptions[i].optionValue[0].price);
+        price -= (-productOptions[i].optionValue[0].price)
       }
-      */
+        productionPrice.innerHTML = price;
+      }
+      let targetPic = document.querySelector('.show-pic');
+      document.querySelector('.pic-container').addEventListener('mousemove',(e)=>{
+      if(e.target.tagName.toLowerCase() === 'img' && targetPic.getAttribute('src') !== e.target.getAttribute('src')) {
+        targetPic.setAttribute('src',e.target.getAttribute('src'));
+      }
+      },false);
+      document.querySelector('.add').addEventListener('click',()=>{
+      let quantity = document.querySelector('.product-quantity');
+      quantity.value -= -1;
+      quantity.setAttribute('value',quantity.value)
     });
-  } else {
-    (0, _api.getEditorOption)({
-      shapeId: id
-    }).then(function (res) {
-      console.log(res);
+      document.querySelector('.reduce').addEventListener('click',()=>{
+      let quantity = document.querySelector('.product-quantity');
+      if(quantity.value > 1) {
+        quantity.value -= 1;
+        quantity.setAttribute('value',quantity.value)
+        }
     });
-  }
+      let select = document.querySelectorAll('.props-item>select');
+      console.log(select);
+      for(let i=select.length-1;i>=0;i--) {
+      console.log(select[i].value);
+      ((_i)=>{
+        select[_i].addEventListener('change',(e)=>{
+          console.log(select[_i].value);
+          let price = 0;
+          for(let j=select.length-1;j>=0;j--) {
+            price -= -select[j].value;
+          }
+          productionPrice.innerHTML = price;
+        })
+      })(i)
+    }
+    */
+  });
+};
+
+var changeBox = function changeBox(box) {
+  console.log(box);
+  document.querySelector('.page-box').style.cssText = "width: ".concat(box.materialBoxWidth - box.materialWidth * 2, "px;\n            height: ").concat(box.materialBoxHeight - box.materialWidth * 2, "px;\n            background: ").concat(box.pageBoxBg, ";\n            margin: ").concat(box.materialWidth, "px");
+  document.querySelector('.trim-box').style.cssText = "width: ".concat(box.materialBoxWidth - box.materialWidth * 2 - box.pageWidth * 2, "px;\n            height: ").concat(box.materialBoxHeight - box.materialWidth * 2 - box.pageWidth * 2, "px;\n            margin: ").concat(box.pageWidth, "px");
+  document.querySelector('.trim-box img').style.cssText = "width: ".concat(box.materialBoxWidth - box.materialWidth * 2 - box.pageWidth * 2, "px;\n            height: ").concat(box.materialBoxHeight - box.materialWidth * 2 - box.pageWidth * 2, "px;");
+  document.querySelector('.material-box').style.cssText = "width: ".concat(box.materialBoxWidth, "px;\n            height: ").concat(box.materialBoxHeight, "px;\n            background:url(").concat(box.materialBoxBg, ") no-repeat;\n            background-size:cover;\n            display: block;");
 };
 
 window.toAddShoppingCart = function () {
@@ -195,22 +230,10 @@ window.checkNumber = function (ele) {
 };
 
 window.showSelectBox = function (ev, bool) {
-  if (ev.target.getAttribute('data-type') === 'paper') {
-    for (var i = editorInfo.length - 1; i >= 0; i--) {
-      if (editorInfo[i].type === 4) {
-        document.querySelector('.paper-box').style.height = bool === true ? editorInfo[i].values.length * 32 + 'px' : 0;
-        break;
-      }
-    }
-  } else {
-    for (var _i = editorInfo.length - 1; _i >= 0; _i--) {
-      if (editorInfo[_i].type === 5) {
-        console.log(editorInfo[_i].values.length, editorInfo[_i].values);
-        document.querySelector('.poli-box').style.height = bool === true ? editorInfo[_i].values.length * 32 + 'px' : 0;
-        break;
-      }
-    }
-  }
+  var id = ev.target.getAttribute('data-op-id'),
+      len = ev.target.getAttribute('data-op-len'),
+      ele = document.querySelector('#drop-down-' + id);
+  ele.style.height = bool === true ? len * 32 + 'px' : 0;
 };
 
 window.selectThisProp = function (ev) {
@@ -227,6 +250,19 @@ window.selectThisProp = function (ev) {
         if (item.id === id) {
           item.selected = true;
           (type === 4 || type === 5) && (editorInfo[i].selectValue = item.name);
+
+          if (type === 2) {
+            box.materialBoxBg = item.largeImage;
+            box.materialWidth = item.width;
+            /*let box = document.querySelector('.material-box');
+            box.style.background = `url(${item.largeImage}) no-repeat`;
+            box.style.backgroundSize = 'cover';*/
+          }
+
+          if (type === 3) {
+            box.pageBoxBg = item.color;
+            box.pageWidth = item.width; // document.querySelector('.page-box').style.background = item.color;
+          }
         }
 
         return item;
@@ -246,6 +282,7 @@ window.selectThisProp = function (ev) {
   });
   console.log(editorInfo, document.querySelector('.product-info>.props'));
   document.querySelector('.product-info>.props').innerHTML = html;
+  changeBox(box);
   var price = productDetail.hasOwnProperty('basePrice') ? productDetail.basePrice : 0;
   editorInfo.map(function (item) {
     item.values.map(function (v) {
@@ -263,38 +300,81 @@ window.selectThisProp = function (ev) {
 
 window.selectShape = function (ev) {
   var target = ev.target,
+      index = +target.getAttribute('data-op-index'),
+      pid = +target.getAttribute('data-parent-id'),
       id = +target.getAttribute('data-prop-id'),
-      pos = null,
-      index = null;
+      propId = +target.getAttribute('data-op-prop-id'),
+      price = productDetail.basePrice;
   (0, _api.getEditorOption)({
     shapeId: id
   }).then(function (res) {
-    for (var i = editorInfo.length - 1; i >= 0; i--) {
-      if (editorInfo[i].type === 1) {
-        pos = i;
+    var options = res.options;
+    var b = JSON.parse(JSON.stringify(res));
+    delete b.options;
+    box = Object.assign({}, box, b);
+    editorInfo = res.options.slice(0);
+    console.log(editorInfo, 'editorInfo');
+    editorInfo = editorInfo.map(function (item) {
+      item.values = item.values.map(function (v, _index) {
+        v.selected = false;
+        console.log(item.id, pid);
 
-        for (var n = editorInfo[i].values.length - 1; n >= 0; n--) {
-          if (editorInfo[i].values[n].id === id) {
-            index = n;
+        if (item.id === pid) {
+          v.selected = true;
+        } else {
+          if (_index === 0) {
+            v.selected = true;
+            price -= -Number(v.price);
+
+            if (item.type === 4 || item.type === 5) {
+              item.selectValue = item.name;
+            }
+
+            if (item.type === 2) {
+              console.log(v.largeImage);
+              box.materialBoxBg = v.largeImage;
+              box.materialWidth = v.width;
+            }
+
+            if (item.type === 3) {
+              box.pageBoxBg = v.color;
+              box.pageWidth = v.width;
+            }
           }
         }
 
-        for (var k = res.length - 1; k >= 0; k--) {
-          if (res[k].type === 1) {
-            editorInfo.splice(i, 1, Object.assign({}, editorInfo[i], res[k]));
-            break;
-          }
-        }
-
-        break;
-      }
-    }
+        return v;
+      });
+      return item;
+    });
   });
+  console.log(editorInfo);
   setTimeout(function () {
     var html = (0, _template.default)('editor-info', {
       data: editorInfo
     });
     console.log(editorInfo, document.querySelector('.product-info>.props'));
     document.querySelector('.product-info>.props').innerHTML = html;
+    console.log(box);
+    changeBox(box);
+    productDetail = Object.assign({}, productDetail, {
+      price: price
+    });
+    console.log(price);
+    document.querySelector('.price-count').innerHTML = '￥' + price;
   }, 100);
+};
+
+window.toUploadImage = function () {
+  console.log(document.querySelector('#upload-file'));
+  document.querySelector('#upload-file').click();
+};
+
+window.uploadImage = function () {
+  (0, _api.uploadEditorImage)(new FormData(document.querySelector('#upload-form')), {
+    id: 0
+  }).then(function (res) {
+    productDetail = Object.assign({}, productDetail, res);
+    document.querySelector('.product-picture').setAttribute('src', res.productImages[0].imageUrl);
+  });
 };

@@ -18,12 +18,33 @@
 }
 .product-container .product-box {
   width: 600px;
-  height: 600px;
-  background: #ddd;
+  height: 550px;
+}
+.product-container .product-box .material-box {
+  display: none;
+  margin: 0 auto;
+  box-shadow: 5px 5px 5px #999;
+}
+.product-container .product-box .page-box {
+  float: left;
+  box-shadow: 0 0 10px #666 inset;
+}
+.product-container .product-box .trim-box {
+  float: left;
+}
+.product-container .product-box .trim-box .image-box {
+  border: 2px solid #bbb;
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  overflow: hidden;
+}
+.product-container .product-box .trim-box img {
+  background: #eee;
+  display: block;
 }
 .product-container .product-info {
   width: 380px;
-  height: 600px;
+  height: 550px;
   font-size: 15px;
   color: #666;
 }
@@ -55,11 +76,16 @@
   padding: 5px 5px 5px 0;
   color: #666;
 }
-.product-container .product-info .props-item .props-name .sec-props {
+.product-container .product-info .props-item .props-name .sec-props,
+.product-container .product-info .props-item .props-name .sec-props-select {
   float: right;
   display: inline-block;
   padding: 1px 3px;
   font-size: 14px;
+  cursor: pointer;
+}
+.product-container .product-info .props-item .props-name .sec-props-select {
+  background: #ddd;
 }
 .product-container .product-info .props-item .props-value {
   padding: 0 0 10px 0;
@@ -70,6 +96,19 @@
   margin: 5px 5px 0 0;
   padding: 5px 10px;
   font-size: 14px;
+  cursor: pointer;
+}
+.product-container .product-info .props-item .props-value i {
+  cursor: pointer;
+}
+.product-container .product-info .props-item .props-value i img {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #ddd;
+  padding: 5px;
+}
+.product-container .product-info .props-item .props-value i .selected {
+  border-color: #00afab;
 }
 .product-container .product-info .props-item .props-select {
   background: #fff;
@@ -89,6 +128,7 @@
   box-sizing: border-box;
   padding: 0 5px;
   outline: none;
+  cursor: pointer;
 }
 .product-container .product-info .props-item .props-select .select-box {
   overflow: hidden;

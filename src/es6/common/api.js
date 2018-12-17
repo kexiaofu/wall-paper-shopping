@@ -4,22 +4,22 @@ const period = 60000;
 
 let requestTimeout = new Date().getTime();
 
-let apiRequire = async (name,url,method,data,duration=0) => {
+let apiRequire = async (obj) => {
   let storageTime = new Date().getTime();
-  if(duration > 0 && window.sessionStorage.getItem(name) !== null && storageTime - window.sessionStorage.getItem(name+'-time') < duration) {
-    return JSON.parse(window.sessionStorage.getItem(name));
+  if(obj.duration > 0 && window.sessionStorage.getItem(obj.name) !== null && storageTime - window.sessionStorage.getItem(obj.name+'-time') < obj.duration) {
+    return JSON.parse(window.sessionStorage.getItem(obj.name));
   } else {
-    console.log(`require ${name} again`);
-    if(method === undefined || method === null) {
-      return await axios.get(url,{
-        params:data
+    console.log(`require ${obj.name} again`);
+    if(obj.method === undefined || obj.method === null) {
+      return await axios.get(obj.url,{
+        params:obj.data
       })
         .then(res=>{
           if(res.data.code === 2000) {
             //name === 'toLogin' && ( requestTimeout = new Date(res.data.result.timeOut).getTime());
             //console.log(name,requestTimeout);
-            duration > 0 && window.sessionStorage.setItem(name,JSON.stringify(res.data.result));
-            duration > 0 && window.sessionStorage.setItem(name+'-time',storageTime);
+            obj.duration > 0 && window.sessionStorage.setItem(obj.name,JSON.stringify(res.data.result));
+            obj.duration > 0 && window.sessionStorage.setItem(obj.name+'-time',storageTime);
             return res.data.result;
           } else {
             console.log(res,'res');
@@ -56,11 +56,12 @@ let apiRequire = async (name,url,method,data,duration=0) => {
           throw Error('fetch api fail');
         })
     } else {
-      return await axios.post(url,data)
+      console.log(obj.url,obj.data,obj.params);
+      return await axios.post(obj.url, obj.data, {params: obj.params})
         .then(res=>{
           if(res.data.code === 2000) {
-            duration > 0 && window.sessionStorage.setItem(name,JSON.stringify(res.data.result));
-            duration > 0 && window.sessionStorage.setItem(name+'-time',storageTime);
+            obj.duration > 0 && window.sessionStorage.setItem(obj.name,JSON.stringify(res.data.result));
+            obj.duration > 0 && window.sessionStorage.setItem(obj.name+'-time',storageTime);
             return res.data.result;
           } else {
             alert(res.data.msg);
@@ -100,73 +101,75 @@ let apiRequire = async (name,url,method,data,duration=0) => {
 };
 
 //product
-export const getAllProductList = async (data) => await apiRequire('getAllProductList','/api/Product/getproductList',null,data);
+export const getAllProductList = async (data) => await apiRequire({name: 'getAllProductList', url: '/api/Product/getproductList', data});
 
-export const getProductClassify = async () => await apiRequire('getProductClassify','/api/Product/GetGroup',null);
+export const getProductClassify = async () => await apiRequire({name: 'getProductClassify', url: '/api/Product/GetGroup'});
 
-export const getProductDetail = async (data) => await apiRequire('getProductDetail','/api/Product/GetProductDetail',null,data);
+export const getProductDetail = async (data) => await apiRequire({name: 'getProductDetail', url: '/api/Product/GetProductDetail',data});
 
-export const getTags =async () => await apiRequire('getTags','/api/Product/getTags',null,null,period);
+export const getTags =async () => await apiRequire({name: 'getTags', url: '/api/Product/getTags', duration: period});
 
 //home
-export const getCarousel = async ()=> await apiRequire('getCarousel','/api/Home/GetCarousel',null,null,period);
+export const getCarousel = async ()=> await apiRequire({name: 'getCarousel', url: '/api/Home/GetCarousel', duration: period});
 
-export const getProductionList = async ()=> await apiRequire('getProductionList','/api/Home/GetHomeProduct',null,null,period);
+export const getProductionList = async ()=> await apiRequire({name: 'getProductionList', url: '/api/Home/GetHomeProduct', duration: period});
 
-export const getHomeGroup =async () => await apiRequire('getHomeGroup','/api/Home/GetHomeGroup',null,null,period);
+export const getHomeGroup =async () => await apiRequire({name: 'getHomeGroup', url: '/api/Home/GetHomeGroup', duration: period});
 
 //account
-export const toLogin = async (account) => await apiRequire('account','/api/account/login','post',account,period);
+export const toLogin = async (account) => await apiRequire({name: 'account', url: '/api/account/login', method: 'post', data: account, duration: period});
 
-export const logout = async () => await apiRequire('logout','/api/account/Logout','post',null);
+export const logout = async () => await apiRequire({name: 'logout', url: '/api/account/Logout', methods: 'post'} );
 
-export const getAddress = async () => await apiRequire('getAddress','/api/account/GetAddressList',null,null);
+export const getAddress = async () => await apiRequire({name: 'getAddress', url: '/api/account/GetAddressList'} );
 
-export const setDefaultAddress = async (data) => await apiRequire('setDefaultAddress','/api/account/SetDefaultAddress','post',data);
+export const setDefaultAddress = async (data) => await apiRequire({name: 'setDefaultAddress', url: '/api/account/SetDefaultAddress', method: 'post', data});
 
-export const addressOperate = async (data) => await apiRequire('addressOperate','/api/account/AddressOperate','post',data);
+export const addressOperate = async (data) => await apiRequire({name: 'addressOperate', url: '/api/account/AddressOperate', method: 'post',data});
 
-export const getUserInfo = async (data) => await apiRequire('addressOperate','/api/account/GetUserInfo',null,data);
+export const getUserInfo = async (data) => await apiRequire({name: 'addressOperate', url: '/api/account/GetUserInfo', data});
 
-export const updateUserInfo = async (data) => await apiRequire('updateUserInfo','/api/account/UpdateUserInfo','post',data);
+export const updateUserInfo = async (data) => await apiRequire({name: 'updateUserInfo', url: '/api/account/UpdateUserInfo', method: 'post', data});
 
-export const updatePassword = async (data) => await apiRequire('updatePassword','/api/account/UpdatePassword','post',data);
+export const updatePassword = async (data) => await apiRequire({name: 'updatePassword', url: '/api/account/UpdatePassword', method: 'post', data});
 
-export const updateIcon = async (data) => await apiRequire('updateIcon','/api/account/UpdateIcon','post',data);
+export const updateIcon = async (data) => await apiRequire({name: 'updateIcon', url: '/api/account/UpdateIcon', method: 'post', data});
 
-export const sendMessage = async (data) => await apiRequire('sendMessage','/api/account/SendMessage','post',data);
+export const sendMessage = async (data) => await apiRequire({name: 'sendMessage', url: '/api/account/SendMessage', method: 'post', data});
 
-export const bindingInfo = async (data) => await apiRequire('bindingInfo','/api/account/BindingInfo','post',data);
+export const bindingInfo = async (data) => await apiRequire({name: 'bindingInfo', url: '/api/account/BindingInfo', method: 'post', data});
 
-export const register = async (data) => await apiRequire('register','/api/account/Register','post',data);
+export const register = async (data) => await apiRequire({name: 'register', url: '/api/account/Register', method: 'post', data});
 
-export const resetPassword = async (data) => await apiRequire('resetPassword','/api/account/ResetPassword','post',data);
+export const resetPassword = async (data) => await apiRequire({name: 'resetPassword', url: '/api/account/ResetPassword', method: 'post', data});
 
 //order
-export const getShoppingCarInfo = async (data) => await apiRequire('getShoppingCarInfo','/api/order/GetShoppingCart',null,data);
+export const getShoppingCarInfo = async (data) => await apiRequire({name: 'getShoppingCarInfo', url: '/api/order/GetShoppingCart', data});
 
-export const addShoppingCart = async (data) => await apiRequire('addShoppingCart','/api/order/AddShoppingCart','post',data);
+export const addShoppingCart = async (data) => await apiRequire({name: 'addShoppingCart', url: '/api/order/AddShoppingCart', method: 'post', data});
 
-export const deleteShoppingCart = async (data) => await apiRequire('deleteShoppingCart','/api/order/DeleteShoppingCart','post',data);
+export const deleteShoppingCart = async (data) => await apiRequire({name: 'deleteShoppingCart', url: '/api/order/DeleteShoppingCart', method: 'post', data});
 
-export const getOrder = async (data) => await apiRequire('getOrder','/api/order/GetOrder',null,data);
+export const getOrder = async (data) => await apiRequire({name: 'getOrder', url: '/api/order/GetOrder', data});
 
-export const addOrder = async (data) => await apiRequire('addOrder','/api/order/AddOrder','post',data);
+export const addOrder = async (data) => await apiRequire({name: 'addOrder', url: '/api/order/AddOrder', method: 'post', data});
 
-export const getOrderStatus = async (data) => await apiRequire('getOrderStatus','/api/order/GetOrderStatus',null,data);
+export const getOrderStatus = async (data) => await apiRequire({name: 'getOrderStatus', url: '/api/order/GetOrderStatus', data});
 
-export const submitOrder = async (data) => await apiRequire('submitOrder','/api/order/SubmitOrder','post',data);
+export const submitOrder = async (data) => await apiRequire({name: 'submitOrder', url: '/api/order/SubmitOrder', method: 'post', data});
 
-export const checkOrder = async (data) => await apiRequire('checkOrder','/api/order/CheckOrderPaid',null,data);
+export const checkOrder = async (data) => await apiRequire({name: 'checkOrder', url: '/api/order/CheckOrderPaid', data});
 
 //pay
-export const payOrder = async (data) => await apiRequire('payOrder','/api/pay/PayOrder',null,data);
+export const payOrder = async (data) => await apiRequire({name: 'payOrder', url: '/api/pay/PayOrder', data});
 
 //config
-export const addressConfig = async () => await apiRequire('addressConfig','/api/config/GetAddressConfig',null,null,600000);
+export const addressConfig = async () => await apiRequire({name: 'addressConfig', url: '/api/config/GetAddressConfig', duration: 600000});
 
 // editor
-export const getEditorOption = async (data) => await apiRequire('checkOrder','/api/editor/GetEditorOption',null,data);
+export const getEditorOption = async (data) => await apiRequire({name: 'checkOrder', url: '/api/editor/GetEditorOption', data});
+
+export const uploadEditorImage = async (data, params) => await apiRequire({name: 'uploadEditorImage', url: '/api/editor/uploadEditorImage', method: 'post', data, params});
 
 ///api/order/AddShoppingCart
 //getProductClassify,api/Product/GetProductDetail?id=

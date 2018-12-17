@@ -20,6 +20,9 @@
         <div class="func-item hover-blue">
             <a href="./product-list.html">商店</a>
         </div>
+        <div class="func-item hover-blue">
+            <a href="./product.html?productId=0" style="margin:0 5px;">开始定制</a>
+        </div>
     </div>
     <div class="right-part">
         <div class="func-item search">
@@ -252,6 +255,9 @@
 
     </div>
     <div class="product-detail"></div>
+    <form action="" id="upload-form" style="display: none;">
+        <input type="file" name="upload-file" id="upload-file" onchange="uploadImage()">
+    </form>
 </div>
 <div class="footer">
     <div class="left-part">
@@ -275,17 +281,34 @@
     </div>
 </div>
 <script id="product-info" type="text/html">
-    <div class="product-box"></div>
+    <div class="product-box">
+        <div class="material-box">
+            <div class="page-box">
+                <div class="trim-box">
+                    <div class="image-box">
+                        {{ if data.hasOwnProperty('productImages') && data.productImages.length > 0 }}
+                        <img src={{ data.productImages[0].imageUrl }} alt="">
+                        {{ else }}
+                        <img src="" alt="" class="product-picture">
+                        {{ /if }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="product-info">
         <div class="product-name">{{ data.name !== null ? data.name : '定制产品'}}</div>
         <div class="price">
             <span>{{ data.productGroupName }}</span>
-            <span class="price-count">{{data.basePrice !== null ? '￥' + data.price : '' }}</span>
+            <span class="price-count">{{data.price !== null ? '￥' + data.price : '' }}</span>
         </div>
         <div class="props"></div>
-        <div class="upload-file">
+
+        {{ if data.id === 0 }}
+        <div class="upload-file" onclick="toUploadImage()">
             上传图片
         </div>
+        {{ /if }}
 
         <div class="buy-product">
             <div class="quantity">
@@ -303,14 +326,18 @@
 </script>
 <script id="editor-info" type="text/html">
     {{ each data props}}
-        {{ if props.type === 0 || props.type === 1 }}
+        {{ if props.optionType === 2 }}
             <div class="props-item">
                 {{ if props.type === 0 }}
                 <div class="props-name">
                     {{ props.name }}
                     {{ if props.values.length > 1 }}
-                    {{ each props.values shape }}
-                    <span class="sec-props" onclick="selectShape(event)" data-type={{ props.type }} data-prop-id={{ shape.id }}>{{ shape.name }}</span>
+                    {{ each props.values shape i }}
+                    {{ if !shape.selected }}
+                    <span class="sec-props" onclick="selectShape(event, 1)" data-op-prop-id="2" data-op-index={{ i }} data-parent-id={{ props.id }} data-prop-id={{ shape.id }}>{{ shape.name }}</span>
+                    {{ else  }}
+                    <span class="sec-props-select" data-op-prop-id="2" data-op-index={{ i }} data-parent-id={{ props.id }} data-prop-id={{ shape.id }}>{{ shape.name }}</span>
+                    {{ /if }}
                     {{ /each }}
                     {{ /if }}
                 </div>
@@ -327,29 +354,25 @@
                 </div>
                 {{ /if }}
             </div>
-        {{ else if props.type === 2 || props.type === 3 }}
+        {{ else if props.optionType === 7 }}
             <div class="props-item">
                 <div class="props-name">
                     {{ props.name }}
                 </div>
                 <div class="props-value">
                     {{ each props.values value }}
-                    {{ if !value.selected }}
-                    <span class="span-box" style="border-color: #ddd" onclick="selectThisProp(event)" data-type={{ props.type }} data-prop-value={{ value.name }} data-prop-id={{ value.id }}>{{ value.name }}</span>
-                    {{ else }}
-                    <span class="span-box" style="border-color: #00afab; background: #00afab; color: #fff;" onclick="selectThisProp(event)" data-type={{ props.type }} data-prop-value={{ value.name }} data-prop-id={{ value.id }}>{{ value.name }}</span>
-                    {{ /if }}
+                    <i><img src={{ value.smallImage }} title={{ value.name }} class={{ value.selected ? 'selected' : '' }} alt="" data-selected={{ value.selected }} onclick="selectThisProp(event)" data-type={{ props.type }} data-prop-value={{ value.name }} data-prop-id={{ value.id }}></i>
                     {{ /each }}
                 </div>
             </div>
-        {{ else if props.type === 4 }}
+        {{ else if props.optionType === 3 }}
             <div class="props-item">
                 <div class="props-value props-select">
                     <span class="input-title">{{ props.name }}:</span>
                     <input class="paper-input" type="text" onfocus="showSelectBox(event,true)"
-                           onblur="showSelectBox(event,false)" readonly data-type="paper" value={{props.selectValue}}>
+                           onblur="showSelectBox(event,false)" readonly data-type="" data-op-len={{ props.values.length }} data-op-id={{ props.id }} value={{props.selectValue}}>
                     <i class="iconfont icon-drop-down"></i>
-                    <div class="select-box paper-box">
+                    <div class="select-box" id={{ 'drop-down-' + props.id }}>
                         <ul>
                             {{ each props.values li }}
                             <li onmousedown="selectThisProp(event)" data-type={{ props.type }} data-prop-id={{ li.id }}>
@@ -363,61 +386,8 @@
                     </div>
                 </div>
             </div>
-        {{ else if props.type === 5}}
-        <div class="props-item">
-            <div class="props-value props-select">
-                <span class="input-title">{{ props.name }}:</span>
-                <input class="paper-input" type="text" onfocus="showSelectBox(event,true)"
-                       onblur="showSelectBox(event,false)" readonly data-type="poli"  value={{props.selectValue}}>
-                <i class="iconfont icon-drop-down"></i>
-
-                <div class="select-box poli-box">
-                    <ul>
-                        {{ each props.values li }}
-                        <li onmousedown="selectThisProp(event)" data-type={{ props.type }} data-prop-id={{ li.id }}>
-                            {{ li.name }}
-                            {{ if li.selected }}
-                            <i class="iconfont icon-ok"></i>
-                            {{ /if }}
-                        </li>
-                        {{ /each }}
-                    </ul>
-                </div>
-            </div>
-        </div>
         {{ /if }}
     {{ /each }}
-    <!--<div class="props-item">
-        <div class="props-value props-select">
-            <span class="input-title">画纸:</span>
-            <input class="paper-input" type="text" onfocus="showSelectBox('paper', true)"
-                   onblur="showSelectBox('paper', false)" readonly>
-            <i class="iconfont icon-drop-down"></i>
-            <div class="select-box paper-box">
-                <ul>
-                    <li onclick="selectThisValue('paper', 0)">呵呵呵呵 <i class="iconfont icon-ok"></i></li>
-                    <li>哈哈哈</li>
-                    <li>会被黑河</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="props-item ">
-        <div class="props-value props-select">
-            <span class="input-title">玻璃:</span>
-            <input type="text" onfocus="showSelectBox('poli', true)" onblur="showSelectBox('poli', false)" readonly>
-            <i class="iconfont icon-drop-down"></i>
-            <div class="select-box poli-box">
-                <ul>
-                    <li>呵呵呵呵</li>
-                    <li>哈哈哈</li>
-                    <li>会被黑河</li>
-                    <li>会被黑河</li>
-                    <li>会被黑河</li>
-                </ul>
-            </div>
-        </div>
-    </div>-->
 </script>
 <script id="product-detail" type="text/html">
     <div class="product-detail-info">
@@ -429,8 +399,3 @@
 <script src="../js/app/product.js"></script>
 </body>
 </html>
-
-<!--
-
-
--->

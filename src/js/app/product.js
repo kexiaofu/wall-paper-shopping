@@ -2501,7 +2501,8 @@ var scrollX = function scrollX(direct, w, parent) {
 };
 
 var editorInfo = [],
-    productDetail = [];
+    productDetail = [],
+    box = {};
 
 window.onload = function () {
   var id = (0, _tools.getParameter)('productId');
@@ -2513,22 +2514,24 @@ window.onload = function () {
   var containerEle = document.querySelector('.product-container'),
       detailEle = document.querySelector('.product-detail'); //取得產品信息
 
-  if (id !== 0) {
-    (0, _api.getProductDetail)({
-      id: id
-    }).then(function (res) {
-      console.log(res);
-      var props = res.productOptions;
-      res = Object.assign({}, res, {
-        price: res.basePrice
-      });
-      (0, _api.getEditorOption)({
-        productId: id
-      }).then(function (options) {
-        options = options.map(function (item) {
-          item.values = item.values.map(function (v) {
-            v.selected = false;
+  (0, _api.getProductDetail)({
+    id: id
+  }).then(function (res) {
+    console.log(res);
+    var props = res.productOptions;
+    res = Object.assign({}, res, {
+      price: res.basePrice || 0
+    });
+    (0, _api.getEditorOption)({
+      productId: id
+    }).then(function (eo) {
+      box = JSON.parse(JSON.stringify(eo));
+      delete box.options;
+      var options = eo.options.map(function (item) {
+        item.values = item.values.map(function (v, index) {
+          v.selected = false;
 
+          if (props.length > 0) {
             for (var i = props.length - 1; i >= 0; i--) {
               if (props[i].optionId === item.id && v.id === +props[i].selectValue) {
                 v.selected = true;
@@ -2537,109 +2540,141 @@ window.onload = function () {
                 if (item.type === 4 || item.type === 5) {
                   item.selectValue = v.name;
                 }
+
+                if (item.type === 2) {
+                  box.materialBoxBg = v.largeImage;
+                  box.materialWidth = v.width;
+                }
+
+                if (item.type === 3) {
+                  box.pageBoxBg = v.color;
+                  box.pageWidth = v.width;
+                }
               }
             }
+          } else {
+            if (index === 0) {
+              v.selected = true;
+              res.price -= -Number(v.price);
 
-            return v;
-          });
-          return item;
-        });
-        console.log(options); // 因为要计算总价
+              if (item.type === 4 || item.type === 5) {
+                item.selectValue = v.name;
+              }
 
-        var html = (0, _template.default)('product-info', {
-          data: res
-        }),
-            detail = (0, _template.default)('product-detail', {
-          data: res
-        });
-        containerEle.style.visibility = 'visible';
-        detailEle.style.visibility = 'visible';
-        document.querySelector('.product-container').innerHTML = html;
-        document.querySelector('.product-detail').innerHTML = detail;
-        setTimeout(function () {
-          var html = (0, _template.default)('editor-info', {
-            data: options
-          });
-          console.log(res, document.querySelector('.product-info>.props'));
-          document.querySelector('.product-info>.props').innerHTML = html;
-          editorInfo = options;
-        }, 100);
-      });
-      productDetail = res;
-      /*if(res.productImages.length > 6) {
-        document.querySelector('.left-btn').addEventListener('click',()=>{
-          let ele = document.querySelectorAll('.pic-item'),
-            l = ele.length,
-            w = ele[0].offsetWidth,
-            parent = document.querySelector('.pic-ul'),
-            container = document.querySelector('.pic-container');
-          if((l * w - container.offsetWidth) > -parent.offsetLeft ) {
-            scrollX(-1,w,parent)
-          }
-        });
-          document.querySelector('.right-btn').addEventListener('click',()=>{
-          let ele = document.querySelectorAll('.pic-item'),
-            w = ele[0].offsetWidth,
-            parent = document.querySelector('.pic-ul');
-          if(parent.offsetLeft < 0 ) {
-            scrollX(1,w,parent)
-          }
-        });
-      } else {
-        document.querySelector('.pic-container').style.width = '500px';
-      }
-        let productionPrice = document.querySelector('.product-price');
-        if(res.productOptions.length > 0) {
-        let productOptions = res.productOptions,
-          price = 0;
-          for(let i=productOptions.length-1;i>=0;i--) {
-          console.log(-productOptions[i].optionValue[0].price);
-          price -= (-productOptions[i].optionValue[0].price)
-        }
-          productionPrice.innerHTML = price;
-        }
-        let targetPic = document.querySelector('.show-pic');
-        document.querySelector('.pic-container').addEventListener('mousemove',(e)=>{
-        if(e.target.tagName.toLowerCase() === 'img' && targetPic.getAttribute('src') !== e.target.getAttribute('src')) {
-          targetPic.setAttribute('src',e.target.getAttribute('src'));
-        }
-        },false);
-        document.querySelector('.add').addEventListener('click',()=>{
-        let quantity = document.querySelector('.product-quantity');
-        quantity.value -= -1;
-        quantity.setAttribute('value',quantity.value)
-      });
-        document.querySelector('.reduce').addEventListener('click',()=>{
-        let quantity = document.querySelector('.product-quantity');
-        if(quantity.value > 1) {
-          quantity.value -= 1;
-          quantity.setAttribute('value',quantity.value)
-          }
-      });
-        let select = document.querySelectorAll('.props-item>select');
-        console.log(select);
-        for(let i=select.length-1;i>=0;i--) {
-        console.log(select[i].value);
-        ((_i)=>{
-          select[_i].addEventListener('change',(e)=>{
-            console.log(select[_i].value);
-            let price = 0;
-            for(let j=select.length-1;j>=0;j--) {
-              price -= -select[j].value;
+              if (item.type === 2) {
+                box.materialBoxBg = v.largeImage;
+                box.materialWidth = v.width;
+              }
+
+              if (item.type === 3) {
+                box.pageBoxBg = v.color;
+                box.pageWidth = v.width;
+              }
             }
-            productionPrice.innerHTML = price;
-          })
-        })(i)
+          }
+
+          return v;
+        });
+        return item;
+      });
+      console.log(options); // 因为要计算总价
+
+      var html = (0, _template.default)('product-info', {
+        data: res
+      }),
+          detail = (0, _template.default)('product-detail', {
+        data: res
+      });
+      containerEle.style.visibility = 'visible';
+      res.detailImages.length > 0 && (detailEle.style.visibility = 'visible');
+      document.querySelector('.product-container').innerHTML = html;
+      document.querySelector('.product-detail').innerHTML = detail;
+      setTimeout(function () {
+        var html = (0, _template.default)('editor-info', {
+          data: options
+        });
+        console.log(res, document.querySelector('.product-info>.props'));
+        document.querySelector('.product-info>.props').innerHTML = html;
+        editorInfo = eo.options;
+        changeBox(box);
+      }, 100);
+    });
+    productDetail = res;
+    /*if(res.productImages.length > 6) {
+      document.querySelector('.left-btn').addEventListener('click',()=>{
+        let ele = document.querySelectorAll('.pic-item'),
+          l = ele.length,
+          w = ele[0].offsetWidth,
+          parent = document.querySelector('.pic-ul'),
+          container = document.querySelector('.pic-container');
+        if((l * w - container.offsetWidth) > -parent.offsetLeft ) {
+          scrollX(-1,w,parent)
+        }
+      });
+        document.querySelector('.right-btn').addEventListener('click',()=>{
+        let ele = document.querySelectorAll('.pic-item'),
+          w = ele[0].offsetWidth,
+          parent = document.querySelector('.pic-ul');
+        if(parent.offsetLeft < 0 ) {
+          scrollX(1,w,parent)
+        }
+      });
+    } else {
+      document.querySelector('.pic-container').style.width = '500px';
+    }
+      let productionPrice = document.querySelector('.product-price');
+      if(res.productOptions.length > 0) {
+      let productOptions = res.productOptions,
+        price = 0;
+        for(let i=productOptions.length-1;i>=0;i--) {
+        console.log(-productOptions[i].optionValue[0].price);
+        price -= (-productOptions[i].optionValue[0].price)
       }
-      */
+        productionPrice.innerHTML = price;
+      }
+      let targetPic = document.querySelector('.show-pic');
+      document.querySelector('.pic-container').addEventListener('mousemove',(e)=>{
+      if(e.target.tagName.toLowerCase() === 'img' && targetPic.getAttribute('src') !== e.target.getAttribute('src')) {
+        targetPic.setAttribute('src',e.target.getAttribute('src'));
+      }
+      },false);
+      document.querySelector('.add').addEventListener('click',()=>{
+      let quantity = document.querySelector('.product-quantity');
+      quantity.value -= -1;
+      quantity.setAttribute('value',quantity.value)
     });
-  } else {
-    (0, _api.getEditorOption)({
-      shapeId: id
-    }).then(function (res) {
-      console.log(res);
+      document.querySelector('.reduce').addEventListener('click',()=>{
+      let quantity = document.querySelector('.product-quantity');
+      if(quantity.value > 1) {
+        quantity.value -= 1;
+        quantity.setAttribute('value',quantity.value)
+        }
     });
-  }
+      let select = document.querySelectorAll('.props-item>select');
+      console.log(select);
+      for(let i=select.length-1;i>=0;i--) {
+      console.log(select[i].value);
+      ((_i)=>{
+        select[_i].addEventListener('change',(e)=>{
+          console.log(select[_i].value);
+          let price = 0;
+          for(let j=select.length-1;j>=0;j--) {
+            price -= -select[j].value;
+          }
+          productionPrice.innerHTML = price;
+        })
+      })(i)
+    }
+    */
+  });
+};
+
+var changeBox = function changeBox(box) {
+  console.log(box);
+  document.querySelector('.page-box').style.cssText = "width: ".concat(box.materialBoxWidth - box.materialWidth * 2, "px;\n            height: ").concat(box.materialBoxHeight - box.materialWidth * 2, "px;\n            background: ").concat(box.pageBoxBg, ";\n            margin: ").concat(box.materialWidth, "px");
+  document.querySelector('.trim-box').style.cssText = "width: ".concat(box.materialBoxWidth - box.materialWidth * 2 - box.pageWidth * 2, "px;\n            height: ").concat(box.materialBoxHeight - box.materialWidth * 2 - box.pageWidth * 2, "px;\n            margin: ").concat(box.pageWidth, "px");
+  document.querySelector('.trim-box img').style.cssText = "width: ".concat(box.materialBoxWidth - box.materialWidth * 2 - box.pageWidth * 2, "px;\n            height: ").concat(box.materialBoxHeight - box.materialWidth * 2 - box.pageWidth * 2, "px;");
+  document.querySelector('.material-box').style.cssText = "width: ".concat(box.materialBoxWidth, "px;\n            height: ").concat(box.materialBoxHeight, "px;\n            background:url(").concat(box.materialBoxBg, ") no-repeat;\n            background-size:cover;\n            display: block;");
 };
 
 window.toAddShoppingCart = function () {
@@ -2680,22 +2715,10 @@ window.checkNumber = function (ele) {
 };
 
 window.showSelectBox = function (ev, bool) {
-  if (ev.target.getAttribute('data-type') === 'paper') {
-    for (var i = editorInfo.length - 1; i >= 0; i--) {
-      if (editorInfo[i].type === 4) {
-        document.querySelector('.paper-box').style.height = bool === true ? editorInfo[i].values.length * 32 + 'px' : 0;
-        break;
-      }
-    }
-  } else {
-    for (var _i = editorInfo.length - 1; _i >= 0; _i--) {
-      if (editorInfo[_i].type === 5) {
-        console.log(editorInfo[_i].values.length, editorInfo[_i].values);
-        document.querySelector('.poli-box').style.height = bool === true ? editorInfo[_i].values.length * 32 + 'px' : 0;
-        break;
-      }
-    }
-  }
+  var id = ev.target.getAttribute('data-op-id'),
+      len = ev.target.getAttribute('data-op-len'),
+      ele = document.querySelector('#drop-down-' + id);
+  ele.style.height = bool === true ? len * 32 + 'px' : 0;
 };
 
 window.selectThisProp = function (ev) {
@@ -2712,6 +2735,19 @@ window.selectThisProp = function (ev) {
         if (item.id === id) {
           item.selected = true;
           (type === 4 || type === 5) && (editorInfo[i].selectValue = item.name);
+
+          if (type === 2) {
+            box.materialBoxBg = item.largeImage;
+            box.materialWidth = item.width;
+            /*let box = document.querySelector('.material-box');
+            box.style.background = `url(${item.largeImage}) no-repeat`;
+            box.style.backgroundSize = 'cover';*/
+          }
+
+          if (type === 3) {
+            box.pageBoxBg = item.color;
+            box.pageWidth = item.width; // document.querySelector('.page-box').style.background = item.color;
+          }
         }
 
         return item;
@@ -2731,6 +2767,7 @@ window.selectThisProp = function (ev) {
   });
   console.log(editorInfo, document.querySelector('.product-info>.props'));
   document.querySelector('.product-info>.props').innerHTML = html;
+  changeBox(box);
   var price = productDetail.hasOwnProperty('basePrice') ? productDetail.basePrice : 0;
   editorInfo.map(function (item) {
     item.values.map(function (v) {
@@ -2748,40 +2785,83 @@ window.selectThisProp = function (ev) {
 
 window.selectShape = function (ev) {
   var target = ev.target,
+      index = +target.getAttribute('data-op-index'),
+      pid = +target.getAttribute('data-parent-id'),
       id = +target.getAttribute('data-prop-id'),
-      pos = null,
-      index = null;
+      propId = +target.getAttribute('data-op-prop-id'),
+      price = productDetail.basePrice;
   (0, _api.getEditorOption)({
     shapeId: id
   }).then(function (res) {
-    for (var i = editorInfo.length - 1; i >= 0; i--) {
-      if (editorInfo[i].type === 1) {
-        pos = i;
+    var options = res.options;
+    var b = JSON.parse(JSON.stringify(res));
+    delete b.options;
+    box = Object.assign({}, box, b);
+    editorInfo = res.options.slice(0);
+    console.log(editorInfo, 'editorInfo');
+    editorInfo = editorInfo.map(function (item) {
+      item.values = item.values.map(function (v, _index) {
+        v.selected = false;
+        console.log(item.id, pid);
 
-        for (var n = editorInfo[i].values.length - 1; n >= 0; n--) {
-          if (editorInfo[i].values[n].id === id) {
-            index = n;
+        if (item.id === pid) {
+          v.selected = true;
+        } else {
+          if (_index === 0) {
+            v.selected = true;
+            price -= -Number(v.price);
+
+            if (item.type === 4 || item.type === 5) {
+              item.selectValue = item.name;
+            }
+
+            if (item.type === 2) {
+              console.log(v.largeImage);
+              box.materialBoxBg = v.largeImage;
+              box.materialWidth = v.width;
+            }
+
+            if (item.type === 3) {
+              box.pageBoxBg = v.color;
+              box.pageWidth = v.width;
+            }
           }
         }
 
-        for (var k = res.length - 1; k >= 0; k--) {
-          if (res[k].type === 1) {
-            editorInfo.splice(i, 1, Object.assign({}, editorInfo[i], res[k]));
-            break;
-          }
-        }
-
-        break;
-      }
-    }
+        return v;
+      });
+      return item;
+    });
   });
+  console.log(editorInfo);
   setTimeout(function () {
     var html = (0, _template.default)('editor-info', {
       data: editorInfo
     });
     console.log(editorInfo, document.querySelector('.product-info>.props'));
     document.querySelector('.product-info>.props').innerHTML = html;
+    console.log(box);
+    changeBox(box);
+    productDetail = Object.assign({}, productDetail, {
+      price: price
+    });
+    console.log(price);
+    document.querySelector('.price-count').innerHTML = '￥' + price;
   }, 100);
+};
+
+window.toUploadImage = function () {
+  console.log(document.querySelector('#upload-file'));
+  document.querySelector('#upload-file').click();
+};
+
+window.uploadImage = function () {
+  (0, _api.uploadEditorImage)(new FormData(document.querySelector('#upload-form')), {
+    id: 0
+  }).then(function (res) {
+    productDetail = Object.assign({}, productDetail, res);
+    document.querySelector('.product-picture').setAttribute('src', res.productImages[0].imageUrl);
+  });
 };
 },{"../common/api":37,"../common/template":38,"../common/toast":39,"../common/tools":40,"@babel/runtime/helpers/interopRequireDefault":4}],37:[function(require,module,exports){
 "use strict";
@@ -2791,7 +2871,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getEditorOption = exports.addressConfig = exports.payOrder = exports.checkOrder = exports.submitOrder = exports.getOrderStatus = exports.addOrder = exports.getOrder = exports.deleteShoppingCart = exports.addShoppingCart = exports.getShoppingCarInfo = exports.resetPassword = exports.register = exports.bindingInfo = exports.sendMessage = exports.updateIcon = exports.updatePassword = exports.updateUserInfo = exports.getUserInfo = exports.addressOperate = exports.setDefaultAddress = exports.getAddress = exports.logout = exports.toLogin = exports.getHomeGroup = exports.getProductionList = exports.getCarousel = exports.getTags = exports.getProductDetail = exports.getProductClassify = exports.getAllProductList = void 0;
+exports.uploadEditorImage = exports.getEditorOption = exports.addressConfig = exports.payOrder = exports.checkOrder = exports.submitOrder = exports.getOrderStatus = exports.addOrder = exports.getOrder = exports.deleteShoppingCart = exports.addShoppingCart = exports.getShoppingCarInfo = exports.resetPassword = exports.register = exports.bindingInfo = exports.sendMessage = exports.updateIcon = exports.updatePassword = exports.updateUserInfo = exports.getUserInfo = exports.addressOperate = exports.setDefaultAddress = exports.getAddress = exports.logout = exports.toLogin = exports.getHomeGroup = exports.getProductionList = exports.getCarousel = exports.getTags = exports.getProductDetail = exports.getProductClassify = exports.getAllProductList = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -2807,41 +2887,38 @@ var apiRequire =
 function () {
   var _ref = (0, _asyncToGenerator2.default)(
   /*#__PURE__*/
-  _regenerator.default.mark(function _callee(name, url, method, data) {
-    var duration,
-        storageTime,
-        _args = arguments;
+  _regenerator.default.mark(function _callee(obj) {
+    var storageTime;
     return _regenerator.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            duration = _args.length > 4 && _args[4] !== undefined ? _args[4] : 0;
             storageTime = new Date().getTime();
 
-            if (!(duration > 0 && window.sessionStorage.getItem(name) !== null && storageTime - window.sessionStorage.getItem(name + '-time') < duration)) {
-              _context.next = 6;
+            if (!(obj.duration > 0 && window.sessionStorage.getItem(obj.name) !== null && storageTime - window.sessionStorage.getItem(obj.name + '-time') < obj.duration)) {
+              _context.next = 5;
               break;
             }
 
-            return _context.abrupt("return", JSON.parse(window.sessionStorage.getItem(name)));
+            return _context.abrupt("return", JSON.parse(window.sessionStorage.getItem(obj.name)));
 
-          case 6:
-            console.log("require ".concat(name, " again"));
+          case 5:
+            console.log("require ".concat(obj.name, " again"));
 
-            if (!(method === undefined || method === null)) {
-              _context.next = 13;
+            if (!(obj.method === undefined || obj.method === null)) {
+              _context.next = 12;
               break;
             }
 
-            _context.next = 10;
-            return _axios.default.get(url, {
-              params: data
+            _context.next = 9;
+            return _axios.default.get(obj.url, {
+              params: obj.data
             }).then(function (res) {
               if (res.data.code === 2000) {
                 //name === 'toLogin' && ( requestTimeout = new Date(res.data.result.timeOut).getTime());
                 //console.log(name,requestTimeout);
-                duration > 0 && window.sessionStorage.setItem(name, JSON.stringify(res.data.result));
-                duration > 0 && window.sessionStorage.setItem(name + '-time', storageTime);
+                obj.duration > 0 && window.sessionStorage.setItem(obj.name, JSON.stringify(res.data.result));
+                obj.duration > 0 && window.sessionStorage.setItem(obj.name + '-time', storageTime);
                 return res.data.result;
               } else {
                 console.log(res, 'res');
@@ -2876,15 +2953,18 @@ function () {
               throw Error('fetch api fail');
             });
 
-          case 10:
+          case 9:
             return _context.abrupt("return", _context.sent);
 
-          case 13:
+          case 12:
+            console.log(obj.url, obj.data, obj.params);
             _context.next = 15;
-            return _axios.default.post(url, data).then(function (res) {
+            return _axios.default.post(obj.url, obj.data, {
+              params: obj.params
+            }).then(function (res) {
               if (res.data.code === 2000) {
-                duration > 0 && window.sessionStorage.setItem(name, JSON.stringify(res.data.result));
-                duration > 0 && window.sessionStorage.setItem(name + '-time', storageTime);
+                obj.duration > 0 && window.sessionStorage.setItem(obj.name, JSON.stringify(res.data.result));
+                obj.duration > 0 && window.sessionStorage.setItem(obj.name + '-time', storageTime);
                 return res.data.result;
               } else {
                 alert(res.data.msg);
@@ -2928,7 +3008,7 @@ function () {
     }, _callee, this);
   }));
 
-  return function apiRequire(_x, _x2, _x3, _x4) {
+  return function apiRequire(_x) {
     return _ref.apply(this, arguments);
   };
 }(); //product
@@ -2945,7 +3025,11 @@ function () {
         switch (_context2.prev = _context2.next) {
           case 0:
             _context2.next = 2;
-            return apiRequire('getAllProductList', '/api/Product/getproductList', null, data);
+            return apiRequire({
+              name: 'getAllProductList',
+              url: '/api/Product/getproductList',
+              data: data
+            });
 
           case 2:
             return _context2.abrupt("return", _context2.sent);
@@ -2958,7 +3042,7 @@ function () {
     }, _callee2, this);
   }));
 
-  return function getAllProductList(_x5) {
+  return function getAllProductList(_x2) {
     return _ref2.apply(this, arguments);
   };
 }();
@@ -2976,7 +3060,10 @@ function () {
         switch (_context3.prev = _context3.next) {
           case 0:
             _context3.next = 2;
-            return apiRequire('getProductClassify', '/api/Product/GetGroup', null);
+            return apiRequire({
+              name: 'getProductClassify',
+              url: '/api/Product/GetGroup'
+            });
 
           case 2:
             return _context3.abrupt("return", _context3.sent);
@@ -3007,7 +3094,11 @@ function () {
         switch (_context4.prev = _context4.next) {
           case 0:
             _context4.next = 2;
-            return apiRequire('getProductDetail', '/api/Product/GetProductDetail', null, data);
+            return apiRequire({
+              name: 'getProductDetail',
+              url: '/api/Product/GetProductDetail',
+              data: data
+            });
 
           case 2:
             return _context4.abrupt("return", _context4.sent);
@@ -3020,7 +3111,7 @@ function () {
     }, _callee4, this);
   }));
 
-  return function getProductDetail(_x6) {
+  return function getProductDetail(_x3) {
     return _ref4.apply(this, arguments);
   };
 }();
@@ -3038,7 +3129,11 @@ function () {
         switch (_context5.prev = _context5.next) {
           case 0:
             _context5.next = 2;
-            return apiRequire('getTags', '/api/Product/getTags', null, null, period);
+            return apiRequire({
+              name: 'getTags',
+              url: '/api/Product/getTags',
+              duration: period
+            });
 
           case 2:
             return _context5.abrupt("return", _context5.sent);
@@ -3070,7 +3165,11 @@ function () {
         switch (_context6.prev = _context6.next) {
           case 0:
             _context6.next = 2;
-            return apiRequire('getCarousel', '/api/Home/GetCarousel', null, null, period);
+            return apiRequire({
+              name: 'getCarousel',
+              url: '/api/Home/GetCarousel',
+              duration: period
+            });
 
           case 2:
             return _context6.abrupt("return", _context6.sent);
@@ -3101,7 +3200,11 @@ function () {
         switch (_context7.prev = _context7.next) {
           case 0:
             _context7.next = 2;
-            return apiRequire('getProductionList', '/api/Home/GetHomeProduct', null, null, period);
+            return apiRequire({
+              name: 'getProductionList',
+              url: '/api/Home/GetHomeProduct',
+              duration: period
+            });
 
           case 2:
             return _context7.abrupt("return", _context7.sent);
@@ -3132,7 +3235,11 @@ function () {
         switch (_context8.prev = _context8.next) {
           case 0:
             _context8.next = 2;
-            return apiRequire('getHomeGroup', '/api/Home/GetHomeGroup', null, null, period);
+            return apiRequire({
+              name: 'getHomeGroup',
+              url: '/api/Home/GetHomeGroup',
+              duration: period
+            });
 
           case 2:
             return _context8.abrupt("return", _context8.sent);
@@ -3164,7 +3271,13 @@ function () {
         switch (_context9.prev = _context9.next) {
           case 0:
             _context9.next = 2;
-            return apiRequire('account', '/api/account/login', 'post', account, period);
+            return apiRequire({
+              name: 'account',
+              url: '/api/account/login',
+              method: 'post',
+              data: account,
+              duration: period
+            });
 
           case 2:
             return _context9.abrupt("return", _context9.sent);
@@ -3177,7 +3290,7 @@ function () {
     }, _callee9, this);
   }));
 
-  return function toLogin(_x7) {
+  return function toLogin(_x4) {
     return _ref9.apply(this, arguments);
   };
 }();
@@ -3195,7 +3308,11 @@ function () {
         switch (_context10.prev = _context10.next) {
           case 0:
             _context10.next = 2;
-            return apiRequire('logout', '/api/account/Logout', 'post', null);
+            return apiRequire({
+              name: 'logout',
+              url: '/api/account/Logout',
+              methods: 'post'
+            });
 
           case 2:
             return _context10.abrupt("return", _context10.sent);
@@ -3226,7 +3343,10 @@ function () {
         switch (_context11.prev = _context11.next) {
           case 0:
             _context11.next = 2;
-            return apiRequire('getAddress', '/api/account/GetAddressList', null, null);
+            return apiRequire({
+              name: 'getAddress',
+              url: '/api/account/GetAddressList'
+            });
 
           case 2:
             return _context11.abrupt("return", _context11.sent);
@@ -3257,7 +3377,12 @@ function () {
         switch (_context12.prev = _context12.next) {
           case 0:
             _context12.next = 2;
-            return apiRequire('setDefaultAddress', '/api/account/SetDefaultAddress', 'post', data);
+            return apiRequire({
+              name: 'setDefaultAddress',
+              url: '/api/account/SetDefaultAddress',
+              method: 'post',
+              data: data
+            });
 
           case 2:
             return _context12.abrupt("return", _context12.sent);
@@ -3270,7 +3395,7 @@ function () {
     }, _callee12, this);
   }));
 
-  return function setDefaultAddress(_x8) {
+  return function setDefaultAddress(_x5) {
     return _ref12.apply(this, arguments);
   };
 }();
@@ -3288,7 +3413,12 @@ function () {
         switch (_context13.prev = _context13.next) {
           case 0:
             _context13.next = 2;
-            return apiRequire('addressOperate', '/api/account/AddressOperate', 'post', data);
+            return apiRequire({
+              name: 'addressOperate',
+              url: '/api/account/AddressOperate',
+              method: 'post',
+              data: data
+            });
 
           case 2:
             return _context13.abrupt("return", _context13.sent);
@@ -3301,7 +3431,7 @@ function () {
     }, _callee13, this);
   }));
 
-  return function addressOperate(_x9) {
+  return function addressOperate(_x6) {
     return _ref13.apply(this, arguments);
   };
 }();
@@ -3319,7 +3449,11 @@ function () {
         switch (_context14.prev = _context14.next) {
           case 0:
             _context14.next = 2;
-            return apiRequire('addressOperate', '/api/account/GetUserInfo', null, data);
+            return apiRequire({
+              name: 'addressOperate',
+              url: '/api/account/GetUserInfo',
+              data: data
+            });
 
           case 2:
             return _context14.abrupt("return", _context14.sent);
@@ -3332,7 +3466,7 @@ function () {
     }, _callee14, this);
   }));
 
-  return function getUserInfo(_x10) {
+  return function getUserInfo(_x7) {
     return _ref14.apply(this, arguments);
   };
 }();
@@ -3350,7 +3484,12 @@ function () {
         switch (_context15.prev = _context15.next) {
           case 0:
             _context15.next = 2;
-            return apiRequire('updateUserInfo', '/api/account/UpdateUserInfo', 'post', data);
+            return apiRequire({
+              name: 'updateUserInfo',
+              url: '/api/account/UpdateUserInfo',
+              method: 'post',
+              data: data
+            });
 
           case 2:
             return _context15.abrupt("return", _context15.sent);
@@ -3363,7 +3502,7 @@ function () {
     }, _callee15, this);
   }));
 
-  return function updateUserInfo(_x11) {
+  return function updateUserInfo(_x8) {
     return _ref15.apply(this, arguments);
   };
 }();
@@ -3381,7 +3520,12 @@ function () {
         switch (_context16.prev = _context16.next) {
           case 0:
             _context16.next = 2;
-            return apiRequire('updatePassword', '/api/account/UpdatePassword', 'post', data);
+            return apiRequire({
+              name: 'updatePassword',
+              url: '/api/account/UpdatePassword',
+              method: 'post',
+              data: data
+            });
 
           case 2:
             return _context16.abrupt("return", _context16.sent);
@@ -3394,7 +3538,7 @@ function () {
     }, _callee16, this);
   }));
 
-  return function updatePassword(_x12) {
+  return function updatePassword(_x9) {
     return _ref16.apply(this, arguments);
   };
 }();
@@ -3412,7 +3556,12 @@ function () {
         switch (_context17.prev = _context17.next) {
           case 0:
             _context17.next = 2;
-            return apiRequire('updateIcon', '/api/account/UpdateIcon', 'post', data);
+            return apiRequire({
+              name: 'updateIcon',
+              url: '/api/account/UpdateIcon',
+              method: 'post',
+              data: data
+            });
 
           case 2:
             return _context17.abrupt("return", _context17.sent);
@@ -3425,7 +3574,7 @@ function () {
     }, _callee17, this);
   }));
 
-  return function updateIcon(_x13) {
+  return function updateIcon(_x10) {
     return _ref17.apply(this, arguments);
   };
 }();
@@ -3443,7 +3592,12 @@ function () {
         switch (_context18.prev = _context18.next) {
           case 0:
             _context18.next = 2;
-            return apiRequire('sendMessage', '/api/account/SendMessage', 'post', data);
+            return apiRequire({
+              name: 'sendMessage',
+              url: '/api/account/SendMessage',
+              method: 'post',
+              data: data
+            });
 
           case 2:
             return _context18.abrupt("return", _context18.sent);
@@ -3456,7 +3610,7 @@ function () {
     }, _callee18, this);
   }));
 
-  return function sendMessage(_x14) {
+  return function sendMessage(_x11) {
     return _ref18.apply(this, arguments);
   };
 }();
@@ -3474,7 +3628,12 @@ function () {
         switch (_context19.prev = _context19.next) {
           case 0:
             _context19.next = 2;
-            return apiRequire('bindingInfo', '/api/account/BindingInfo', 'post', data);
+            return apiRequire({
+              name: 'bindingInfo',
+              url: '/api/account/BindingInfo',
+              method: 'post',
+              data: data
+            });
 
           case 2:
             return _context19.abrupt("return", _context19.sent);
@@ -3487,7 +3646,7 @@ function () {
     }, _callee19, this);
   }));
 
-  return function bindingInfo(_x15) {
+  return function bindingInfo(_x12) {
     return _ref19.apply(this, arguments);
   };
 }();
@@ -3505,7 +3664,12 @@ function () {
         switch (_context20.prev = _context20.next) {
           case 0:
             _context20.next = 2;
-            return apiRequire('register', '/api/account/Register', 'post', data);
+            return apiRequire({
+              name: 'register',
+              url: '/api/account/Register',
+              method: 'post',
+              data: data
+            });
 
           case 2:
             return _context20.abrupt("return", _context20.sent);
@@ -3518,7 +3682,7 @@ function () {
     }, _callee20, this);
   }));
 
-  return function register(_x16) {
+  return function register(_x13) {
     return _ref20.apply(this, arguments);
   };
 }();
@@ -3536,7 +3700,12 @@ function () {
         switch (_context21.prev = _context21.next) {
           case 0:
             _context21.next = 2;
-            return apiRequire('resetPassword', '/api/account/ResetPassword', 'post', data);
+            return apiRequire({
+              name: 'resetPassword',
+              url: '/api/account/ResetPassword',
+              method: 'post',
+              data: data
+            });
 
           case 2:
             return _context21.abrupt("return", _context21.sent);
@@ -3549,7 +3718,7 @@ function () {
     }, _callee21, this);
   }));
 
-  return function resetPassword(_x17) {
+  return function resetPassword(_x14) {
     return _ref21.apply(this, arguments);
   };
 }(); //order
@@ -3568,7 +3737,11 @@ function () {
         switch (_context22.prev = _context22.next) {
           case 0:
             _context22.next = 2;
-            return apiRequire('getShoppingCarInfo', '/api/order/GetShoppingCart', null, data);
+            return apiRequire({
+              name: 'getShoppingCarInfo',
+              url: '/api/order/GetShoppingCart',
+              data: data
+            });
 
           case 2:
             return _context22.abrupt("return", _context22.sent);
@@ -3581,7 +3754,7 @@ function () {
     }, _callee22, this);
   }));
 
-  return function getShoppingCarInfo(_x18) {
+  return function getShoppingCarInfo(_x15) {
     return _ref22.apply(this, arguments);
   };
 }();
@@ -3599,7 +3772,12 @@ function () {
         switch (_context23.prev = _context23.next) {
           case 0:
             _context23.next = 2;
-            return apiRequire('addShoppingCart', '/api/order/AddShoppingCart', 'post', data);
+            return apiRequire({
+              name: 'addShoppingCart',
+              url: '/api/order/AddShoppingCart',
+              method: 'post',
+              data: data
+            });
 
           case 2:
             return _context23.abrupt("return", _context23.sent);
@@ -3612,7 +3790,7 @@ function () {
     }, _callee23, this);
   }));
 
-  return function addShoppingCart(_x19) {
+  return function addShoppingCart(_x16) {
     return _ref23.apply(this, arguments);
   };
 }();
@@ -3630,7 +3808,12 @@ function () {
         switch (_context24.prev = _context24.next) {
           case 0:
             _context24.next = 2;
-            return apiRequire('deleteShoppingCart', '/api/order/DeleteShoppingCart', 'post', data);
+            return apiRequire({
+              name: 'deleteShoppingCart',
+              url: '/api/order/DeleteShoppingCart',
+              method: 'post',
+              data: data
+            });
 
           case 2:
             return _context24.abrupt("return", _context24.sent);
@@ -3643,7 +3826,7 @@ function () {
     }, _callee24, this);
   }));
 
-  return function deleteShoppingCart(_x20) {
+  return function deleteShoppingCart(_x17) {
     return _ref24.apply(this, arguments);
   };
 }();
@@ -3661,7 +3844,11 @@ function () {
         switch (_context25.prev = _context25.next) {
           case 0:
             _context25.next = 2;
-            return apiRequire('getOrder', '/api/order/GetOrder', null, data);
+            return apiRequire({
+              name: 'getOrder',
+              url: '/api/order/GetOrder',
+              data: data
+            });
 
           case 2:
             return _context25.abrupt("return", _context25.sent);
@@ -3674,7 +3861,7 @@ function () {
     }, _callee25, this);
   }));
 
-  return function getOrder(_x21) {
+  return function getOrder(_x18) {
     return _ref25.apply(this, arguments);
   };
 }();
@@ -3692,7 +3879,12 @@ function () {
         switch (_context26.prev = _context26.next) {
           case 0:
             _context26.next = 2;
-            return apiRequire('addOrder', '/api/order/AddOrder', 'post', data);
+            return apiRequire({
+              name: 'addOrder',
+              url: '/api/order/AddOrder',
+              method: 'post',
+              data: data
+            });
 
           case 2:
             return _context26.abrupt("return", _context26.sent);
@@ -3705,7 +3897,7 @@ function () {
     }, _callee26, this);
   }));
 
-  return function addOrder(_x22) {
+  return function addOrder(_x19) {
     return _ref26.apply(this, arguments);
   };
 }();
@@ -3723,7 +3915,11 @@ function () {
         switch (_context27.prev = _context27.next) {
           case 0:
             _context27.next = 2;
-            return apiRequire('getOrderStatus', '/api/order/GetOrderStatus', null, data);
+            return apiRequire({
+              name: 'getOrderStatus',
+              url: '/api/order/GetOrderStatus',
+              data: data
+            });
 
           case 2:
             return _context27.abrupt("return", _context27.sent);
@@ -3736,7 +3932,7 @@ function () {
     }, _callee27, this);
   }));
 
-  return function getOrderStatus(_x23) {
+  return function getOrderStatus(_x20) {
     return _ref27.apply(this, arguments);
   };
 }();
@@ -3754,7 +3950,12 @@ function () {
         switch (_context28.prev = _context28.next) {
           case 0:
             _context28.next = 2;
-            return apiRequire('submitOrder', '/api/order/SubmitOrder', 'post', data);
+            return apiRequire({
+              name: 'submitOrder',
+              url: '/api/order/SubmitOrder',
+              method: 'post',
+              data: data
+            });
 
           case 2:
             return _context28.abrupt("return", _context28.sent);
@@ -3767,7 +3968,7 @@ function () {
     }, _callee28, this);
   }));
 
-  return function submitOrder(_x24) {
+  return function submitOrder(_x21) {
     return _ref28.apply(this, arguments);
   };
 }();
@@ -3785,7 +3986,11 @@ function () {
         switch (_context29.prev = _context29.next) {
           case 0:
             _context29.next = 2;
-            return apiRequire('checkOrder', '/api/order/CheckOrderPaid', null, data);
+            return apiRequire({
+              name: 'checkOrder',
+              url: '/api/order/CheckOrderPaid',
+              data: data
+            });
 
           case 2:
             return _context29.abrupt("return", _context29.sent);
@@ -3798,7 +4003,7 @@ function () {
     }, _callee29, this);
   }));
 
-  return function checkOrder(_x25) {
+  return function checkOrder(_x22) {
     return _ref29.apply(this, arguments);
   };
 }(); //pay
@@ -3817,7 +4022,11 @@ function () {
         switch (_context30.prev = _context30.next) {
           case 0:
             _context30.next = 2;
-            return apiRequire('payOrder', '/api/pay/PayOrder', null, data);
+            return apiRequire({
+              name: 'payOrder',
+              url: '/api/pay/PayOrder',
+              data: data
+            });
 
           case 2:
             return _context30.abrupt("return", _context30.sent);
@@ -3830,7 +4039,7 @@ function () {
     }, _callee30, this);
   }));
 
-  return function payOrder(_x26) {
+  return function payOrder(_x23) {
     return _ref30.apply(this, arguments);
   };
 }(); //config
@@ -3849,7 +4058,11 @@ function () {
         switch (_context31.prev = _context31.next) {
           case 0:
             _context31.next = 2;
-            return apiRequire('addressConfig', '/api/config/GetAddressConfig', null, null, 600000);
+            return apiRequire({
+              name: 'addressConfig',
+              url: '/api/config/GetAddressConfig',
+              duration: 600000
+            });
 
           case 2:
             return _context31.abrupt("return", _context31.sent);
@@ -3881,7 +4094,11 @@ function () {
         switch (_context32.prev = _context32.next) {
           case 0:
             _context32.next = 2;
-            return apiRequire('checkOrder', '/api/editor/GetEditorOption', null, data);
+            return apiRequire({
+              name: 'checkOrder',
+              url: '/api/editor/GetEditorOption',
+              data: data
+            });
 
           case 2:
             return _context32.abrupt("return", _context32.sent);
@@ -3894,14 +4111,51 @@ function () {
     }, _callee32, this);
   }));
 
-  return function getEditorOption(_x27) {
+  return function getEditorOption(_x24) {
     return _ref32.apply(this, arguments);
+  };
+}();
+
+exports.getEditorOption = getEditorOption;
+
+var uploadEditorImage =
+/*#__PURE__*/
+function () {
+  var _ref33 = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee33(data, params) {
+    return _regenerator.default.wrap(function _callee33$(_context33) {
+      while (1) {
+        switch (_context33.prev = _context33.next) {
+          case 0:
+            _context33.next = 2;
+            return apiRequire({
+              name: 'uploadEditorImage',
+              url: '/api/editor/uploadEditorImage',
+              method: 'post',
+              data: data,
+              params: params
+            });
+
+          case 2:
+            return _context33.abrupt("return", _context33.sent);
+
+          case 3:
+          case "end":
+            return _context33.stop();
+        }
+      }
+    }, _callee33, this);
+  }));
+
+  return function uploadEditorImage(_x25, _x26) {
+    return _ref33.apply(this, arguments);
   };
 }(); ///api/order/AddShoppingCart
 //getProductClassify,api/Product/GetProductDetail?id=
 
 
-exports.getEditorOption = getEditorOption;
+exports.uploadEditorImage = uploadEditorImage;
 },{"@babel/runtime/helpers/asyncToGenerator":1,"@babel/runtime/helpers/interopRequireDefault":4,"@babel/runtime/regenerator":6,"axios":7}],38:[function(require,module,exports){
 (function (process){
 "use strict";
