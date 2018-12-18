@@ -222,7 +222,7 @@
     {{ else if data.data.length > 0}}
     <div class="shopping-list">
         {{ each data.data item i }}
-        <a href={{ "./product.html?productId=" + item.productId }} target="_blank" class="shopping-item">
+        <a href={{ "./product.html?shoppingCartId=" + item.id }} target="_blank" class="shopping-item">
             <div class="item-pic">
                 <img src={{ item.introductImage }} alt="">
             </div>

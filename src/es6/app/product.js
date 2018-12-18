@@ -11,12 +11,15 @@ let scrollX = (direct, w, parent) => {
 };
 
 let editorInfo = [], productDetail = [], box = {} ;
+const productScaleWidth = 200;
 
 window.onload = () => {
 
-  let id = getParameter('productId');
+  let id = getParameter('productId') ;
+  let shoppingCartId = getParameter('shoppingCartId');
+  console.log(getParameter('productId'), getParameter('shoppingCartId'));
 
-  if (id === null) {
+  if (id === null && shoppingCartId === null) {
     return alert('没有该产品');
   }
 
@@ -25,7 +28,7 @@ window.onload = () => {
 
   //取得產品信息
 
-  getProductDetail({id: id})
+  getProductDetail({id: id, shoppingCartId: shoppingCartId})
     .then(res => {
       console.log(res);
 
@@ -33,7 +36,7 @@ window.onload = () => {
 
       res = Object.assign({}, res, {price: res.basePrice || 0});
 
-      getEditorOption({productId: id})
+      getEditorOption({productId: res.productType==2?0:res.id})
         .then(eo => {
           box = JSON.parse(JSON.stringify(eo));
           delete box.options;
@@ -196,13 +199,23 @@ let changeBox = (box) => {
             height: ${box.materialBoxHeight - box.materialWidth * 2 - box.pageWidth * 2}px;
             margin: ${box.pageWidth}px`;
 
-  document.querySelector('.trim-box img').style.cssText = `width: ${box.materialBoxWidth - box.materialWidth * 2 - box.pageWidth * 2}px;
-            height: ${box.materialBoxHeight - box.materialWidth * 2 - box.pageWidth * 2}px;`;
+  let img = document.querySelector('.trim-box img');
+  img.style.width = `${box.materialBoxWidth - box.materialWidth * 2 - box.pageWidth * 2}px`;
+  img.style.height = `${box.materialBoxHeight - box.materialWidth * 2 - box.pageWidth * 2}px`;
 
-  document.querySelector('.material-box').style.cssText = `width: ${box.materialBoxWidth}px;
+  let materialbox  = document.querySelector('.material-box'),
+      scaleX = materialbox.getAttribute('data-op-scale-x'),
+      scaleY = materialbox.getAttribute('data-op-scale-y'),
+      topPos = materialbox.getAttribute('data-op-top');
+
+  console.log(scaleX, scaleY, '---------------');
+
+  materialbox.style.cssText = `width: ${box.materialBoxWidth}px;
             height: ${box.materialBoxHeight}px;
             background:url(${ box.materialBoxBg}) no-repeat;
             background-size:cover;
+            transform: scale(${scaleX}, ${scaleY});
+            margin-top: ${topPos}px;
             display: block;`;
 };
 
@@ -221,8 +234,10 @@ window.toAddShoppingCart = () => {
   console.log(selectStr);
 
   addShoppingCart({
+    editorType: productDetail.editorType,
+    editorOption: productDetail.editorOption,
     productType: productDetail.productType,
-    productId: getParameter('productId'),
+    productId: productDetail.id,
     number: quantity.value,
     optionValueIds: selectStr.substring(0, selectStr.length - 1)
   })
@@ -328,10 +343,10 @@ window.selectShape = (ev) => {
         item.values = item.values.map((v, _index) => {
           v.selected = false;
           console.log(item.id, pid);
-          if (item.id === pid) {
+          if (item.id === pid && v.id === id) {
             v.selected = true;
           } else {
-            if (_index === 0) {
+            if (item.type !== 0 && _index === 0) {
               v.selected = true;
               price -= -Number(v.price);
               if (item.type === 4 || item.type === 5) {
@@ -374,9 +389,101 @@ window.toUploadImage = () => {
 };
 
 window.uploadImage = () => {
-  uploadEditorImage(new FormData(document.querySelector('#upload-form')), {id: 0})
+  uploadEditorImage(new FormData(document.querySelector('#upload-form')), {productId: productDetail.id || 0})
     .then(res => {
-      productDetail = Object.assign({}, productDetail, res);
-      document.querySelector('.product-picture').setAttribute('src', res.productImages[0].imageUrl);
+      if (productDetail.productImages.length > 0) {
+        productDetail = Object.assign({}, productDetail, res);
+        console.log(res.productImages[0].imageUrl);
+        document.querySelector('#product-img').setAttribute('src', res.productImages[0].imageUrl);
+      } else {
+        document.querySelector('.product-picture').setAttribute('src', res.productImages[0].imageUrl);
+      }
     });
+};
+
+let stopScale = null;
+
+let scaleImg = (ele, plus, rotateDeg) => {
+  let num = null, eleValue = null;
+  num = +ele.getAttribute('data-op-scale');
+  eleValue = num + plus * 0.01;
+  eleValue = eleValue >= 1 ? eleValue : 1;
+  ele.innerHTML = parseInt(eleValue * 100, 10) + '%';
+  ele.setAttribute('data-op-scale', eleValue);
+  document.querySelector('#product-img').style.transform = `scale(${eleValue}) rotate(${rotateDeg}deg)`;
+  let obj = Object.assign({}, productDetail.editorOption, {
+    rotate: rotateDeg,
+    scale: parseInt(eleValue * 100, 10)
+  });
+  productDetail = Object.assign({}, productDetail, {editorOption: obj});
+  console.log(productDetail);
+};
+
+window.scaleProductImage = (plus) => {
+  let scale = document.querySelector('#scale-number'),
+    rotateDeg = document.querySelector('#rotate-number').getAttribute('data-op-rotate');
+  scaleImg(scale, plus, rotateDeg);
+  stopScale = setInterval(() => {
+    scaleImg(scale, plus, rotateDeg);
+  }, 200);
+
+};
+
+window.stopScaleProductImage = () => {
+  clearInterval(stopScale);
+};
+
+window.rotateProductImage = (ev) => {
+  let target = ev.target,
+      deg = (target.getAttribute('data-op-rotate') - 90),
+      scale = document.querySelector('#scale-number'),
+      num = +scale.getAttribute('data-op-scale');
+  target.setAttribute('data-op-rotate', deg);
+  let img = document.querySelector('#product-img');
+  /*if (deg / -90 % 2 === 1) {
+    let imgScale = img.offsetHeight / img.offsetWidth;
+    if (imgScale > num) {
+      num = imgScale;
+      scale.setAttribute('data-op-scale', num);
+      scale.innerHTML = parseInt(num * 100, 10) + '%';
+    }
+    img.style.transform = `rotate(${deg}deg) scale(${num })`;
+  } else {
+    img.style.transform = `rotate(${deg}deg) scale(${num})`;
+  }*/
+  img.style.transform = `rotate(${deg}deg) scale(${num})`;
+  let obj = Object.assign({}, productDetail.editorOption, {
+    rotate: Number(deg),
+    scale: parseInt(num * 100, 10)
+  });
+  productDetail = Object.assign({}, productDetail, {editorOption: obj});
+  console.log(productDetail);
+};
+
+window.changeShowType = (ev, type) => {
+  let target = ev.target;
+  if (target.className !== 'active-type') {
+    document.querySelector('.active-type').className = '';
+    target.className = 'active-type';
+  }
+  let materialBox = document.querySelector('.material-box');
+  if (type === 1) {
+    materialBox.style.transform = `scale(${productScaleWidth / box.materialBoxWidth}, ${productScaleWidth / box.materialBoxHeight})`;
+    materialBox.style.marginTop = `-100px`;
+    materialBox.setAttribute('data-op-scale-x', productScaleWidth / box.materialBoxWidth);
+    materialBox.setAttribute('data-op-scale-y', productScaleWidth / box.materialBoxHeight);
+    materialBox.setAttribute('data-op-top', -100);
+    materialBox.querySelector('.operation-box').style.display = 'none';
+    document.querySelector('.scene-container').style.transform = 'translate(0, 0px)';
+  } else {
+    materialBox.style.transform = 'scale(1)';
+    materialBox.style.marginTop = 0;
+    materialBox.setAttribute('data-op-scale-x', 1);
+    materialBox.setAttribute('data-op-scale-y', 1);
+    materialBox.setAttribute('data-op-top', 0);
+    materialBox.querySelector('.operation-box').style.display = 'flex';
+    document.querySelector('.scene-container').style.transform = 'translate(0, 80px)';
+
+
+  }
 };

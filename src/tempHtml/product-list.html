@@ -23,12 +23,12 @@
     <div class="product-container">
         {{each data value i}}
         <div class="production-item">
-            <div class="product-img">
-                <a href={{"./product.html?productId="+value.id}} target="_blank">
+            <a href={{"./product.html?productId="+value.id}} target="_blank">
+                <div class="product-img">
                     <img src="" alt="" data-origin-src={{value.introductImage}} data-is-load="false"
                          class="lazy-load-img">
-                </a>
-            </div>
+                </div>
+            </a>
             <div class="product-content">
                 <p class="product-name">
                     <span>{{ value.name }}</span>

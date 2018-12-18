@@ -221,7 +221,7 @@
     {{ else if data.data.length > 0}}
     <div class="shopping-list">
         {{ each data.data item i }}
-        <a href={{ "./product.html?productId=" + item.productId }} target="_blank" class="shopping-item">
+        <a href={{ "./product.html?shoppingCartId=" + item.id }} target="_blank" class="shopping-item">
             <div class="item-pic">
                 <img src={{ item.introductImage }} alt="">
             </div>
@@ -321,12 +321,12 @@
     <div class="product-container">
         {{each data value i}}
         <div class="production-item">
-            <div class="product-img">
-                <a href={{"./product.html?productId="+value.id}} target="_blank">
+            <a href={{"./product.html?productId="+value.id}} target="_blank">
+                <div class="product-img">
                     <img src="" alt="" data-origin-src={{value.introductImage}} data-is-load="false"
                          class="lazy-load-img">
-                </a>
-            </div>
+                </div>
+            </a>
             <div class="product-content">
                 <p class="product-name">
                     <span>{{ value.name }}</span>
