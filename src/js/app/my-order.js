@@ -2570,7 +2570,7 @@ var toGetOrder = function toGetOrder(index, status) {
       }
 
       var html = (0, _template.default)('order-content', {
-        data: res.orderInfos
+        data: res.data
       });
       document.querySelector('.order-content').innerHTML = html;
     });
@@ -2597,7 +2597,7 @@ var toGetOrder = function toGetOrder(index, status) {
       }
 
       var html = (0, _template.default)('order-content', {
-        data: res.orderInfos
+        data: res.data
       });
       document.querySelector('.order-content').innerHTML = html;
     });
@@ -3063,7 +3063,7 @@ function () {
             return apiRequire({
               name: 'logout',
               url: '/api/account/Logout',
-              methods: 'post'
+              method: 'post'
             });
 
           case 2:

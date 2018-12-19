@@ -2499,18 +2499,18 @@ window.onload = function () {
     }).then(function (res) {
       console.log(res);
 
-      if (res.orderInfos[0].status === 1) {
+      if (res.data[0].status === 1) {
         window.location.href = './to-pay.html?orderId=' + orderId;
-      } else if (res.orderInfos[0].status > 1) {
+      } else if (res.data[0].status > 1) {
         window.location.href = './my-order.html?orderId=' + orderId;
       }
 
       var html = (0, _template.default)('shopping-list-page', {
-        data: res.orderInfos
+        data: res.data
       });
       document.querySelector('.shopping-list-page').innerHTML = html;
       var count = (0, _template.default)('order-pay-info', {
-        data: res.orderInfos[0]
+        data: res.data[0]
       });
       document.querySelector('.order-pay-info').innerHTML = count;
     });
@@ -3018,7 +3018,7 @@ function () {
             return apiRequire({
               name: 'logout',
               url: '/api/account/Logout',
-              methods: 'post'
+              method: 'post'
             });
 
           case 2:

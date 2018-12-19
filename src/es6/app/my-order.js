@@ -69,7 +69,7 @@ let toGetOrder = (index,status) =>{
           toPage:toPage
         })
       }
-      let html = template('order-content',{data:res.orderInfos});
+      let html = template('order-content',{data:res.data});
       document.querySelector('.order-content').innerHTML = html;
     })
   } else {
@@ -91,8 +91,7 @@ let toGetOrder = (index,status) =>{
         })
       }
 
-
-      let html = template('order-content',{data:res.orderInfos});
+      let html = template('order-content',{data:res.data});
       document.querySelector('.order-content').innerHTML = html;
     })
   }

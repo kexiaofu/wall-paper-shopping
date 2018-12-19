@@ -119,7 +119,7 @@ export const getHomeGroup =async () => await apiRequire({name: 'getHomeGroup', u
 //account
 export const toLogin = async (account) => await apiRequire({name: 'account', url: '/api/account/login', method: 'post', data: account, duration: period});
 
-export const logout = async () => await apiRequire({name: 'logout', url: '/api/account/Logout', methods: 'post'} );
+export const logout = async () => await apiRequire({name: 'logout', url: '/api/account/Logout', method: 'post'} );
 
 export const getAddress = async () => await apiRequire({name: 'getAddress', url: '/api/account/GetAddressList'} );
 

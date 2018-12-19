@@ -4,7 +4,7 @@
 }
 .product-container{
   position: relative;
-  width: 1000px;
+  width: 1020px;
   margin: 0 auto;
   border:1px solid #eee;
   display: flex;
@@ -13,20 +13,21 @@
   background: #fff;
   visibility: hidden;
   .product-box{
-    width: 600px;
+    width: 700px;
     height: 550px;
     overflow: hidden;
      //background: #ddd;
     position: relative;
-    .material-bon-content{
+    .material-box-content{
       width: 550px;
       height: 550px;
+      margin: 0 90px;
     }
     .material-box{
       display: none;
-      margin: 0 auto;
       box-shadow: 5px 5px 5px #999;
-      transition: transform .3s ease, margin-top .2s ease;
+      transition: transform .2s ease;
+      margin: 0 auto;
     }
     .page-box{
       float:left;
@@ -46,22 +47,28 @@
       }
     }
     .scene-container{
-      width: 100%;
-      height: 100px;
+      width: 80px;
+      height: 100%;
+      top: 0;
+      left: 0;
       background: #ececec;
       position: absolute;
-      transform: translate(0, 80px);
+      transform: translate(-100px, 0);
+      transition: transform .2s ease .1s;
+      background: rgba(255,255,255, .5);
       img{
-        width: 100px;
-        height: 100px;
-        margin:0 5px 0 0;
+        width: 80px;
+        height: 80px;
         cursor: pointer;
+      }
+      img:hover{
+        box-shadow: 0 0 10px #333;
       }
     }
   }
   .product-info{
-    width: 380px;
-    height: 550px;
+    width: 320px;
+    height: 600px;
     font-size:15px;
     color: #666;
     .product-name{
@@ -99,6 +106,7 @@
       }
       .props-value{
         padding: 0 0 10px 0;
+        margin:5px 0 0 0;
         .span-box{
           display: inline-block;
           border: 1px solid #ddd;
@@ -232,6 +240,7 @@
     display: block;
     width: 20px;
     height: 20px;
+    line-height: 20px;
     background: #ececec;
     text-align: center;
     cursor: pointer;
@@ -264,7 +273,7 @@
 
 
 .product-detail{
-  width: 1000px;
+  width: 1045px;
   margin: 10px auto;
   border:1px solid #ececec;
   display: flex;
@@ -273,7 +282,7 @@
   background: #fff;
   visibility: hidden;
   img{
-    width: 100%;
+    max-width: 100%;
   }
 }
 
@@ -305,6 +314,8 @@
   left: 0;
   width: 20px;
   z-index: 11;
+  top: 40%;
+  transform: translate(0, -50%);
   span{
     display: inline-block;
     margin:0 0 10px 0;

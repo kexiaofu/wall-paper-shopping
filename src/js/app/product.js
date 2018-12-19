@@ -2502,8 +2502,22 @@ var scrollX = function scrollX(direct, w, parent) {
 
 var editorInfo = [],
     productDetail = [],
-    box = {};
-var productScaleWidth = 200;
+    box = {},
+    showImgIndex = null;
+var productScaleWidth = 1;
+var showImgs = [{
+  src: '../images/1.jpg',
+  pos: -10
+}, {
+  src: '../images/2.jpeg',
+  pos: -150
+}, {
+  src: '../images/3.jpeg',
+  pos: -200
+}, {
+  src: '../images/4.jpg',
+  pos: -300
+}];
 
 window.onload = function () {
   var id = (0, _tools.getParameter)('productId');
@@ -2584,7 +2598,8 @@ window.onload = function () {
       console.log(options); // 因为要计算总价
 
       var html = (0, _template.default)('product-info', {
-        data: res
+        data: res,
+        imgs: showImgs
       }),
           detail = (0, _template.default)('product-detail', {
         data: res
@@ -2671,7 +2686,8 @@ window.onload = function () {
     }
     */
   });
-};
+}; // 更换画框
+
 
 var changeBox = function changeBox(box) {
   console.log(box);
@@ -2680,15 +2696,19 @@ var changeBox = function changeBox(box) {
   var img = document.querySelector('.trim-box img');
   img.style.width = "".concat(box.materialBoxWidth - box.materialWidth * 2 - box.pageWidth * 2, "px");
   img.style.height = "".concat(box.materialBoxHeight - box.materialWidth * 2 - box.pageWidth * 2, "px");
-  var materialbox = document.querySelector('.material-box'),
-      scaleX = materialbox.getAttribute('data-op-scale-x'),
-      scaleY = materialbox.getAttribute('data-op-scale-y'),
-      topPos = materialbox.getAttribute('data-op-top');
-  console.log(scaleX, scaleY, '---------------');
-  materialbox.style.cssText = "width: ".concat(box.materialBoxWidth, "px;\n            height: ").concat(box.materialBoxHeight, "px;\n            background:url(").concat(box.materialBoxBg, ") no-repeat;\n            background-size:cover;\n            transform: scale(").concat(scaleX, ", ").concat(scaleY, ");\n            margin-top: ").concat(topPos, "px;\n            display: block;");
+  var materialbox = document.querySelector('.material-box'); // scaleX = materialbox.getAttribute('data-op-scale-x'),
+  // scaleY = materialbox.getAttribute('data-op-scale-y'),
+  // topPos = materialbox.getAttribute('data-op-top');
+
+  materialbox.style.cssText = "width: ".concat(box.materialBoxWidth, "px;\n            height: ").concat(box.materialBoxHeight, "px;\n            background:url(").concat(box.materialBoxBg, ") no-repeat;\n            background-size:cover;\n            transform: scale(").concat(productScaleWidth, ") translate(0, ").concat(showImgIndex !== null ? showImgs[showImgIndex].pos : 0, "px);\n            display: block;");
 };
 
 window.toAddShoppingCart = function () {
+  if (productDetail.productImages.length === 0) {
+    alert('请上传图片');
+    return;
+  }
+
   var select = document.querySelectorAll('.props-item>select'),
       selectStr = '',
       quantity = document.querySelector('.product-quantity');
@@ -2752,14 +2772,11 @@ window.selectThisProp = function (ev) {
           if (type === 2) {
             box.materialBoxBg = item.largeImage;
             box.materialWidth = item.width;
-            /*let box = document.querySelector('.material-box');
-            box.style.background = `url(${item.largeImage}) no-repeat`;
-            box.style.backgroundSize = 'cover';*/
           }
 
           if (type === 3) {
             box.pageBoxBg = item.color;
-            box.pageWidth = item.width; // document.querySelector('.page-box').style.background = item.color;
+            box.pageWidth = item.width;
           }
         }
 
@@ -2873,29 +2890,33 @@ window.uploadImage = function () {
     productId: productDetail.id || 0
   }).then(function (res) {
     if (productDetail.productImages.length > 0) {
-      productDetail = Object.assign({}, productDetail, res);
-      console.log(res.productImages[0].imageUrl);
       document.querySelector('#product-img').setAttribute('src', res.productImages[0].imageUrl);
     } else {
       document.querySelector('.product-picture').setAttribute('src', res.productImages[0].imageUrl);
     }
+
+    productDetail = Object.assign({}, productDetail, res);
+    console.log(res.productImages[0].imageUrl, productDetail);
   });
 };
 
-var stopScale = null;
+var stopScale = null,
+    scalePer = 1,
+    rotateDeg = 0;
 
-var scaleImg = function scaleImg(ele, plus, rotateDeg) {
-  var num = null,
-      eleValue = null;
-  num = +ele.getAttribute('data-op-scale');
-  eleValue = num + plus * 0.01;
-  eleValue = eleValue >= 1 ? eleValue : 1;
-  ele.innerHTML = parseInt(eleValue * 100, 10) + '%';
-  ele.setAttribute('data-op-scale', eleValue);
-  document.querySelector('#product-img').style.transform = "scale(".concat(eleValue, ") rotate(").concat(rotateDeg, "deg)");
+var scaleImg = function scaleImg(ele, plus) {
+  scalePer += plus * 0.01;
+  scalePer = scalePer >= 1 ? scalePer : 1;
+  ele.innerHTML = parseInt(scalePer * 100, 10) + '%';
+  var img = document.querySelector('#product-img');
+
+  if (img !== null) {
+    img.style.transform = "scale(".concat(scalePer, ") rotate(").concat(rotateDeg, "deg)");
+  }
+
   var obj = Object.assign({}, productDetail.editorOption, {
     rotate: rotateDeg,
-    scale: parseInt(eleValue * 100, 10)
+    scale: parseInt(scalePer * 100, 10)
   });
   productDetail = Object.assign({}, productDetail, {
     editorOption: obj
@@ -2904,47 +2925,37 @@ var scaleImg = function scaleImg(ele, plus, rotateDeg) {
 };
 
 window.scaleProductImage = function (plus) {
-  var scale = document.querySelector('#scale-number'),
-      rotateDeg = document.querySelector('#rotate-number').getAttribute('data-op-rotate');
-  scaleImg(scale, plus, rotateDeg);
+  var scale = document.querySelector('#scale-number');
+  scaleImg(scale, plus);
   stopScale = setInterval(function () {
-    scaleImg(scale, plus, rotateDeg);
+    scaleImg(scale, plus);
   }, 200);
 };
 
-window.stopScaleProductImage = function () {
-  clearInterval(stopScale);
-};
+document.addEventListener('mouseup', function () {
+  if (stopScale) {
+    clearInterval(stopScale);
+  }
+}); // 图片旋转
 
 window.rotateProductImage = function (ev) {
-  var target = ev.target,
-      deg = target.getAttribute('data-op-rotate') - 90,
-      scale = document.querySelector('#scale-number'),
-      num = +scale.getAttribute('data-op-scale');
-  target.setAttribute('data-op-rotate', deg);
+  rotateDeg -= 90;
   var img = document.querySelector('#product-img');
-  /*if (deg / -90 % 2 === 1) {
-    let imgScale = img.offsetHeight / img.offsetWidth;
-    if (imgScale > num) {
-      num = imgScale;
-      scale.setAttribute('data-op-scale', num);
-      scale.innerHTML = parseInt(num * 100, 10) + '%';
-    }
-    img.style.transform = `rotate(${deg}deg) scale(${num })`;
-  } else {
-    img.style.transform = `rotate(${deg}deg) scale(${num})`;
-  }*/
 
-  img.style.transform = "rotate(".concat(deg, "deg) scale(").concat(num, ")");
+  if (img !== null) {
+    img.style.transform = "scale(".concat(scalePer, ") rotate(").concat(rotateDeg, "deg)");
+  }
+
   var obj = Object.assign({}, productDetail.editorOption, {
-    rotate: Number(deg),
-    scale: parseInt(num * 100, 10)
+    rotate: Number(rotateDeg),
+    scale: parseInt(scalePer * 100, 10)
   });
   productDetail = Object.assign({}, productDetail, {
     editorOption: obj
   });
   console.log(productDetail);
-};
+}; // 更换产品的展示方式
+
 
 window.changeShowType = function (ev, type) {
   var target = ev.target;
@@ -2957,22 +2968,36 @@ window.changeShowType = function (ev, type) {
   var materialBox = document.querySelector('.material-box');
 
   if (type === 1) {
-    materialBox.style.transform = "scale(".concat(productScaleWidth / box.materialBoxWidth, ", ").concat(productScaleWidth / box.materialBoxHeight, ")");
-    materialBox.style.marginTop = "-100px";
-    materialBox.setAttribute('data-op-scale-x', productScaleWidth / box.materialBoxWidth);
-    materialBox.setAttribute('data-op-scale-y', productScaleWidth / box.materialBoxHeight);
-    materialBox.setAttribute('data-op-top', -100);
+    productScaleWidth = .25;
+    materialBox.style.transform = "scale(".concat(productScaleWidth, ")");
     materialBox.querySelector('.operation-box').style.display = 'none';
-    document.querySelector('.scene-container').style.transform = 'translate(0, 0px)';
+    document.querySelector('.scene-container').style.transform = 'translate(0, 0)';
+    showImgIndex = 0;
+    changeScene(showImgIndex);
   } else {
-    materialBox.style.transform = 'scale(1)';
-    materialBox.style.marginTop = 0;
-    materialBox.setAttribute('data-op-scale-x', 1);
-    materialBox.setAttribute('data-op-scale-y', 1);
-    materialBox.setAttribute('data-op-top', 0);
+    showImgIndex = null;
+    productScaleWidth = 1;
+    materialBox.style.transform = "scale(".concat(productScaleWidth, ")");
     materialBox.querySelector('.operation-box').style.display = 'flex';
-    document.querySelector('.scene-container').style.transform = 'translate(0, 80px)';
+    document.querySelector('.scene-container').style.transform = 'translate(-100px, 0px)';
+    document.querySelector('.material-box-content').style.background = "";
   }
+}; // 更换场景
+
+
+window.changeScene = function (index) {
+  showImgIndex = index;
+  document.querySelector('.material-box-content').style.background = "url(".concat(showImgs[index].src, ")");
+  document.querySelector('.material-box').style.transform = "scale(".concat(productScaleWidth, ") translate(").concat(box.materialBoxWidth * productScaleWidth / 2, "px, ").concat(showImgs[index].pos, "px)");
+}; // 更改商品数量
+
+
+window.changeQuantity = function (plus) {
+  var input = document.querySelector('.product-quantity'),
+      value = input.value;
+  value -= -plus;
+  input.value = value;
+  input.setAttribute('value', value);
 };
 },{"../common/api":37,"../common/template":38,"../common/toast":39,"../common/tools":40,"@babel/runtime/helpers/interopRequireDefault":4}],37:[function(require,module,exports){
 "use strict";
@@ -3422,7 +3447,7 @@ function () {
             return apiRequire({
               name: 'logout',
               url: '/api/account/Logout',
-              methods: 'post'
+              method: 'post'
             });
 
           case 2:

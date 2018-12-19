@@ -52,12 +52,9 @@
                             <img src={{ product.introductImage }} alt="">
                         </div>
                         <div class="name">
-                            <a href={{"./product.html?id="+product.id}}>
-                                {{ product.productName }}
-                            </a>
+                            <span style="color: #00a1de;">{{ product.productName }} </span>
                             <p>￥{{ product.money }}</p>
                             <p>x{{ product.number }}</p>
-
                             {{ each product.standards s _s }}
                                 <p>
                                     <span>{{ s.optionName }}:</span>

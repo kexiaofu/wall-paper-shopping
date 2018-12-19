@@ -266,6 +266,7 @@ document.querySelector('.close-sign-up-box').addEventListener('click', toCloseSi
 document.querySelector('.close-forget-password-box').addEventListener('click', toCloseForgetBox);
 document.querySelector('.submit').addEventListener('click', toSumbitLoginData);
 
+
 window.changeLoginType = (type) => {
   let activeTab = document.querySelector('.login-tab-active'),
     oldType = activeTab.getAttribute('data-op-type');

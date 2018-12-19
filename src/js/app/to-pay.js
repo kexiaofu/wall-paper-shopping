@@ -2486,7 +2486,7 @@ window.onload = function () {
     }).then(function (res) {
       console.log(res);
 
-      if (res && res.hasOwnProperty('orderInfos') && res.orderInfos.length === 0) {
+      if (res && res.hasOwnProperty('data') && res.data.length === 0) {
         document.querySelector('.to-pay-container').style.display = 'none';
         alert('订单不存在');
         return false;
@@ -2494,18 +2494,18 @@ window.onload = function () {
 
       orderInfo = res;
 
-      if (res.orderInfos[0].status === 0) {
+      if (res.data[0].status === 0) {
         window.location.href = './edit-order.html?orderId=' + orderId;
-      } else if (res.orderInfos[0].status > 1) {
+      } else if (res.data[0].status > 1) {
         window.location.href = './my-order.html?orderId=' + orderId;
       }
 
       var baseInfo = (0, _template.default)('base-info', {
-        data: res.orderInfos[0],
+        data: res.data[0],
         showDetail: true
       });
       document.querySelector('.base-info').innerHTML = baseInfo;
-      document.querySelector('.money').innerHTML = '￥' + res.orderInfos[0].money;
+      document.querySelector('.money').innerHTML = '￥' + res.data[0].money;
     });
   }
 };
@@ -2515,7 +2515,7 @@ window.showDetail = function (ele) {
 
   if (ele.getAttribute('data-op-bool') === 'true') {
     baseInfo = (0, _template.default)('base-info', {
-      data: orderInfo.orderInfos[0],
+      data: orderInfo.data[0],
       showDetail: true
     });
   } else {
@@ -3013,7 +3013,7 @@ function () {
             return apiRequire({
               name: 'logout',
               url: '/api/account/Logout',
-              methods: 'post'
+              method: 'post'
             });
 
           case 2:

@@ -85,7 +85,7 @@ var toGetOrder = function toGetOrder(index, status) {
       }
 
       var html = (0, _template.default)('order-content', {
-        data: res.orderInfos
+        data: res.data
       });
       document.querySelector('.order-content').innerHTML = html;
     });
@@ -112,7 +112,7 @@ var toGetOrder = function toGetOrder(index, status) {
       }
 
       var html = (0, _template.default)('order-content', {
-        data: res.orderInfos
+        data: res.data
       });
       document.querySelector('.order-content').innerHTML = html;
     });

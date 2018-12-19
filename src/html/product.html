@@ -280,12 +280,14 @@
     </div>
 </div>
 <script id="product-info" type="text/html">
+    {{ if data.productType === 2 && imgs.length > 0}}
     <div class="show-type-container">
         <span class="active-type" onclick="changeShowType(event, 0)">产品显示</span>
         <span  onclick="changeShowType(event, 1)">实景显示</span>
     </div>
+    {{ /if }}
     <div class="product-box">
-        <div class="material-bon-content">
+        <div class="material-box-content">
             <div class="material-box" data-op-scale-x="1" data-op-scale-y="1" data-op-top="0">
                 <div class="page-box">
                     <div class="trim-box">
@@ -298,22 +300,21 @@
                         </div>
                     </div>
                 </div>
-                {{ if data.hasOwnProperty('productImages') && data.productImages.length > 0 }}
+                {{ if data.productType === 2  }}
                 <div class="operation-box">
-                    <i class="iconfont icon-bigger" onmousedown="scaleProductImage(1)" onmouseup="stopScaleProductImage()"></i>
+                    <i class="iconfont icon-bigger" onmousedown="scaleProductImage(1)"></i>
                     <span id="scale-number" data-op-scale="1">100%</span>
-                    <i class="iconfont icon-smaller" onmousedown="scaleProductImage(-1)" onmouseup="stopScaleProductImage()"></i>
+                    <i class="iconfont icon-smaller" onmousedown="scaleProductImage(-1)"></i>
                     <i class="iconfont icon-rotate" id="rotate-number" onclick="rotateProductImage(event)" data-op-rotate="0"></i>
                 </div>
                 {{ /if }}
             </div>
         </div>
-        {{ if data.hasOwnProperty('productImages') && data.productImages.length > 0 }}
+        {{ if data.productType === 2 && imgs.length > 0}}
         <div class="scene-container">
-            <img src="../images/1.jpg" alt="">
-            <img src="../images/2.jpeg" alt="">
-            <img src="../images/3.jpeg" alt="">
-            <img src="../images/4.jpg" alt="">
+            {{ each imgs img i }}
+            <img src={{ img.src }} alt="" onclick="changeScene({{ i }})" >
+            {{ /each }}
         </div>
         {{ /if }}
     </div>
@@ -334,8 +335,8 @@
         <div class="buy-product">
             <div class="quantity">
                 <input type="number" value="1" class="product-quantity" onchange="checkNumber(this)">
-                <span class="change-quantity add">+</span>
-                <span class="change-quantity reduce">-</span>
+                <span class="change-quantity add" onclick="changeQuantity(1)">+</span>
+                <span class="change-quantity reduce" onclick="changeQuantity(-1)">-</span>
             </div>
 
             <div class="add-to-car" onclick="toAddShoppingCart()">

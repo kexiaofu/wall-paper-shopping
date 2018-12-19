@@ -445,7 +445,7 @@ function () {
             return apiRequire({
               name: 'logout',
               url: '/api/account/Logout',
-              methods: 'post'
+              method: 'post'
             });
 
           case 2:
