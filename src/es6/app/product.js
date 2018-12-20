@@ -11,20 +11,18 @@ let scrollX = (direct, w, parent) => {
 };
 
 let editorInfo = [], productDetail = [], box = {} , showImgIndex = null;
-let productScaleWidth = 1;
+let productScaleWidth = 1; // 场景显示的时候，画框缩小倍数
+let shapeScale = 1;
 
 const showImgs = [{
-  src: '../images/1.jpg',
-  pos: -10
-},{
-  src: '../images/2.jpeg',
-  pos: -150
-},{
-  src: '../images/3.jpeg',
+  src: '../images/wp3.png',
   pos: -200
 },{
-  src: '../images/4.jpg',
-  pos: -300
+  src: '../images/wp5.png',
+  pos: -200
+},{
+  src: '../images/wp6.png',
+  pos: -200
 }];
 
 window.onload = () => {
@@ -223,11 +221,13 @@ let changeBox = (box) => {
       // scaleY = materialbox.getAttribute('data-op-scale-y'),
       // topPos = materialbox.getAttribute('data-op-top');
 
+  let per = box.materialBoxWidth > box.materialBoxHeight ? box.materialBoxHeight / box.materialBoxWidth :  box.materialBoxWidth / box.materialBoxHeight ;
   materialbox.style.cssText = `width: ${box.materialBoxWidth}px;
             height: ${box.materialBoxHeight}px;
             background:url(${ box.materialBoxBg}) no-repeat;
             background-size:cover;
-            transform: scale(${productScaleWidth}) translate(0, ${showImgIndex !== null ? showImgs[showImgIndex].pos : 0}px);
+            margin:0 ${(550 - box.materialBoxWidth) / 2}px;
+            transform: scale(${productScaleWidth}) translate(0, ${showImgIndex !== null ? showImgs[showImgIndex].pos   : 0}px);
             display: block;`;
 };
 
@@ -335,10 +335,8 @@ window.selectThisProp = (ev) => {
 
 window.selectShape = (ev) => {
   let target = ev.target,
-    index = +target.getAttribute('data-op-index'),
     pid = +target.getAttribute('data-parent-id'),
     id = +target.getAttribute('data-prop-id'),
-    propId = +target.getAttribute('data-op-prop-id'),
     price = productDetail.basePrice;
   getEditorOption({shapeId: id})
     .then(res => {
@@ -468,11 +466,12 @@ window.changeShowType = (ev, type) => {
     document.querySelector('.active-type').className = '';
     target.className = 'active-type';
   }
-  let materialBox = document.querySelector('.material-box');
+  let materialBox = document.querySelector('.material-box'), imgBox = document.querySelector('.img-box');
   if (type === 1) {
     productScaleWidth = .25;
     materialBox.style.transform = `scale(${productScaleWidth})`;
     materialBox.querySelector('.operation-box').style.display = 'none';
+    imgBox.style.display = 'block';
     document.querySelector('.scene-container').style.transform = 'translate(0, 0)';
     showImgIndex = 0;
     changeScene(showImgIndex);
@@ -481,6 +480,7 @@ window.changeShowType = (ev, type) => {
     productScaleWidth = 1;
     materialBox.style.transform = `scale(${productScaleWidth})`;
     materialBox.querySelector('.operation-box').style.display = 'flex';
+    imgBox.style.display = 'none';
     document.querySelector('.scene-container').style.transform = 'translate(-100px, 0px)';
     document.querySelector('.material-box-content').style.background = ``;
 
@@ -490,8 +490,11 @@ window.changeShowType = (ev, type) => {
 // 更换场景
 window.changeScene = (index) => {
   showImgIndex = index;
-  document.querySelector('.material-box-content').style.background = `url(${showImgs[index].src})`;
-  document.querySelector('.material-box').style.transform = `scale(${productScaleWidth}) translate(${box.materialBoxWidth * productScaleWidth / 2}px, ${showImgs[index].pos}px)`;
+  let img = document.querySelector('.img-box>img');
+  img.setAttribute('src', showImgs[index].src);
+
+  // document.querySelector('.material-box-content').style.background = `url(${showImgs[index].src}) no-repeat`;
+  document.querySelector('.material-box').style.transform = `scale(${productScaleWidth}) translate(0, ${showImgs[index].pos}px)`;
 };
 
 // 更改商品数量

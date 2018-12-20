@@ -59,14 +59,14 @@ let getPersonalInfo = () => {
           for (let i = res.length - 1; i >= 0; i--) {
             if (info.address.indexOf(res[i].name) > -1) {
               info.province = res[i].name;
-              let cities = res[i].cities;
+              let cities = res[i].children;
 
               info.cities = cities;
 
               for (let c = cities.length - 1; c >= 0; c--) {
                 if (info.address.indexOf(cities[c].name) > -1) {
                   info.city = cities[c].name;
-                  let districts = cities[c].districts;
+                  let districts = cities[c].children;
 
                   info.districts = districts;
 
@@ -76,17 +76,13 @@ let getPersonalInfo = () => {
                       break;
                     }
                   }
-
                   break;
                 }
               }
               break;
             }
-
           }
         }
-
-
 
         personalInfo = JSON.parse(JSON.stringify(info));
 

@@ -27,6 +27,8 @@
   width: 550px;
   height: 550px;
   margin: 0 90px;
+  box-sizing: border-box;
+  position: relative;
 }
 .product-container .product-box .material-box {
   display: none;
@@ -34,7 +36,7 @@
   transition: -webkit-transform 0.2s ease;
   transition: transform 0.2s ease;
   transition: transform 0.2s ease, -webkit-transform 0.2s ease;
-  margin: 0 auto;
+  position: absolute;
 }
 .product-container .product-box .page-box {
   float: left;
@@ -53,8 +55,16 @@
   background: #eee;
   display: block;
 }
+.product-container .product-box .img-box {
+  display: none;
+}
+.product-container .product-box .img-box img {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+}
 .product-container .product-box .scene-container {
-  width: 80px;
+  width: 85px;
   height: 100%;
   top: 0;
   left: 0;
@@ -72,6 +82,8 @@
   width: 80px;
   height: 80px;
   cursor: pointer;
+  border: 1px solid #ddd;
+  margin: 0 0 5px 2px;
 }
 .product-container .product-box .scene-container img:hover {
   box-shadow: 0 0 10px #333;

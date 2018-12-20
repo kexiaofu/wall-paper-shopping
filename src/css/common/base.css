@@ -510,7 +510,7 @@ view-image
 }
 /*classify*/
 .classify {
-  height: 100px;
+  height: 60px;
   width: 100%;
   position: fixed;
   top: 60px;
@@ -522,7 +522,7 @@ view-image
   width: 1000px;
   height: 60px;
   line-height: 60px;
-  margin: 40px auto;
+  margin: 0 auto;
 }
 .classify .classify-container ul {
   display: -webkit-flex;
@@ -585,7 +585,7 @@ view-image
   -webkit-transform: translate(-50%, 0);
       -ms-transform: translate(-50%, 0);
           transform: translate(-50%, 0);
-  min-width: 250px;
+  min-width: 180px;
   margin: 0 auto;
   padding: 0 10px;
   box-sizing: border-box;

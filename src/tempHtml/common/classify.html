@@ -7,9 +7,9 @@
         {{each data val i}}
         <a href={{ "./product-list.html#"+val.id }}>
             <li>
-                <i>
+                <!--<i>
                     <img src={{val.icon}} alt="" class="classify-img">
-                </i>
+                </i>-->
                 <span>{{val.name}}</span>
                 <div class="sec-classify-container">
                     {{each val.children sec si}}

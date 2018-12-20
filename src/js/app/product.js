@@ -2504,19 +2504,18 @@ var editorInfo = [],
     productDetail = [],
     box = {},
     showImgIndex = null;
-var productScaleWidth = 1;
+var productScaleWidth = 1; // 场景显示的时候，画框缩小倍数
+
+var shapeScale = 1;
 var showImgs = [{
-  src: '../images/1.jpg',
-  pos: -10
-}, {
-  src: '../images/2.jpeg',
-  pos: -150
-}, {
-  src: '../images/3.jpeg',
+  src: '../images/wp3.png',
   pos: -200
 }, {
-  src: '../images/4.jpg',
-  pos: -300
+  src: '../images/wp5.png',
+  pos: -200
+}, {
+  src: '../images/wp6.png',
+  pos: -200
 }];
 
 window.onload = function () {
@@ -2700,7 +2699,8 @@ var changeBox = function changeBox(box) {
   // scaleY = materialbox.getAttribute('data-op-scale-y'),
   // topPos = materialbox.getAttribute('data-op-top');
 
-  materialbox.style.cssText = "width: ".concat(box.materialBoxWidth, "px;\n            height: ").concat(box.materialBoxHeight, "px;\n            background:url(").concat(box.materialBoxBg, ") no-repeat;\n            background-size:cover;\n            transform: scale(").concat(productScaleWidth, ") translate(0, ").concat(showImgIndex !== null ? showImgs[showImgIndex].pos : 0, "px);\n            display: block;");
+  var per = box.materialBoxWidth > box.materialBoxHeight ? box.materialBoxHeight / box.materialBoxWidth : box.materialBoxWidth / box.materialBoxHeight;
+  materialbox.style.cssText = "width: ".concat(box.materialBoxWidth, "px;\n            height: ").concat(box.materialBoxHeight, "px;\n            background:url(").concat(box.materialBoxBg, ") no-repeat;\n            background-size:cover;\n            margin:0 ").concat((550 - box.materialBoxWidth) / 2, "px;\n            transform: scale(").concat(productScaleWidth, ") translate(0, ").concat(showImgIndex !== null ? showImgs[showImgIndex].pos : 0, "px);\n            display: block;");
 };
 
 window.toAddShoppingCart = function () {
@@ -2815,10 +2815,8 @@ window.selectThisProp = function (ev) {
 
 window.selectShape = function (ev) {
   var target = ev.target,
-      index = +target.getAttribute('data-op-index'),
       pid = +target.getAttribute('data-parent-id'),
       id = +target.getAttribute('data-prop-id'),
-      propId = +target.getAttribute('data-op-prop-id'),
       price = productDetail.basePrice;
   (0, _api.getEditorOption)({
     shapeId: id
@@ -2965,12 +2963,14 @@ window.changeShowType = function (ev, type) {
     target.className = 'active-type';
   }
 
-  var materialBox = document.querySelector('.material-box');
+  var materialBox = document.querySelector('.material-box'),
+      imgBox = document.querySelector('.img-box');
 
   if (type === 1) {
     productScaleWidth = .25;
     materialBox.style.transform = "scale(".concat(productScaleWidth, ")");
     materialBox.querySelector('.operation-box').style.display = 'none';
+    imgBox.style.display = 'block';
     document.querySelector('.scene-container').style.transform = 'translate(0, 0)';
     showImgIndex = 0;
     changeScene(showImgIndex);
@@ -2979,6 +2979,7 @@ window.changeShowType = function (ev, type) {
     productScaleWidth = 1;
     materialBox.style.transform = "scale(".concat(productScaleWidth, ")");
     materialBox.querySelector('.operation-box').style.display = 'flex';
+    imgBox.style.display = 'none';
     document.querySelector('.scene-container').style.transform = 'translate(-100px, 0px)';
     document.querySelector('.material-box-content').style.background = "";
   }
@@ -2987,8 +2988,10 @@ window.changeShowType = function (ev, type) {
 
 window.changeScene = function (index) {
   showImgIndex = index;
-  document.querySelector('.material-box-content').style.background = "url(".concat(showImgs[index].src, ")");
-  document.querySelector('.material-box').style.transform = "scale(".concat(productScaleWidth, ") translate(").concat(box.materialBoxWidth * productScaleWidth / 2, "px, ").concat(showImgs[index].pos, "px)");
+  var img = document.querySelector('.img-box>img');
+  img.setAttribute('src', showImgs[index].src); // document.querySelector('.material-box-content').style.background = `url(${showImgs[index].src}) no-repeat`;
+
+  document.querySelector('.material-box').style.transform = "scale(".concat(productScaleWidth, ") translate(0, ").concat(showImgs[index].pos, "px)");
 }; // 更改商品数量
 
 

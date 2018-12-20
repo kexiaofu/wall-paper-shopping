@@ -2536,13 +2536,13 @@ var getPersonalInfo = function getPersonalInfo() {
         for (var i = res.length - 1; i >= 0; i--) {
           if (info.address.indexOf(res[i].name) > -1) {
             info.province = res[i].name;
-            var cities = res[i].cities;
+            var cities = res[i].children;
             info.cities = cities;
 
             for (var c = cities.length - 1; c >= 0; c--) {
               if (info.address.indexOf(cities[c].name) > -1) {
                 info.city = cities[c].name;
-                var districts = cities[c].districts;
+                var districts = cities[c].children;
                 info.districts = districts;
 
                 for (var d = districts.length - 1; d >= 0; d--) {
