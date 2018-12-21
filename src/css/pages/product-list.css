@@ -18,6 +18,7 @@
 .tags-container .tag-item .tag-title {
   color: #999;
   width: 60px;
+  padding: 3px 6px;
 }
 .tags-container .tag-item .tag-content {
   width: 980px;
